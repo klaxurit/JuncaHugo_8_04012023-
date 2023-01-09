@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '431d3881c4b07b287a2d0b82acf3aada98020204',
+        'reference' => '2465c8ac319a6bf4ee2937232656fa3d5ffbd702',
         'name' => 'saro0h/to-do-list',
         'dev' => true,
     ),
@@ -229,8 +229,8 @@
         'psr/log-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '1.0',
-                1 => '1.0.0',
+                0 => '1.0.0',
+                1 => '1.0',
             ),
         ),
         'psr/simple-cache' => array(
@@ -254,7 +254,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '431d3881c4b07b287a2d0b82acf3aada98020204',
+            'reference' => '2465c8ac319a6bf4ee2937232656fa3d5ffbd702',
             'dev_requirement' => false,
         ),
         'sensio/distribution-bundle' => array(
@@ -267,12 +267,12 @@
             'dev_requirement' => false,
         ),
         'sensio/framework-extra-bundle' => array(
-            'pretty_version' => 'v3.0.29',
-            'version' => '3.0.29.0',
+            'pretty_version' => 'v5.2.4',
+            'version' => '5.2.4.0',
             'type' => 'symfony-bundle',
             'install_path' => __DIR__ . '/../sensio/framework-extra-bundle',
             'aliases' => array(),
-            'reference' => 'bb907234df776b68922eb4b25bfa061683597b6a',
+            'reference' => '1fdf591c4b388e62dbb2579de89c1560b33f865d',
             'dev_requirement' => false,
         ),
         'sensio/generator-bundle' => array(
@@ -501,12 +501,12 @@
             ),
         ),
         'symfony/monolog-bundle' => array(
-            'pretty_version' => 'v2.12.1',
-            'version' => '2.12.1.0',
+            'pretty_version' => 'v3.6.0',
+            'version' => '3.6.0.0',
             'type' => 'symfony-bundle',
             'install_path' => __DIR__ . '/../symfony/monolog-bundle',
             'aliases' => array(),
-            'reference' => 'b0146bdca7ba2a65f3bbe7010423c7393b29ec3f',
+            'reference' => 'e495f5c7e4e672ffef4357d4a4d85f010802f940',
             'dev_requirement' => false,
         ),
         'symfony/options-resolver' => array(

@@ -158,48 +158,6 @@
       <parameter>bootstrap_3_layout.html.twig</parameter>
     </parameter>
     <parameter key="twig.default_path">/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/templates</parameter>
-    <parameter key="monolog.logger.class">Symfony\Bridge\Monolog\Logger</parameter>
-    <parameter key="monolog.gelf.publisher.class">Gelf\MessagePublisher</parameter>
-    <parameter key="monolog.gelfphp.publisher.class">Gelf\Publisher</parameter>
-    <parameter key="monolog.handler.stream.class">Monolog\Handler\StreamHandler</parameter>
-    <parameter key="monolog.handler.console.class">Symfony\Bridge\Monolog\Handler\ConsoleHandler</parameter>
-    <parameter key="monolog.handler.group.class">Monolog\Handler\GroupHandler</parameter>
-    <parameter key="monolog.handler.buffer.class">Monolog\Handler\BufferHandler</parameter>
-    <parameter key="monolog.handler.deduplication.class">Monolog\Handler\DeduplicationHandler</parameter>
-    <parameter key="monolog.handler.rotating_file.class">Monolog\Handler\RotatingFileHandler</parameter>
-    <parameter key="monolog.handler.syslog.class">Monolog\Handler\SyslogHandler</parameter>
-    <parameter key="monolog.handler.syslogudp.class">Monolog\Handler\SyslogUdpHandler</parameter>
-    <parameter key="monolog.handler.null.class">Monolog\Handler\NullHandler</parameter>
-    <parameter key="monolog.handler.test.class">Monolog\Handler\TestHandler</parameter>
-    <parameter key="monolog.handler.gelf.class">Monolog\Handler\GelfHandler</parameter>
-    <parameter key="monolog.handler.rollbar.class">Monolog\Handler\RollbarHandler</parameter>
-    <parameter key="monolog.handler.flowdock.class">Monolog\Handler\FlowdockHandler</parameter>
-    <parameter key="monolog.handler.browser_console.class">Monolog\Handler\BrowserConsoleHandler</parameter>
-    <parameter key="monolog.handler.firephp.class">Symfony\Bridge\Monolog\Handler\FirePHPHandler</parameter>
-    <parameter key="monolog.handler.chromephp.class">Symfony\Bridge\Monolog\Handler\ChromePhpHandler</parameter>
-    <parameter key="monolog.handler.debug.class">Symfony\Bridge\Monolog\Handler\DebugHandler</parameter>
-    <parameter key="monolog.handler.swift_mailer.class">Symfony\Bridge\Monolog\Handler\SwiftMailerHandler</parameter>
-    <parameter key="monolog.handler.native_mailer.class">Monolog\Handler\NativeMailerHandler</parameter>
-    <parameter key="monolog.handler.socket.class">Monolog\Handler\SocketHandler</parameter>
-    <parameter key="monolog.handler.pushover.class">Monolog\Handler\PushoverHandler</parameter>
-    <parameter key="monolog.handler.raven.class">Monolog\Handler\RavenHandler</parameter>
-    <parameter key="monolog.handler.newrelic.class">Monolog\Handler\NewRelicHandler</parameter>
-    <parameter key="monolog.handler.hipchat.class">Monolog\Handler\HipChatHandler</parameter>
-    <parameter key="monolog.handler.slack.class">Monolog\Handler\SlackHandler</parameter>
-    <parameter key="monolog.handler.cube.class">Monolog\Handler\CubeHandler</parameter>
-    <parameter key="monolog.handler.amqp.class">Monolog\Handler\AmqpHandler</parameter>
-    <parameter key="monolog.handler.error_log.class">Monolog\Handler\ErrorLogHandler</parameter>
-    <parameter key="monolog.handler.loggly.class">Monolog\Handler\LogglyHandler</parameter>
-    <parameter key="monolog.handler.logentries.class">Monolog\Handler\LogEntriesHandler</parameter>
-    <parameter key="monolog.handler.whatfailuregroup.class">Monolog\Handler\WhatFailureGroupHandler</parameter>
-    <parameter key="monolog.activation_strategy.not_found.class">Symfony\Bundle\MonologBundle\NotFoundActivationStrategy</parameter>
-    <parameter key="monolog.handler.fingers_crossed.class">Monolog\Handler\FingersCrossedHandler</parameter>
-    <parameter key="monolog.handler.fingers_crossed.error_level_activation_strategy.class">Monolog\Handler\FingersCrossed\ErrorLevelActivationStrategy</parameter>
-    <parameter key="monolog.handler.filter.class">Monolog\Handler\FilterHandler</parameter>
-    <parameter key="monolog.handler.mongo.class">Monolog\Handler\MongoDBHandler</parameter>
-    <parameter key="monolog.mongo.client.class">MongoClient</parameter>
-    <parameter key="monolog.handler.elasticsearch.class">Monolog\Handler\ElasticSearchHandler</parameter>
-    <parameter key="monolog.elastica.client.class">Elastica\Client</parameter>
     <parameter key="monolog.use_microseconds">true</parameter>
     <parameter key="monolog.swift_mailer.handlers" type="collection"/>
     <parameter key="monolog.handlers_to_channels" type="collection">
@@ -362,16 +320,6 @@
     <parameter key="doctrine.orm.auto_generate_proxy_classes">true</parameter>
     <parameter key="doctrine.orm.proxy_dir">/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/var/cache/dev/doctrine/orm/Proxies</parameter>
     <parameter key="doctrine.orm.proxy_namespace">Proxies</parameter>
-    <parameter key="sensio_framework_extra.view.guesser.class">Sensio\Bundle\FrameworkExtraBundle\Templating\TemplateGuesser</parameter>
-    <parameter key="sensio_framework_extra.controller.listener.class">Sensio\Bundle\FrameworkExtraBundle\EventListener\ControllerListener</parameter>
-    <parameter key="sensio_framework_extra.routing.loader.annot_dir.class">Symfony\Component\Routing\Loader\AnnotationDirectoryLoader</parameter>
-    <parameter key="sensio_framework_extra.routing.loader.annot_file.class">Symfony\Component\Routing\Loader\AnnotationFileLoader</parameter>
-    <parameter key="sensio_framework_extra.routing.loader.annot_class.class">Sensio\Bundle\FrameworkExtraBundle\Routing\AnnotatedRouteControllerLoader</parameter>
-    <parameter key="sensio_framework_extra.converter.listener.class">Sensio\Bundle\FrameworkExtraBundle\EventListener\ParamConverterListener</parameter>
-    <parameter key="sensio_framework_extra.converter.manager.class">Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterManager</parameter>
-    <parameter key="sensio_framework_extra.converter.doctrine.class">Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\DoctrineParamConverter</parameter>
-    <parameter key="sensio_framework_extra.converter.datetime.class">Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\DateTimeParamConverter</parameter>
-    <parameter key="sensio_framework_extra.view.listener.class">Sensio\Bundle\FrameworkExtraBundle\EventListener\TemplateListener</parameter>
     <parameter key="web_profiler.debug_toolbar.position">bottom</parameter>
     <parameter key="web_profiler.debug_toolbar.intercept_redirects">false</parameter>
     <parameter key="web_profiler.debug_toolbar.mode">2</parameter>
@@ -645,6 +593,8 @@
         <argument key="debug.stopwatch" type="service" id="debug.stopwatch" on-invalid="ignore_uninitialized"/>
         <argument key="debug.event_dispatcher" type="service" id="debug.event_dispatcher" on-invalid="ignore_uninitialized"/>
         <argument key="security.token_storage" type="service" id="security.token_storage" on-invalid="ignore_uninitialized"/>
+        <argument key="monolog.handler.main" type="service" id="monolog.handler.main" on-invalid="ignore_uninitialized"/>
+        <argument key="monolog.handler.console" type="service" id="monolog.handler.console" on-invalid="ignore_uninitialized"/>
         <argument key="form.type.entity" type="service" id="form.type.entity" on-invalid="ignore_uninitialized"/>
       </argument>
       <argument type="collection">
@@ -658,6 +608,8 @@
         <argument key="debug.stopwatch">reset</argument>
         <argument key="debug.event_dispatcher">reset</argument>
         <argument key="security.token_storage">setToken</argument>
+        <argument key="monolog.handler.main">reset</argument>
+        <argument key="monolog.handler.console">reset</argument>
         <argument key="form.type.entity">reset</argument>
       </argument>
     </service>
@@ -1856,10 +1808,18 @@
         <argument>0</argument>
       </call>
       <call method="addListener">
-        <argument>kernel.controller</argument>
+        <argument>kernel.controller_arguments</argument>
         <argument type="collection">
           <argument type="service" id="sensio_framework_extra.security.listener"/>
-          <argument>onKernelController</argument>
+          <argument>onKernelControllerArguments</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+      <call method="addListener">
+        <argument>kernel.controller_arguments</argument>
+        <argument type="collection">
+          <argument type="service" id="framework_extra_bundle.event.is_granted"/>
+          <argument>onKernelControllerArguments</argument>
         </argument>
         <argument>0</argument>
       </call>
@@ -3140,7 +3100,6 @@
       <call method="pushHandler">
         <argument type="service" id="monolog.handler.main"/>
       </call>
-      <autowiring-type>Psr\Log\LoggerInterface</autowiring-type>
     </service>
     <service id="monolog.logger_prototype" class="Symfony\Bridge\Monolog\Logger" abstract="true">
       <argument></argument>
@@ -3148,6 +3107,8 @@
         <argument type="service" id="debug.log_processor"/>
       </call>
     </service>
+    <service id="monolog.activation_strategy.not_found" class="Symfony\Bridge\Monolog\Handler\FingersCrossed\NotFoundActivationStrategy" abstract="true"/>
+    <service id="monolog.handler.fingers_crossed.error_level_activation_strategy" class="Monolog\Handler\FingersCrossed\ErrorLevelActivationStrategy" abstract="true"/>
     <service id="monolog.formatter.chrome_php" class="Monolog\Formatter\ChromePHPFormatter" public="false"/>
     <service id="monolog.formatter.gelf_message" class="Monolog\Formatter\GelfMessageFormatter" public="false"/>
     <service id="monolog.formatter.html" class="Monolog\Formatter\HtmlFormatter" public="false"/>
@@ -3160,20 +3121,27 @@
     <service id="monolog.formatter.logstash" class="Monolog\Formatter\LogstashFormatter" public="false">
       <argument>app</argument>
     </service>
+    <service id="monolog.http_client" class="Symfony\Contracts\HttpClient\HttpClientInterface" public="false">
+      <factory class="Symfony\Component\HttpClient\HttpClient" method="create"/>
+    </service>
     <service id="monolog.processor.psr_log_message" class="Monolog\Processor\PsrLogMessageProcessor" public="false"/>
     <service id="monolog.handler.main" class="Monolog\Handler\StreamHandler">
+      <tag name="kernel.reset" method="reset"/>
       <argument>/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/var/logs/dev.log</argument>
       <argument>100</argument>
       <argument>true</argument>
       <argument>null</argument>
+      <argument>false</argument>
       <call method="pushProcessor">
         <argument type="service" id="monolog.processor.psr_log_message"/>
       </call>
     </service>
     <service id="monolog.handler.console" class="Symfony\Bridge\Monolog\Handler\ConsoleHandler">
       <tag name="kernel.event_subscriber"/>
+      <tag name="kernel.reset" method="reset"/>
       <argument>null</argument>
       <argument>true</argument>
+      <argument type="collection"/>
       <argument type="collection"/>
       <call method="pushProcessor">
         <argument type="service" id="monolog.processor.psr_log_message"/>
@@ -3645,10 +3613,7 @@
       <tag name="property_info.type_extractor" priority="-999"/>
       <argument type="service" id="doctrine.orm.default_entity_manager.metadata_factory"/>
     </service>
-    <service id="sensio_framework_extra.view.guesser" class="Sensio\Bundle\FrameworkExtraBundle\Templating\TemplateGuesser" public="true">
-      <argument type="service" id="kernel"/>
-    </service>
-    <service id="sensio_framework_extra.controller.listener" class="Sensio\Bundle\FrameworkExtraBundle\EventListener\ControllerListener">
+    <service id="sensio_framework_extra.controller.listener" class="Sensio\Bundle\FrameworkExtraBundle\EventListener\ControllerListener" public="false">
       <tag name="kernel.event_subscriber"/>
       <tag name="container.hot_path"/>
       <argument type="service" id="annotations.cached_reader"/>
@@ -3656,18 +3621,21 @@
     <service id="sensio_framework_extra.routing.loader.annot_class" class="Sensio\Bundle\FrameworkExtraBundle\Routing\AnnotatedRouteControllerLoader" public="false">
       <tag name="routing.loader"/>
       <argument type="service" id="annotations.cached_reader"/>
+      <deprecated>The "%service_id%" service is deprecated since version 5.2</deprecated>
     </service>
     <service id="sensio_framework_extra.routing.loader.annot_dir" class="Symfony\Component\Routing\Loader\AnnotationDirectoryLoader" public="false">
       <tag name="routing.loader"/>
       <argument type="service" id="file_locator"/>
       <argument type="service" id="sensio_framework_extra.routing.loader.annot_class"/>
+      <deprecated>The "%service_id%" service is deprecated since version 5.2</deprecated>
     </service>
     <service id="sensio_framework_extra.routing.loader.annot_file" class="Symfony\Component\Routing\Loader\AnnotationFileLoader" public="false">
       <tag name="routing.loader"/>
       <argument type="service" id="file_locator"/>
       <argument type="service" id="sensio_framework_extra.routing.loader.annot_class"/>
+      <deprecated>The "%service_id%" service is deprecated since version 5.2</deprecated>
     </service>
-    <service id="sensio_framework_extra.converter.listener" class="Sensio\Bundle\FrameworkExtraBundle\EventListener\ParamConverterListener">
+    <service id="sensio_framework_extra.converter.listener" class="Sensio\Bundle\FrameworkExtraBundle\EventListener\ParamConverterListener" public="false">
       <tag name="kernel.event_subscriber"/>
       <tag name="container.hot_path"/>
       <argument type="service" id="sensio_framework_extra.converter.manager"/>
@@ -3680,39 +3648,55 @@
         <argument>doctrine.orm</argument>
       </call>
       <call method="add">
-        <argument type="service" id="sensio_framework_extra.converter.datetime"/>
+        <argument type="service" id="framework_extra_bundle.date_time_param_converter"/>
         <argument>0</argument>
         <argument>datetime</argument>
       </call>
     </service>
-    <service id="sensio_framework_extra.converter.doctrine.orm" class="Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\DoctrineParamConverter">
+    <service id="sensio_framework_extra.converter.doctrine.orm" class="Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\DoctrineParamConverter" public="false">
       <tag name="request.param_converter" converter="doctrine.orm"/>
       <argument type="service" id="doctrine" on-invalid="ignore"/>
+      <argument type="service" id="sensio_framework_extra.converter.doctrine.orm.expression_language.default" on-invalid="null"/>
     </service>
-    <service id="sensio_framework_extra.converter.datetime" class="Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\DateTimeParamConverter">
+    <service id="framework_extra_bundle.date_time_param_converter" class="Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\DateTimeParamConverter" public="false">
       <tag name="request.param_converter" converter="datetime"/>
     </service>
-    <service id="sensio_framework_extra.view.listener" class="Sensio\Bundle\FrameworkExtraBundle\EventListener\TemplateListener">
-      <tag name="kernel.event_subscriber"/>
-      <tag name="container.hot_path"/>
-      <argument type="service" id="service_container"/>
+    <service id="sensio_framework_extra.converter.doctrine.orm.expression_language.default" class="Symfony\Component\ExpressionLanguage\ExpressionLanguage" public="false"/>
+    <service id="sensio_framework_extra.view.guesser" class="Sensio\Bundle\FrameworkExtraBundle\Templating\TemplateGuesser" public="false">
+      <argument type="service" id="kernel"/>
     </service>
-    <service id="sensio_framework_extra.cache.listener" class="Sensio\Bundle\FrameworkExtraBundle\EventListener\HttpCacheListener">
+    <service id="sensio_framework_extra.view.listener" class="Sensio\Bundle\FrameworkExtraBundle\EventListener\TemplateListener" public="false">
+      <tag name="kernel.event_subscriber"/>
+      <tag name="container.hot_path"/>
+      <argument type="service" id="sensio_framework_extra.view.guesser"/>
+      <argument type="service" id="twig" on-invalid="null"/>
+    </service>
+    <service id="sensio_framework_extra.cache.listener" class="Sensio\Bundle\FrameworkExtraBundle\EventListener\HttpCacheListener" public="false">
       <tag name="kernel.event_subscriber"/>
       <tag name="container.hot_path"/>
       <tag name="container.hot_path"/>
     </service>
-    <service id="sensio_framework_extra.security.listener" class="Sensio\Bundle\FrameworkExtraBundle\EventListener\SecurityListener">
+    <service id="sensio_framework_extra.security.listener" class="Sensio\Bundle\FrameworkExtraBundle\EventListener\SecurityListener" public="false">
       <tag name="kernel.event_subscriber"/>
       <tag name="container.hot_path"/>
-      <argument>null</argument>
+      <argument type="service" id="framework_extra_bundle.argument_name_convertor"/>
       <argument type="service" id="sensio_framework_extra.security.expression_language.default" on-invalid="null"/>
       <argument type="service" id="security.authentication.trust_resolver" on-invalid="null"/>
       <argument type="service" id="security.role_hierarchy" on-invalid="null"/>
       <argument type="service" id="security.token_storage" on-invalid="null"/>
       <argument type="service" id="security.authorization_checker" on-invalid="null"/>
+      <argument type="service" id="monolog.logger" on-invalid="null"/>
     </service>
     <service id="sensio_framework_extra.security.expression_language.default" class="Sensio\Bundle\FrameworkExtraBundle\Security\ExpressionLanguage" public="false"/>
+    <service id="framework_extra_bundle.event.is_granted" class="Sensio\Bundle\FrameworkExtraBundle\EventListener\IsGrantedListener" public="false">
+      <tag name="kernel.event_subscriber"/>
+      <tag name="container.hot_path"/>
+      <argument type="service" id="framework_extra_bundle.argument_name_convertor"/>
+      <argument type="service" id="security.authorization_checker" on-invalid="null"/>
+    </service>
+    <service id="framework_extra_bundle.argument_name_convertor" class="Sensio\Bundle\FrameworkExtraBundle\Request\ArgumentNameConverter" public="false">
+      <argument type="service" id="argument_metadata_factory"/>
+    </service>
     <service id="twig.extension.dump" class="Symfony\Bridge\Twig\Extension\DumpExtension" public="false">
       <tag name="twig.extension"/>
       <argument type="service" id="var_dumper.cloner"/>
@@ -4227,6 +4211,7 @@
     <service id="Twig_Environment" alias="twig" public="false"/>
     <service id="Twig\Environment" alias="twig" public="false"/>
     <service id="logger" alias="monolog.logger"/>
+    <service id="Psr\Log\LoggerInterface" alias="monolog.logger" public="false"/>
     <service id="swiftmailer.mailer.default.transport" alias="swiftmailer.mailer.default.transport.spool"/>
     <service id="swiftmailer.mailer.default.spool" alias="swiftmailer.mailer.default.spool.memory"/>
     <service id="swiftmailer.mailer.default.transport.real" alias="swiftmailer.mailer.default.transport.smtp" public="true"/>
@@ -4252,11 +4237,11 @@
     <service id="doctrine.orm.default_result_cache" alias="doctrine_cache.providers.doctrine.orm.default_result_cache" public="true"/>
     <service id="doctrine.orm.default_query_cache" alias="doctrine_cache.providers.doctrine.orm.default_query_cache" public="true"/>
     <service id="doctrine.orm.default_entity_manager.event_manager" alias="doctrine.dbal.default_connection.event_manager" public="false"/>
+    <service id="sensio_framework_extra.converter.doctrine.orm.expression_language" alias="sensio_framework_extra.converter.doctrine.orm.expression_language.default" public="false"/>
     <service id="sensio_framework_extra.security.expression_language" alias="sensio_framework_extra.security.expression_language.default" public="false"/>
     <service id="Symfony\Component\Templating\EngineInterface" alias="templating.engine.twig" public="false"/>
     <service id="Symfony\Bundle\FrameworkBundle\Templating\EngineInterface" alias="templating.engine.twig" public="false"/>
     <service id="twig.loader" alias="twig.loader.filesystem"/>
-    <service id="Psr\Log\LoggerInterface" alias="monolog.logger" public="false"/>
     <service id="service_locator._fpuy7b" alias="2_ServiceLocator~aq7rn89" public="false"/>
     <service id="service_locator.ml7rum7" alias="1_ServiceLocator~il1m0gm" public="false"/>
     <service id="validator" alias="debug.validator" public="true"/>
