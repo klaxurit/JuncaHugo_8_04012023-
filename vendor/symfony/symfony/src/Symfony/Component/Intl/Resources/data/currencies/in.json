@@ -1,5 +1,4 @@
 {
-    "Version": "2.1.22.93",
     "Names": {
         "ADP": [
             "ADP",
@@ -213,9 +212,13 @@
             "BYB",
             "Rubel Baru Belarus (1994–1999)"
         ],
+        "BYN": [
+            "BYN",
+            "Rubel Belarusia"
+        ],
         "BYR": [
             "BYR",
-            "Rubel Belarusia"
+            "Rubel Belarusia (2000–2016)"
         ],
         "BZD": [
             "BZD",
@@ -252,6 +255,10 @@
         "CLP": [
             "CLP",
             "Peso Cile"
+        ],
+        "CNH": [
+            "CNH",
+            "Yuan Tiongkok (luar negeri)"
         ],
         "CNY": [
             "CN¥",
@@ -667,6 +674,10 @@
         ],
         "MRO": [
             "MRO",
+            "Ouguiya Mauritania (1973–2017)"
+        ],
+        "MRU": [
+            "MRU",
             "Ouguiya Mauritania"
         ],
         "MTL": [
@@ -767,7 +778,7 @@
         ],
         "PEN": [
             "PEN",
-            "Nuevo Sol Peru"
+            "Sol Peru"
         ],
         "PES": [
             "PES",
@@ -899,6 +910,10 @@
         ],
         "STD": [
             "STD",
+            "Dobra Sao Tome dan Principe (1977–2017)"
+        ],
+        "STN": [
+            "STN",
             "Dobra Sao Tome dan Principe"
         ],
         "SUR": [
@@ -1019,6 +1034,10 @@
         ],
         "VEF": [
             "VEF",
+            "Bolivar Venezuela (2008–2018)"
+        ],
+        "VES": [
+            "VES",
             "Bolivar Venezuela"
         ],
         "VND": [

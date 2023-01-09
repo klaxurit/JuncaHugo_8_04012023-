@@ -1,5 +1,4 @@
 {
-    "Version": "2.1.23.66",
     "Names": {
         "ADP": [
             "ADP",
@@ -217,9 +216,13 @@
             "BYB",
             "vitrysk ny rubel (1994–1999)"
         ],
+        "BYN": [
+            "BYN",
+            "vitrysk rubel"
+        ],
         "BYR": [
             "BYR",
-            "vitrysk rubel"
+            "vitrysk rubel (2000–2016)"
         ],
         "BZD": [
             "BZ$",
@@ -256,6 +259,10 @@
         "CLP": [
             "CLP",
             "chilensk peso"
+        ],
+        "CNH": [
+            "CNH",
+            "kinesisk yuan (offshore)"
         ],
         "CNX": [
             "CNX",
@@ -443,7 +450,7 @@
         ],
         "GYD": [
             "GYD",
-            "guyanansk dollar"
+            "Guyanadollar"
         ],
         "HKD": [
             "HKD",
@@ -471,10 +478,10 @@
         ],
         "IDR": [
             "IDR",
-            "indonesisk rupiah"
+            "indonesisk rupie"
         ],
         "IEP": [
-            "IEP",
+            "IE£",
             "irländskt pund"
         ],
         "ILP": [
@@ -671,10 +678,14 @@
         ],
         "MOP": [
             "MOP",
-            "macaosk pataca"
+            "makanesisk pataca"
         ],
         "MRO": [
             "MRO",
+            "mauretansk ouguiya (1973–2017)"
+        ],
+        "MRU": [
+            "MRU",
             "mauretansk ouguiya"
         ],
         "MTL": [
@@ -775,7 +786,7 @@
         ],
         "PEN": [
             "PEN",
-            "peruansk nuevo sol"
+            "peruansk sol"
         ],
         "PES": [
             "PES",
@@ -907,6 +918,10 @@
         ],
         "STD": [
             "STD",
+            "saotomeansk dobra (1977–2017)"
+        ],
+        "STN": [
+            "STN",
             "saotomeansk dobra"
         ],
         "SUR": [
@@ -955,7 +970,7 @@
         ],
         "TPE": [
             "TPE",
-            "timoriansk escudo"
+            "östtimoresisk escudo"
         ],
         "TRL": [
             "TRL",
@@ -1017,6 +1032,10 @@
             "UYU",
             "uruguayansk peso"
         ],
+        "UYW": [
+            "UYW",
+            "uruguayansk indexenhet för nominell lön"
+        ],
         "UZS": [
             "UZS",
             "uzbekisk sum"
@@ -1027,6 +1046,10 @@
         ],
         "VEF": [
             "VEF",
+            "venezuelansk bolívar (2008–2018)"
+        ],
+        "VES": [
+            "VES",
             "venezuelansk bolívar"
         ],
         "VND": [
@@ -1063,7 +1086,7 @@
         ],
         "XFU": [
             "XFU",
-            "French UIC-Franc"
+            "internationella järnvägsunionens franc"
         ],
         "XOF": [
             "CFA",

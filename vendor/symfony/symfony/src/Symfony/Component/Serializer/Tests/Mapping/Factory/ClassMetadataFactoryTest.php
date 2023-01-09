@@ -12,6 +12,7 @@
 namespace Symfony\Component\Serializer\Tests\Mapping\Factory;
 
 use Doctrine\Common\Annotations\AnnotationReader;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
 use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
 use Symfony\Component\Serializer\Mapping\Loader\LoaderChain;
@@ -20,11 +21,11 @@ use Symfony\Component\Serializer\Tests\Mapping\TestClassMetadataFactory;
 /**
  * @author Kévin Dunglas <dunglas@gmail.com>
  */
-class ClassMetadataFactoryTest extends \PHPUnit_Framework_TestCase
+class ClassMetadataFactoryTest extends TestCase
 {
     public function testInterface()
     {
-        $classMetadata = new ClassMetadataFactory(new LoaderChain(array()));
+        $classMetadata = new ClassMetadataFactory(new LoaderChain([]));
         $this->assertInstanceOf('Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface', $classMetadata);
     }
 
@@ -50,11 +51,11 @@ class ClassMetadataFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testCacheExists()
     {
-        $cache = $this->getMock('Doctrine\Common\Cache\Cache');
+        $cache = $this->getMockBuilder('Doctrine\Common\Cache\Cache')->getMock();
         $cache
             ->expects($this->once())
             ->method('fetch')
-            ->will($this->returnValue('foo'))
+            ->willReturn('foo')
         ;
 
         $factory = new ClassMetadataFactory(new AnnotationLoader(new AnnotationReader()), $cache);
@@ -66,8 +67,8 @@ class ClassMetadataFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testCacheNotExists()
     {
-        $cache = $this->getMock('Doctrine\Common\Cache\Cache');
-        $cache->method('fetch')->will($this->returnValue(false));
+        $cache = $this->getMockBuilder('Doctrine\Common\Cache\Cache')->getMock();
+        $cache->method('fetch')->willReturn(false);
         $cache->method('save');
 
         $factory = new ClassMetadataFactory(new AnnotationLoader(new AnnotationReader()), $cache);

@@ -11,12 +11,16 @@
 
 namespace Symfony\Component\Form\Tests\Extension\Csrf\EventListener;
 
-use Symfony\Component\Form\Form;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Form\Extension\Core\DataMapper\PropertyPathMapper;
+use Symfony\Component\Form\Extension\Csrf\EventListener\CsrfValidationListener;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\Extension\Csrf\EventListener\CsrfValidationListener;
+use Symfony\Component\Form\FormFactoryBuilder;
+use Symfony\Component\Security\Csrf\CsrfTokenManager;
 
-class CsrfValidationListenerTest extends \PHPUnit_Framework_TestCase
+class CsrfValidationListenerTest extends TestCase
 {
     protected $dispatcher;
     protected $factory;
@@ -25,11 +29,11 @@ class CsrfValidationListenerTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
-        $this->factory = $this->getMock('Symfony\Component\Form\FormFactoryInterface');
-        $this->tokenManager = $this->getMock('Symfony\Component\Security\Csrf\CsrfTokenManagerInterface');
-        $this->form = $this->getBuilder('post')
-            ->setDataMapper($this->getDataMapper())
+        $this->dispatcher = new EventDispatcher();
+        $this->factory = (new FormFactoryBuilder())->getFormFactory();
+        $this->tokenManager = new CsrfTokenManager();
+        $this->form = $this->getBuilder()
+            ->setDataMapper(new PropertyPathMapper())
             ->getForm();
     }
 
@@ -41,24 +45,9 @@ class CsrfValidationListenerTest extends \PHPUnit_Framework_TestCase
         $this->form = null;
     }
 
-    protected function getBuilder($name = 'name')
+    protected function getBuilder()
     {
-        return new FormBuilder($name, null, $this->dispatcher, $this->factory, array('compound' => true));
-    }
-
-    protected function getForm($name = 'name')
-    {
-        return $this->getBuilder($name)->getForm();
-    }
-
-    protected function getDataMapper()
-    {
-        return $this->getMock('Symfony\Component\Form\DataMapperInterface');
-    }
-
-    protected function getMockForm()
-    {
-        return $this->getMock('Symfony\Component\Form\Test\FormInterface');
+        return new FormBuilder('post', null, $this->dispatcher, $this->factory, ['compound' => true]);
     }
 
     // https://github.com/symfony/symfony/pull/5838
@@ -72,6 +61,16 @@ class CsrfValidationListenerTest extends \PHPUnit_Framework_TestCase
 
         // Validate accordingly
         $this->assertSame($data, $event->getData());
+    }
+
+    public function testArrayCsrfToken()
+    {
+        $event = new FormEvent($this->form, ['csrf' => []]);
+
+        $validation = new CsrfValidationListener('csrf', $this->tokenManager, 'unknown', 'Invalid.');
+        $validation->preSubmit($event);
+
+        $this->assertNotEmpty($this->form->getErrors());
     }
 
     public function testMaxPostSizeExceeded()
@@ -88,7 +87,7 @@ class CsrfValidationListenerTest extends \PHPUnit_Framework_TestCase
             ->willReturn(true)
         ;
 
-        $event = new FormEvent($this->form, array('csrf' => 'token'));
+        $event = new FormEvent($this->form, ['csrf' => 'token']);
         $validation = new CsrfValidationListener('csrf', $this->tokenManager, 'unknown', 'Error message', null, null, $serverParams);
 
         $validation->preSubmit($event);

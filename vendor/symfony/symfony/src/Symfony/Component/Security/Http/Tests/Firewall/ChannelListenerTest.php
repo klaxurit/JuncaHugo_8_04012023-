@@ -11,39 +11,40 @@
 
 namespace Symfony\Component\Security\Http\Tests\Firewall;
 
-use Symfony\Component\Security\Http\Firewall\ChannelListener;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Http\Firewall\ChannelListener;
 
-class ChannelListenerTest extends \PHPUnit_Framework_TestCase
+class ChannelListenerTest extends TestCase
 {
     public function testHandleWithNotSecuredRequestAndHttpChannel()
     {
-        $request = $this->getMock('Symfony\Component\HttpFoundation\Request', array(), array(), '', false, false);
+        $request = $this->getMockBuilder('Symfony\Component\HttpFoundation\Request')->disableOriginalConstructor()->disableOriginalClone()->getMock();
         $request
             ->expects($this->any())
             ->method('isSecure')
-            ->will($this->returnValue(false))
+            ->willReturn(false)
         ;
 
-        $accessMap = $this->getMock('Symfony\Component\Security\Http\AccessMapInterface');
+        $accessMap = $this->getMockBuilder('Symfony\Component\Security\Http\AccessMapInterface')->getMock();
         $accessMap
             ->expects($this->any())
             ->method('getPatterns')
             ->with($this->equalTo($request))
-            ->will($this->returnValue(array(array(), 'http')))
+            ->willReturn([[], 'http'])
         ;
 
-        $entryPoint = $this->getMock('Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface');
+        $entryPoint = $this->getMockBuilder('Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface')->getMock();
         $entryPoint
             ->expects($this->never())
             ->method('start')
         ;
 
-        $event = $this->getMock('Symfony\Component\HttpKernel\Event\GetResponseEvent', array(), array(), '', false);
+        $event = $this->getMockBuilder('Symfony\Component\HttpKernel\Event\GetResponseEvent')->disableOriginalConstructor()->getMock();
         $event
             ->expects($this->any())
             ->method('getRequest')
-            ->will($this->returnValue($request))
+            ->willReturn($request)
         ;
         $event
             ->expects($this->never())
@@ -56,32 +57,32 @@ class ChannelListenerTest extends \PHPUnit_Framework_TestCase
 
     public function testHandleWithSecuredRequestAndHttpsChannel()
     {
-        $request = $this->getMock('Symfony\Component\HttpFoundation\Request', array(), array(), '', false, false);
+        $request = $this->getMockBuilder('Symfony\Component\HttpFoundation\Request')->disableOriginalConstructor()->disableOriginalClone()->getMock();
         $request
             ->expects($this->any())
             ->method('isSecure')
-            ->will($this->returnValue(true))
+            ->willReturn(true)
         ;
 
-        $accessMap = $this->getMock('Symfony\Component\Security\Http\AccessMapInterface');
+        $accessMap = $this->getMockBuilder('Symfony\Component\Security\Http\AccessMapInterface')->getMock();
         $accessMap
             ->expects($this->any())
             ->method('getPatterns')
             ->with($this->equalTo($request))
-            ->will($this->returnValue(array(array(), 'https')))
+            ->willReturn([[], 'https'])
         ;
 
-        $entryPoint = $this->getMock('Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface');
+        $entryPoint = $this->getMockBuilder('Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface')->getMock();
         $entryPoint
             ->expects($this->never())
             ->method('start')
         ;
 
-        $event = $this->getMock('Symfony\Component\HttpKernel\Event\GetResponseEvent', array(), array(), '', false);
+        $event = $this->getMockBuilder('Symfony\Component\HttpKernel\Event\GetResponseEvent')->disableOriginalConstructor()->getMock();
         $event
             ->expects($this->any())
             ->method('getRequest')
-            ->will($this->returnValue($request))
+            ->willReturn($request)
         ;
         $event
             ->expects($this->never())
@@ -94,36 +95,36 @@ class ChannelListenerTest extends \PHPUnit_Framework_TestCase
 
     public function testHandleWithNotSecuredRequestAndHttpsChannel()
     {
-        $request = $this->getMock('Symfony\Component\HttpFoundation\Request', array(), array(), '', false, false);
+        $request = $this->getMockBuilder('Symfony\Component\HttpFoundation\Request')->disableOriginalConstructor()->disableOriginalClone()->getMock();
         $request
             ->expects($this->any())
             ->method('isSecure')
-            ->will($this->returnValue(false))
+            ->willReturn(false)
         ;
 
         $response = new Response();
 
-        $accessMap = $this->getMock('Symfony\Component\Security\Http\AccessMapInterface');
+        $accessMap = $this->getMockBuilder('Symfony\Component\Security\Http\AccessMapInterface')->getMock();
         $accessMap
             ->expects($this->any())
             ->method('getPatterns')
             ->with($this->equalTo($request))
-            ->will($this->returnValue(array(array(), 'https')))
+            ->willReturn([[], 'https'])
         ;
 
-        $entryPoint = $this->getMock('Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface');
+        $entryPoint = $this->getMockBuilder('Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface')->getMock();
         $entryPoint
             ->expects($this->once())
             ->method('start')
             ->with($this->equalTo($request))
-            ->will($this->returnValue($response))
+            ->willReturn($response)
         ;
 
-        $event = $this->getMock('Symfony\Component\HttpKernel\Event\GetResponseEvent', array(), array(), '', false);
+        $event = $this->getMockBuilder('Symfony\Component\HttpKernel\Event\GetResponseEvent')->disableOriginalConstructor()->getMock();
         $event
             ->expects($this->any())
             ->method('getRequest')
-            ->will($this->returnValue($request))
+            ->willReturn($request)
         ;
         $event
             ->expects($this->once())
@@ -137,36 +138,36 @@ class ChannelListenerTest extends \PHPUnit_Framework_TestCase
 
     public function testHandleWithSecuredRequestAndHttpChannel()
     {
-        $request = $this->getMock('Symfony\Component\HttpFoundation\Request', array(), array(), '', false, false);
+        $request = $this->getMockBuilder('Symfony\Component\HttpFoundation\Request')->disableOriginalConstructor()->disableOriginalClone()->getMock();
         $request
             ->expects($this->any())
             ->method('isSecure')
-            ->will($this->returnValue(true))
+            ->willReturn(true)
         ;
 
         $response = new Response();
 
-        $accessMap = $this->getMock('Symfony\Component\Security\Http\AccessMapInterface');
+        $accessMap = $this->getMockBuilder('Symfony\Component\Security\Http\AccessMapInterface')->getMock();
         $accessMap
             ->expects($this->any())
             ->method('getPatterns')
             ->with($this->equalTo($request))
-            ->will($this->returnValue(array(array(), 'http')))
+            ->willReturn([[], 'http'])
         ;
 
-        $entryPoint = $this->getMock('Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface');
+        $entryPoint = $this->getMockBuilder('Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface')->getMock();
         $entryPoint
             ->expects($this->once())
             ->method('start')
             ->with($this->equalTo($request))
-            ->will($this->returnValue($response))
+            ->willReturn($response)
         ;
 
-        $event = $this->getMock('Symfony\Component\HttpKernel\Event\GetResponseEvent', array(), array(), '', false);
+        $event = $this->getMockBuilder('Symfony\Component\HttpKernel\Event\GetResponseEvent')->disableOriginalConstructor()->getMock();
         $event
             ->expects($this->any())
             ->method('getRequest')
-            ->will($this->returnValue($request))
+            ->willReturn($request)
         ;
         $event
             ->expects($this->once())

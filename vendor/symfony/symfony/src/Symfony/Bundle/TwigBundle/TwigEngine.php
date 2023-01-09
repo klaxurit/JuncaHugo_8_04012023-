@@ -13,10 +13,11 @@ namespace Symfony\Bundle\TwigBundle;
 
 use Symfony\Bridge\Twig\TwigEngine as BaseEngine;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
-use Symfony\Component\Templating\TemplateNameParserInterface;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Config\FileLocatorInterface;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Templating\TemplateNameParserInterface;
+use Twig\Environment;
+use Twig\Error\Error;
 
 /**
  * This engine renders Twig templates.
@@ -27,14 +28,7 @@ class TwigEngine extends BaseEngine implements EngineInterface
 {
     protected $locator;
 
-    /**
-     * Constructor.
-     *
-     * @param \Twig_Environment           $environment A \Twig_Environment instance
-     * @param TemplateNameParserInterface $parser      A TemplateNameParserInterface instance
-     * @param FileLocatorInterface        $locator     A FileLocatorInterface instance
-     */
-    public function __construct(\Twig_Environment $environment, TemplateNameParserInterface $parser, FileLocatorInterface $locator)
+    public function __construct(Environment $environment, TemplateNameParserInterface $parser, FileLocatorInterface $locator)
     {
         parent::__construct($environment, $parser);
 
@@ -43,30 +37,10 @@ class TwigEngine extends BaseEngine implements EngineInterface
 
     /**
      * {@inheritdoc}
-     */
-    public function render($name, array $parameters = array())
-    {
-        try {
-            return parent::render($name, $parameters);
-        } catch (\Twig_Error $e) {
-            if ($name instanceof TemplateReference) {
-                try {
-                    // try to get the real name of the template where the error occurred
-                    $e->setTemplateName(sprintf('%s', $this->locator->locate($this->parser->parse($e->getTemplateName()))));
-                } catch (\Exception $e2) {
-                }
-            }
-
-            throw $e;
-        }
-    }
-
-    /**
-     * {@inheritdoc}
      *
-     * @throws \Twig_Error if something went wrong like a thrown exception while rendering the template
+     * @throws Error if something went wrong like a thrown exception while rendering the template
      */
-    public function renderResponse($view, array $parameters = array(), Response $response = null)
+    public function renderResponse($view, array $parameters = [], Response $response = null)
     {
         if (null === $response) {
             $response = new Response();

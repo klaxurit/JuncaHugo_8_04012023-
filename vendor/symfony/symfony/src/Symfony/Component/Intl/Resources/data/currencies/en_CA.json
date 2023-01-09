@@ -1,9 +1,12 @@
 {
-    "Version": "2.1.22.91",
     "Names": {
         "CAD": [
             "$",
             "Canadian Dollar"
+        ],
+        "VES": [
+            "VES",
+            "Venezuelan Bolívar"
         ]
     }
 }

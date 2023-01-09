@@ -31,14 +31,14 @@ class IssnValidator extends ConstraintValidator
     public function validate($value, Constraint $constraint)
     {
         if (!$constraint instanceof Issn) {
-            throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\Issn');
+            throw new UnexpectedTypeException($constraint, Issn::class);
         }
 
         if (null === $value || '' === $value) {
             return;
         }
 
-        if (!is_scalar($value) && !(is_object($value) && method_exists($value, '__toString'))) {
+        if (!is_scalar($value) && !(\is_object($value) && method_exists($value, '__toString'))) {
             throw new UnexpectedTypeException($value, 'string');
         }
 
@@ -47,7 +47,7 @@ class IssnValidator extends ConstraintValidator
 
         // 1234-567X
         //     ^
-        if (isset($canonical{4}) && '-' === $canonical{4}) {
+        if (isset($canonical[4]) && '-' === $canonical[4]) {
             // remove hyphen
             $canonical = substr($canonical, 0, 4).substr($canonical, 5);
         } elseif ($constraint->requireHyphen) {
@@ -59,7 +59,7 @@ class IssnValidator extends ConstraintValidator
             return;
         }
 
-        $length = strlen($canonical);
+        $length = \strlen($canonical);
 
         if ($length < 8) {
             $this->context->buildViolation($constraint->message)
@@ -92,7 +92,7 @@ class IssnValidator extends ConstraintValidator
 
         // 1234567X
         //        ^ digit, x or X
-        if (!ctype_digit($canonical{7}) && 'x' !== $canonical{7} && 'X' !== $canonical{7}) {
+        if (!ctype_digit($canonical[7]) && 'x' !== $canonical[7] && 'X' !== $canonical[7]) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $this->formatValue($value))
                 ->setCode(Issn::INVALID_CHARACTERS_ERROR)
@@ -103,7 +103,7 @@ class IssnValidator extends ConstraintValidator
 
         // 1234567X
         //        ^ case-sensitive?
-        if ($constraint->caseSensitive && 'x' === $canonical{7}) {
+        if ($constraint->caseSensitive && 'x' === $canonical[7]) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $this->formatValue($value))
                 ->setCode(Issn::INVALID_CASE_ERROR)
@@ -113,14 +113,14 @@ class IssnValidator extends ConstraintValidator
         }
 
         // Calculate a checksum. "X" equals 10.
-        $checkSum = 'X' === $canonical{7}
-        || 'x' === $canonical{7}
+        $checkSum = 'X' === $canonical[7]
+        || 'x' === $canonical[7]
         ? 10
-            : $canonical{7};
+            : $canonical[7];
 
         for ($i = 0; $i < 7; ++$i) {
             // Multiply the first digit by 8, the second by 7, etc.
-            $checkSum += (8 - $i) * $canonical{$i};
+            $checkSum += (8 - $i) * (int) $canonical[$i];
         }
 
         if (0 !== $checkSum % 11) {

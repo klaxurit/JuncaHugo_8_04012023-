@@ -13,8 +13,9 @@ namespace Symfony\Component\Validator\Tests\Constraints;
 
 use Symfony\Component\Validator\Constraints\Locale;
 use Symfony\Component\Validator\Constraints\LocaleValidator;
+use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
-class LocaleValidatorTest extends AbstractConstraintValidatorTest
+class LocaleValidatorTest extends ConstraintValidatorTestCase
 {
     protected function createValidator()
     {
@@ -35,11 +36,9 @@ class LocaleValidatorTest extends AbstractConstraintValidatorTest
         $this->assertNoViolation();
     }
 
-    /**
-     * @expectedException \Symfony\Component\Validator\Exception\UnexpectedTypeException
-     */
     public function testExpectsStringCompatibleType()
     {
+        $this->expectException('Symfony\Component\Validator\Exception\UnexpectedTypeException');
         $this->validator->validate(new \stdClass(), new Locale());
     }
 
@@ -55,14 +54,14 @@ class LocaleValidatorTest extends AbstractConstraintValidatorTest
 
     public function getValidLocales()
     {
-        return array(
-            array('en'),
-            array('en_US'),
-            array('pt'),
-            array('pt_PT'),
-            array('zh_Hans'),
-            array('fil_PH'),
-        );
+        return [
+            ['en'],
+            ['en_US'],
+            ['pt'],
+            ['pt_PT'],
+            ['zh_Hans'],
+            ['fil_PH'],
+        ];
     }
 
     /**
@@ -70,9 +69,9 @@ class LocaleValidatorTest extends AbstractConstraintValidatorTest
      */
     public function testInvalidLocales($locale)
     {
-        $constraint = new Locale(array(
+        $constraint = new Locale([
             'message' => 'myMessage',
-        ));
+        ]);
 
         $this->validator->validate($locale, $constraint);
 
@@ -84,9 +83,9 @@ class LocaleValidatorTest extends AbstractConstraintValidatorTest
 
     public function getInvalidLocales()
     {
-        return array(
-            array('EN'),
-            array('foobar'),
-        );
+        return [
+            ['EN'],
+            ['foobar'],
+        ];
     }
 }

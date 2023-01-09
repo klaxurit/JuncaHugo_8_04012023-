@@ -11,26 +11,21 @@
 
 namespace Symfony\Component\Form\Tests\Extension\Core\EventListener;
 
-use Symfony\Component\Form\FormEvent;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Extension\Core\EventListener\MergeCollectionListener;
+use Symfony\Component\Form\FormEvent;
 
-abstract class MergeCollectionListenerTest extends \PHPUnit_Framework_TestCase
+abstract class MergeCollectionListenerTest extends TestCase
 {
-    protected $dispatcher;
-    protected $factory;
     protected $form;
 
     protected function setUp()
     {
-        $this->dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
-        $this->factory = $this->getMock('Symfony\Component\Form\FormFactoryInterface');
         $this->form = $this->getForm('axes');
     }
 
     protected function tearDown()
     {
-        $this->dispatcher = null;
-        $this->factory = null;
         $this->form = null;
     }
 
@@ -43,27 +38,22 @@ abstract class MergeCollectionListenerTest extends \PHPUnit_Framework_TestCase
         return $this->getBuilder($name)->setAttribute('property_path', $propertyPath)->getForm();
     }
 
-    protected function getMockForm()
-    {
-        return $this->getMock('Symfony\Component\Form\Test\FormInterface');
-    }
-
     public function getBooleanMatrix1()
     {
-        return array(
-            array(true),
-            array(false),
-        );
+        return [
+            [true],
+            [false],
+        ];
     }
 
     public function getBooleanMatrix2()
     {
-        return array(
-            array(true, true),
-            array(true, false),
-            array(false, true),
-            array(false, false),
-        );
+        return [
+            [true, true],
+            [true, false],
+            [false, true],
+            [false, false],
+        ];
     }
 
     abstract protected function getData(array $data);
@@ -73,8 +63,8 @@ abstract class MergeCollectionListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddExtraEntriesIfAllowAdd($allowDelete)
     {
-        $originalData = $this->getData(array(1 => 'second'));
-        $newData = $this->getData(array(0 => 'first', 1 => 'second', 2 => 'third'));
+        $originalData = $this->getData([1 => 'second']);
+        $newData = $this->getData([0 => 'first', 1 => 'second', 2 => 'third']);
 
         $listener = new MergeCollectionListener(true, $allowDelete);
 
@@ -84,7 +74,7 @@ abstract class MergeCollectionListenerTest extends \PHPUnit_Framework_TestCase
         $listener->onSubmit($event);
 
         // The original object was modified
-        if (is_object($originalData)) {
+        if (\is_object($originalData)) {
             $this->assertSame($originalData, $event->getData());
         }
 
@@ -97,8 +87,8 @@ abstract class MergeCollectionListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddExtraEntriesIfAllowAddDontOverwriteExistingIndices($allowDelete)
     {
-        $originalData = $this->getData(array(1 => 'first'));
-        $newData = $this->getData(array(0 => 'first', 1 => 'second'));
+        $originalData = $this->getData([1 => 'first']);
+        $newData = $this->getData([0 => 'first', 1 => 'second']);
 
         $listener = new MergeCollectionListener(true, $allowDelete);
 
@@ -108,12 +98,12 @@ abstract class MergeCollectionListenerTest extends \PHPUnit_Framework_TestCase
         $listener->onSubmit($event);
 
         // The original object was modified
-        if (is_object($originalData)) {
+        if (\is_object($originalData)) {
             $this->assertSame($originalData, $event->getData());
         }
 
         // The original object matches the new object
-        $this->assertEquals($this->getData(array(1 => 'first', 2 => 'second')), $event->getData());
+        $this->assertEquals($this->getData([1 => 'first', 2 => 'second']), $event->getData());
     }
 
     /**
@@ -121,9 +111,9 @@ abstract class MergeCollectionListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testDoNothingIfNotAllowAdd($allowDelete)
     {
-        $originalDataArray = array(1 => 'second');
+        $originalDataArray = [1 => 'second'];
         $originalData = $this->getData($originalDataArray);
-        $newData = $this->getData(array(0 => 'first', 1 => 'second', 2 => 'third'));
+        $newData = $this->getData([0 => 'first', 1 => 'second', 2 => 'third']);
 
         $listener = new MergeCollectionListener(false, $allowDelete);
 
@@ -133,7 +123,7 @@ abstract class MergeCollectionListenerTest extends \PHPUnit_Framework_TestCase
         $listener->onSubmit($event);
 
         // We still have the original object
-        if (is_object($originalData)) {
+        if (\is_object($originalData)) {
             $this->assertSame($originalData, $event->getData());
         }
 
@@ -146,8 +136,8 @@ abstract class MergeCollectionListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testRemoveMissingEntriesIfAllowDelete($allowAdd)
     {
-        $originalData = $this->getData(array(0 => 'first', 1 => 'second', 2 => 'third'));
-        $newData = $this->getData(array(1 => 'second'));
+        $originalData = $this->getData([0 => 'first', 1 => 'second', 2 => 'third']);
+        $newData = $this->getData([1 => 'second']);
 
         $listener = new MergeCollectionListener($allowAdd, true);
 
@@ -157,7 +147,7 @@ abstract class MergeCollectionListenerTest extends \PHPUnit_Framework_TestCase
         $listener->onSubmit($event);
 
         // The original object was modified
-        if (is_object($originalData)) {
+        if (\is_object($originalData)) {
             $this->assertSame($originalData, $event->getData());
         }
 
@@ -170,9 +160,9 @@ abstract class MergeCollectionListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testDoNothingIfNotAllowDelete($allowAdd)
     {
-        $originalDataArray = array(0 => 'first', 1 => 'second', 2 => 'third');
+        $originalDataArray = [0 => 'first', 1 => 'second', 2 => 'third'];
         $originalData = $this->getData($originalDataArray);
-        $newData = $this->getData(array(1 => 'second'));
+        $newData = $this->getData([1 => 'second']);
 
         $listener = new MergeCollectionListener($allowAdd, false);
 
@@ -182,7 +172,7 @@ abstract class MergeCollectionListenerTest extends \PHPUnit_Framework_TestCase
         $listener->onSubmit($event);
 
         // We still have the original object
-        if (is_object($originalData)) {
+        if (\is_object($originalData)) {
             $this->assertSame($originalData, $event->getData());
         }
 
@@ -192,10 +182,10 @@ abstract class MergeCollectionListenerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getBooleanMatrix2
-     * @expectedException \Symfony\Component\Form\Exception\UnexpectedTypeException
      */
     public function testRequireArrayOrTraversable($allowAdd, $allowDelete)
     {
+        $this->expectException('Symfony\Component\Form\Exception\UnexpectedTypeException');
         $newData = 'no array or traversable';
         $event = new FormEvent($this->form, $newData);
         $listener = new MergeCollectionListener($allowAdd, $allowDelete);
@@ -204,7 +194,7 @@ abstract class MergeCollectionListenerTest extends \PHPUnit_Framework_TestCase
 
     public function testDealWithNullData()
     {
-        $originalData = $this->getData(array(0 => 'first', 1 => 'second', 2 => 'third'));
+        $originalData = $this->getData([0 => 'first', 1 => 'second', 2 => 'third']);
         $newData = null;
 
         $listener = new MergeCollectionListener(false, false);
@@ -223,7 +213,7 @@ abstract class MergeCollectionListenerTest extends \PHPUnit_Framework_TestCase
     public function testDealWithNullOriginalDataIfAllowAdd($allowDelete)
     {
         $originalData = null;
-        $newData = $this->getData(array(0 => 'first', 1 => 'second', 2 => 'third'));
+        $newData = $this->getData([0 => 'first', 1 => 'second', 2 => 'third']);
 
         $listener = new MergeCollectionListener(true, $allowDelete);
 
@@ -241,7 +231,7 @@ abstract class MergeCollectionListenerTest extends \PHPUnit_Framework_TestCase
     public function testDontDealWithNullOriginalDataIfNotAllowAdd($allowDelete)
     {
         $originalData = null;
-        $newData = $this->getData(array(0 => 'first', 1 => 'second', 2 => 'third'));
+        $newData = $this->getData([0 => 'first', 1 => 'second', 2 => 'third']);
 
         $listener = new MergeCollectionListener(false, $allowDelete);
 

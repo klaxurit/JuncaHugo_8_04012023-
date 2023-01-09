@@ -1,5 +1,4 @@
 {
-    "Version": "2.1.22.93",
     "Names": {
         "AED": [
             "AED",
@@ -27,7 +26,7 @@
         ],
         "ARS": [
             "ARS",
-            "Pezoja argjentinase"
+            "Pesoja argjentinase"
         ],
         "AUD": [
             "A$",
@@ -39,7 +38,7 @@
         ],
         "AZN": [
             "AZN",
-            "Manata e Azerbajxhanit"
+            "Manata azerbajxhanase"
         ],
         "BAM": [
             "BAM",
@@ -78,7 +77,7 @@
             "Boliviani i Bolivisë"
         ],
         "BRL": [
-            "R$",
+            "BRL",
             "Reali brazilian"
         ],
         "BSD": [
@@ -93,9 +92,13 @@
             "BWP",
             "Pula botsuane"
         ],
+        "BYN": [
+            "BYN",
+            "Rubla bjelloruse"
+        ],
         "BYR": [
             "BYR",
-            "Rubla bjelloruse"
+            "Rubla bjelloruse (2000–2016)"
         ],
         "BZD": [
             "BZD",
@@ -115,7 +118,11 @@
         ],
         "CLP": [
             "CLP",
-            "Pezoja kiliane"
+            "Pesoja kiliane"
+        ],
+        "CNH": [
+            "CNH",
+            "Juani kinez (për treg të jashtëm)"
         ],
         "CNY": [
             "CN¥",
@@ -123,7 +130,7 @@
         ],
         "COP": [
             "COP",
-            "Pezoja kolumbiane"
+            "Pesoja kolumbiane"
         ],
         "CRC": [
             "CRC",
@@ -131,11 +138,11 @@
         ],
         "CUC": [
             "CUC",
-            "Pezoja kubaneze e shkëmbyeshme"
+            "Pesoja kubaneze e shkëmbyeshme"
         ],
         "CUP": [
             "CUP",
-            "Pezoja kubaneze"
+            "Pesoja kubaneze"
         ],
         "CVE": [
             "CVE",
@@ -143,7 +150,7 @@
         ],
         "CZK": [
             "CZK",
-            "Koruna e Republikës Çeke"
+            "Koruna e Çekisë"
         ],
         "DJF": [
             "DJF",
@@ -155,7 +162,7 @@
         ],
         "DOP": [
             "DOP",
-            "Pezoja dominikane"
+            "Pesoja dominikane"
         ],
         "DZD": [
             "DZD",
@@ -163,7 +170,7 @@
         ],
         "EGP": [
             "EGP",
-            "Stërlina egjiptiane"
+            "Sterlina egjiptiane"
         ],
         "ERN": [
             "ERN",
@@ -183,7 +190,7 @@
         ],
         "FKP": [
             "FKP",
-            "Stërlina e Ishujve Folkland"
+            "Stërlina e Ishujve Falkland"
         ],
         "GBP": [
             "£",
@@ -219,7 +226,7 @@
         ],
         "HKD": [
             "HK$",
-            "Dollari i Hong Kongut"
+            "Dollari i Hong-Kongut"
         ],
         "HNL": [
             "HNL",
@@ -343,7 +350,7 @@
         ],
         "MDL": [
             "MDL",
-            "Leu moldav"
+            "Leuja moldave"
         ],
         "MGA": [
             "MGA",
@@ -367,6 +374,10 @@
         ],
         "MRO": [
             "MRO",
+            "Ugija mauritane (1973–2017)"
+        ],
+        "MRU": [
+            "MRU",
             "Ugija mauritane"
         ],
         "MUR": [
@@ -383,7 +394,7 @@
         ],
         "MXN": [
             "MX$",
-            "Pezoja meksikane"
+            "Pesoja meksikane"
         ],
         "MYR": [
             "MYR",
@@ -427,15 +438,15 @@
         ],
         "PEN": [
             "PEN",
-            "Sola nuevo-peruane"
+            "Sola peruane"
         ],
         "PGK": [
             "PGK",
-            "Kina e Papua-Guineas së Re"
+            "Kina e Guinesë së Re-Papua"
         ],
         "PHP": [
             "PHP",
-            "Pezoja filipinase"
+            "Pesoja filipinase"
         ],
         "PKR": [
             "PKR",
@@ -455,7 +466,7 @@
         ],
         "RON": [
             "RON",
-            "Leu rumun"
+            "Leuja rumune"
         ],
         "RSD": [
             "RSD",
@@ -483,7 +494,7 @@
         ],
         "SDG": [
             "SDG",
-            "Stërlina sudaneze"
+            "Sterlina sudaneze"
         ],
         "SEK": [
             "SEK",
@@ -495,7 +506,7 @@
         ],
         "SHP": [
             "SHP",
-            "Stërlina e Ishullit të Shën-Helenës"
+            "Sterlina e Ishullit të Shën-Helenës"
         ],
         "SLL": [
             "SLL",
@@ -511,10 +522,14 @@
         ],
         "SSP": [
             "SSP",
-            "Stërlina e Sudanit të Jugut"
+            "Sterlina sudanezo-jugore"
         ],
         "STD": [
             "STD",
+            "Dobra e Sao-Tomes dhe Prinsipes (1977–2017)"
+        ],
+        "STN": [
+            "STN",
             "Dobra e Sao-Tomes dhe Prinsipes"
         ],
         "SYP": [
@@ -575,7 +590,7 @@
         ],
         "UYU": [
             "UYU",
-            "Pezoja uruguaiane"
+            "Pesoja uruguaiane"
         ],
         "UZS": [
             "UZS",
@@ -583,7 +598,11 @@
         ],
         "VEF": [
             "VEF",
-            "Bolivari venezuelian"
+            "Bolivari venezuelian (2008–2018)"
+        ],
+        "VES": [
+            "VES",
+            "Bolivari venezuelas"
         ],
         "VND": [
             "₫",
@@ -619,7 +638,7 @@
         ],
         "ZAR": [
             "ZAR",
-            "Randa afrikano-jugore"
+            "Randi afrikano-jugor"
         ],
         "ZMW": [
             "ZMW",

@@ -11,10 +11,11 @@
 
 namespace Symfony\Component\Security\Http\Tests\EntryPoint;
 
-use Symfony\Component\Security\Http\EntryPoint\RetryAuthenticationEntryPoint;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Http\EntryPoint\RetryAuthenticationEntryPoint;
 
-class RetryAuthenticationEntryPointTest extends \PHPUnit_Framework_TestCase
+class RetryAuthenticationEntryPointTest extends TestCase
 {
     /**
      * @dataProvider dataForStart
@@ -31,34 +32,34 @@ class RetryAuthenticationEntryPointTest extends \PHPUnit_Framework_TestCase
     public function dataForStart()
     {
         if (!class_exists('Symfony\Component\HttpFoundation\Request')) {
-            return array(array());
+            return [[]];
         }
 
-        return array(
-            array(
+        return [
+            [
                 80,
                 443,
                 Request::create('http://localhost/foo/bar?baz=bat'),
                 'https://localhost/foo/bar?baz=bat',
-            ),
-            array(
+            ],
+            [
                 80,
                 443,
                 Request::create('https://localhost/foo/bar?baz=bat'),
                 'http://localhost/foo/bar?baz=bat',
-            ),
-            array(
+            ],
+            [
                 80,
                 123,
                 Request::create('http://localhost/foo/bar?baz=bat'),
                 'https://localhost:123/foo/bar?baz=bat',
-            ),
-            array(
+            ],
+            [
                 8080,
                 443,
                 Request::create('https://localhost/foo/bar?baz=bat'),
                 'http://localhost:8080/foo/bar?baz=bat',
-            ),
-        );
+            ],
+        ];
     }
 }

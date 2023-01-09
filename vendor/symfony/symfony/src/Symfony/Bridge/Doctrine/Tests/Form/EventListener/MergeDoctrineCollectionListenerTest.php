@@ -12,13 +12,14 @@
 namespace Symfony\Bridge\Doctrine\Tests\Form\EventListener;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\Doctrine\Form\EventListener\MergeDoctrineCollectionListener;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
-class MergeDoctrineCollectionListenerTest extends \PHPUnit_Framework_TestCase
+class MergeDoctrineCollectionListenerTest extends TestCase
 {
     /** @var \Doctrine\Common\Collections\ArrayCollection */
     private $collection;
@@ -29,9 +30,9 @@ class MergeDoctrineCollectionListenerTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->collection = new ArrayCollection(array('test'));
+        $this->collection = new ArrayCollection(['test']);
         $this->dispatcher = new EventDispatcher();
-        $this->factory = $this->getMock('Symfony\Component\Form\FormFactoryInterface');
+        $this->factory = $this->getMockBuilder('Symfony\Component\Form\FormFactoryInterface')->getMock();
         $this->form = $this->getBuilder()
             ->getForm();
     }
@@ -44,14 +45,14 @@ class MergeDoctrineCollectionListenerTest extends \PHPUnit_Framework_TestCase
         $this->form = null;
     }
 
-    protected function getBuilder($name = 'name')
+    protected function getBuilder()
     {
-        return new FormBuilder($name, null, $this->dispatcher, $this->factory);
+        return new FormBuilder('name', null, $this->dispatcher, $this->factory);
     }
 
-    protected function getForm($name = 'name')
+    protected function getForm()
     {
-        return $this->getBuilder($name)
+        return $this->getBuilder()
             ->setData($this->collection)
             ->addEventSubscriber(new MergeDoctrineCollectionListener())
             ->getForm();
@@ -59,7 +60,7 @@ class MergeDoctrineCollectionListenerTest extends \PHPUnit_Framework_TestCase
 
     public function testOnSubmitDoNothing()
     {
-        $submittedData = array('test');
+        $submittedData = ['test'];
         $event = new FormEvent($this->getForm(), $submittedData);
 
         $this->dispatcher->dispatch(FormEvents::SUBMIT, $event);
@@ -70,7 +71,7 @@ class MergeDoctrineCollectionListenerTest extends \PHPUnit_Framework_TestCase
 
     public function testOnSubmitNullClearCollection()
     {
-        $submittedData = array();
+        $submittedData = [];
         $event = new FormEvent($this->getForm(), $submittedData);
 
         $this->dispatcher->dispatch(FormEvents::SUBMIT, $event);
@@ -83,11 +84,11 @@ class MergeDoctrineCollectionListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testLegacyChildClassOnSubmitCallParent()
     {
-        $form = $this->getBuilder('name')
+        $form = $this->getBuilder()
             ->setData($this->collection)
             ->addEventSubscriber(new TestClassExtendingMergeDoctrineCollectionListener())
             ->getForm();
-        $submittedData = array();
+        $submittedData = [];
         $event = new FormEvent($form, $submittedData);
 
         $this->dispatcher->dispatch(FormEvents::SUBMIT, $event);

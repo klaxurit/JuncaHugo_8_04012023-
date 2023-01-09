@@ -11,13 +11,13 @@
 
 namespace Symfony\Component\Form\Tests\Extension\Core\Type;
 
-use Symfony\Component\Form\Test\TypeTestCase as TestCase;
-
-class UrlTypeTest extends TestCase
+class UrlTypeTest extends TextTypeTest
 {
+    const TESTED_TYPE = 'Symfony\Component\Form\Extension\Core\Type\UrlType';
+
     public function testSubmitAddsDefaultProtocolIfNoneIsIncluded()
     {
-        $form = $this->factory->create('Symfony\Component\Form\Extension\Core\Type\UrlType', 'name');
+        $form = $this->factory->create(static::TESTED_TYPE, 'name');
 
         $form->submit('www.domain.com');
 
@@ -27,9 +27,9 @@ class UrlTypeTest extends TestCase
 
     public function testSubmitAddsNoDefaultProtocolIfAlreadyIncluded()
     {
-        $form = $this->factory->create('Symfony\Component\Form\Extension\Core\Type\UrlType', null, array(
+        $form = $this->factory->create(static::TESTED_TYPE, null, [
             'default_protocol' => 'http',
-        ));
+        ]);
 
         $form->submit('ftp://www.domain.com');
 
@@ -39,9 +39,9 @@ class UrlTypeTest extends TestCase
 
     public function testSubmitAddsNoDefaultProtocolIfEmpty()
     {
-        $form = $this->factory->create('Symfony\Component\Form\Extension\Core\Type\UrlType', null, array(
+        $form = $this->factory->create(static::TESTED_TYPE, null, [
             'default_protocol' => 'http',
-        ));
+        ]);
 
         $form->submit('');
 
@@ -51,9 +51,9 @@ class UrlTypeTest extends TestCase
 
     public function testSubmitAddsNoDefaultProtocolIfNull()
     {
-        $form = $this->factory->create('Symfony\Component\Form\Extension\Core\Type\UrlType', null, array(
+        $form = $this->factory->create(static::TESTED_TYPE, null, [
             'default_protocol' => 'http',
-        ));
+        ]);
 
         $form->submit(null);
 
@@ -63,9 +63,9 @@ class UrlTypeTest extends TestCase
 
     public function testSubmitAddsNoDefaultProtocolIfSetToNull()
     {
-        $form = $this->factory->create('Symfony\Component\Form\Extension\Core\Type\UrlType', null, array(
+        $form = $this->factory->create(static::TESTED_TYPE, null, [
             'default_protocol' => null,
-        ));
+        ]);
 
         $form->submit('www.domain.com');
 
@@ -73,13 +73,24 @@ class UrlTypeTest extends TestCase
         $this->assertSame('www.domain.com', $form->getViewData());
     }
 
-    /**
-     * @expectedException \Symfony\Component\OptionsResolver\Exception\InvalidOptionsException
-     */
     public function testThrowExceptionIfDefaultProtocolIsInvalid()
     {
-        $this->factory->create('Symfony\Component\Form\Extension\Core\Type\UrlType', null, array(
-            'default_protocol' => array(),
-        ));
+        $this->expectException('Symfony\Component\OptionsResolver\Exception\InvalidOptionsException');
+        $this->factory->create(static::TESTED_TYPE, null, [
+            'default_protocol' => [],
+        ]);
+    }
+
+    public function testSubmitNullUsesDefaultEmptyData($emptyData = 'empty', $expectedData = 'http://empty')
+    {
+        $form = $this->factory->create(static::TESTED_TYPE, null, [
+            'empty_data' => $emptyData,
+        ]);
+        $form->submit(null);
+
+        // listener normalizes data on submit
+        $this->assertSame($expectedData, $form->getViewData());
+        $this->assertSame($expectedData, $form->getNormData());
+        $this->assertSame($expectedData, $form->getData());
     }
 }
