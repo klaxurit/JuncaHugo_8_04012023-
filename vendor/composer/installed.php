@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '0851dbca628c7420af14b47fa4141c59fa9f043c',
+        'reference' => 'c4b0aa9273492d1fd41c914630192cf0449421ab',
         'name' => 'saro0h/to-do-list',
         'dev' => true,
     ),
@@ -326,7 +326,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '0851dbca628c7420af14b47fa4141c59fa9f043c',
+            'reference' => 'c4b0aa9273492d1fd41c914630192cf0449421ab',
             'dev_requirement' => false,
         ),
         'symfony/amazon-mailer' => array(
