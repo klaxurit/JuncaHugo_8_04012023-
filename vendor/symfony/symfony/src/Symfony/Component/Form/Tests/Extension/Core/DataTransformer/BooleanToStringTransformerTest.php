@@ -11,9 +11,10 @@
 
 namespace Symfony\Component\Form\Tests\Extension\Core\DataTransformer;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Extension\Core\DataTransformer\BooleanToStringTransformer;
 
-class BooleanToStringTransformerTest extends \PHPUnit_Framework_TestCase
+class BooleanToStringTransformerTest extends TestCase
 {
     const TRUE_VALUE = '1';
 
@@ -44,19 +45,15 @@ class BooleanToStringTransformerTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($this->transformer->transform(null));
     }
 
-    /**
-     * @expectedException \Symfony\Component\Form\Exception\TransformationFailedException
-     */
     public function testTransformFailsIfString()
     {
+        $this->expectException('Symfony\Component\Form\Exception\TransformationFailedException');
         $this->transformer->transform('1');
     }
 
-    /**
-     * @expectedException \Symfony\Component\Form\Exception\TransformationFailedException
-     */
     public function testReverseTransformFailsIfInteger()
     {
+        $this->expectException('Symfony\Component\Form\Exception\TransformationFailedException');
         $this->transformer->reverseTransform(1);
     }
 

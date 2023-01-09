@@ -11,24 +11,26 @@
 
 namespace Symfony\Component\Security\Http\Tests\EntryPoint;
 
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Http\EntryPoint\FormAuthenticationEntryPoint;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\Security\Http\EntryPoint\FormAuthenticationEntryPoint;
 
-class FormAuthenticationEntryPointTest extends \PHPUnit_Framework_TestCase
+class FormAuthenticationEntryPointTest extends TestCase
 {
     public function testStart()
     {
-        $request = $this->getMock('Symfony\Component\HttpFoundation\Request', array(), array(), '', false, false);
-        $response = new Response();
+        $request = $this->getMockBuilder('Symfony\Component\HttpFoundation\Request')->disableOriginalConstructor()->disableOriginalClone()->getMock();
+        $response = new RedirectResponse('/the/login/path');
 
-        $httpKernel = $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface');
-        $httpUtils = $this->getMock('Symfony\Component\Security\Http\HttpUtils');
+        $httpKernel = $this->getMockBuilder('Symfony\Component\HttpKernel\HttpKernelInterface')->getMock();
+        $httpUtils = $this->getMockBuilder('Symfony\Component\Security\Http\HttpUtils')->getMock();
         $httpUtils
             ->expects($this->once())
             ->method('createRedirectResponse')
             ->with($this->equalTo($request), $this->equalTo('/the/login/path'))
-            ->will($this->returnValue($response))
+            ->willReturn($response)
         ;
 
         $entryPoint = new FormAuthenticationEntryPoint($httpKernel, $httpUtils, '/the/login/path', false);
@@ -38,24 +40,24 @@ class FormAuthenticationEntryPointTest extends \PHPUnit_Framework_TestCase
 
     public function testStartWithUseForward()
     {
-        $request = $this->getMock('Symfony\Component\HttpFoundation\Request', array(), array(), '', false, false);
-        $subRequest = $this->getMock('Symfony\Component\HttpFoundation\Request', array(), array(), '', false, false);
+        $request = $this->getMockBuilder('Symfony\Component\HttpFoundation\Request')->disableOriginalConstructor()->disableOriginalClone()->getMock();
+        $subRequest = $this->getMockBuilder('Symfony\Component\HttpFoundation\Request')->disableOriginalConstructor()->disableOriginalClone()->getMock();
         $response = new Response('', 200);
 
-        $httpUtils = $this->getMock('Symfony\Component\Security\Http\HttpUtils');
+        $httpUtils = $this->getMockBuilder('Symfony\Component\Security\Http\HttpUtils')->getMock();
         $httpUtils
             ->expects($this->once())
             ->method('createRequest')
             ->with($this->equalTo($request), $this->equalTo('/the/login/path'))
-            ->will($this->returnValue($subRequest))
+            ->willReturn($subRequest)
         ;
 
-        $httpKernel = $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface');
+        $httpKernel = $this->getMockBuilder('Symfony\Component\HttpKernel\HttpKernelInterface')->getMock();
         $httpKernel
             ->expects($this->once())
             ->method('handle')
             ->with($this->equalTo($subRequest), $this->equalTo(HttpKernelInterface::SUB_REQUEST))
-            ->will($this->returnValue($response))
+            ->willReturn($response)
         ;
 
         $entryPoint = new FormAuthenticationEntryPoint($httpKernel, $httpUtils, '/the/login/path', true);
@@ -63,6 +65,6 @@ class FormAuthenticationEntryPointTest extends \PHPUnit_Framework_TestCase
         $entryPointResponse = $entryPoint->start($request);
 
         $this->assertEquals($response, $entryPointResponse);
-        $this->assertEquals(401, $entryPointResponse->headers->get('X-Status-Code'));
+        $this->assertEquals(401, $entryPointResponse->getStatusCode());
     }
 }

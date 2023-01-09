@@ -11,9 +11,10 @@
 
 namespace Symfony\Component\Serializer\Tests\Encoder;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Encoder\ChainDecoder;
 
-class ChainDecoderTest extends \PHPUnit_Framework_TestCase
+class ChainDecoderTest extends TestCase
 {
     const FORMAT_1 = 'format1';
     const FORMAT_2 = 'format2';
@@ -31,11 +32,12 @@ class ChainDecoderTest extends \PHPUnit_Framework_TestCase
 
         $this->decoder1
             ->method('supportsDecoding')
-            ->will($this->returnValueMap(array(
-                array(self::FORMAT_1, true),
-                array(self::FORMAT_2, false),
-                array(self::FORMAT_3, false),
-            )));
+            ->willReturnMap([
+                [self::FORMAT_1, [], true],
+                [self::FORMAT_2, [], false],
+                [self::FORMAT_3, [], false],
+                [self::FORMAT_3, ['foo' => 'bar'], true],
+            ]);
 
         $this->decoder2 = $this
             ->getMockBuilder('Symfony\Component\Serializer\Encoder\DecoderInterface')
@@ -43,13 +45,13 @@ class ChainDecoderTest extends \PHPUnit_Framework_TestCase
 
         $this->decoder2
             ->method('supportsDecoding')
-            ->will($this->returnValueMap(array(
-                array(self::FORMAT_1, false),
-                array(self::FORMAT_2, true),
-                array(self::FORMAT_3, false),
-            )));
+            ->willReturnMap([
+                [self::FORMAT_1, [], false],
+                [self::FORMAT_2, [], true],
+                [self::FORMAT_3, [], false],
+            ]);
 
-        $this->chainDecoder = new ChainDecoder(array($this->decoder1, $this->decoder2));
+        $this->chainDecoder = new ChainDecoder([$this->decoder1, $this->decoder2]);
     }
 
     public function testSupportsDecoding()
@@ -57,6 +59,7 @@ class ChainDecoderTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->chainDecoder->supportsDecoding(self::FORMAT_1));
         $this->assertTrue($this->chainDecoder->supportsDecoding(self::FORMAT_2));
         $this->assertFalse($this->chainDecoder->supportsDecoding(self::FORMAT_3));
+        $this->assertTrue($this->chainDecoder->supportsDecoding(self::FORMAT_3, ['foo' => 'bar']));
     }
 
     public function testDecode()
@@ -67,11 +70,9 @@ class ChainDecoderTest extends \PHPUnit_Framework_TestCase
         $this->chainDecoder->decode('string_to_decode', self::FORMAT_2);
     }
 
-    /**
-     * @expectedException \Symfony\Component\Serializer\Exception\RuntimeException
-     */
     public function testDecodeUnsupportedFormat()
     {
+        $this->expectException('Symfony\Component\Serializer\Exception\RuntimeException');
         $this->chainDecoder->decode('string_to_decode', self::FORMAT_3);
     }
 }

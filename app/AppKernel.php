@@ -1,10 +1,24 @@
 <?php
 
-use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Kernel as BaseKernel;
+use Symfony\Component\Routing\RouteCollectionBuilder;
 
-class AppKernel extends Kernel
+class AppKernel extends BaseKernel
 {
+    use MicroKernelTrait;
+
+    public function __serialize(): array
+    {
+        return [];
+    }
+
+    public function __unserialize(array $data): void
+    {
+    }
+
     public function registerBundles()
     {
         $bundles = [
@@ -27,6 +41,17 @@ class AppKernel extends Kernel
 
         return $bundles;
     }
+
+    protected function configureRoutes(RouteCollectionBuilder $routes)
+    {
+        // ...
+    }
+
+    protected function configureContainer(ContainerBuilder $c, LoaderInterface $loader)
+    {
+        // ...
+    }
+
 
     public function getRootDir()
     {

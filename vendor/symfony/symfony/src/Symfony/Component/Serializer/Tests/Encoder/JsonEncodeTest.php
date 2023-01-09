@@ -11,10 +11,11 @@
 
 namespace Symfony\Component\Serializer\Tests\Encoder;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Encoder\JsonEncode;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 
-class JsonEncodeTest extends \PHPUnit_Framework_TestCase
+class JsonEncodeTest extends TestCase
 {
     private $encoder;
 
@@ -42,18 +43,18 @@ class JsonEncodeTest extends \PHPUnit_Framework_TestCase
 
     public function encodeProvider()
     {
-        return array(
-            array(array(), '[]', array()),
-            array(array(), '{}', array('json_encode_options' => JSON_FORCE_OBJECT)),
-        );
+        return [
+            [[], '[]', []],
+            [[], '{}', ['json_encode_options' => \JSON_FORCE_OBJECT]],
+        ];
     }
 
     /**
      * @requires function json_last_error_msg
-     * @expectedException \Symfony\Component\Serializer\Exception\UnexpectedValueException
      */
     public function testEncodeWithError()
     {
-        $this->encode->encode("\xB1\x31",  JsonEncoder::FORMAT);
+        $this->expectException('Symfony\Component\Serializer\Exception\UnexpectedValueException');
+        $this->encode->encode("\xB1\x31", JsonEncoder::FORMAT);
     }
 }

@@ -11,11 +11,12 @@
 
 namespace Symfony\Component\Form\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\ButtonBuilder;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\SubmitButtonBuilder;
 
-class FormBuilderTest extends \PHPUnit_Framework_TestCase
+class FormBuilderTest extends TestCase
 {
     private $dispatcher;
     private $factory;
@@ -23,8 +24,8 @@ class FormBuilderTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
-        $this->factory = $this->getMock('Symfony\Component\Form\FormFactoryInterface');
+        $this->dispatcher = $this->getMockBuilder('Symfony\Component\EventDispatcher\EventDispatcherInterface')->getMock();
+        $this->factory = $this->getMockBuilder('Symfony\Component\Form\FormFactoryInterface')->getMock();
         $this->builder = new FormBuilder('name', null, $this->dispatcher, $this->factory);
     }
 
@@ -48,13 +49,13 @@ class FormBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testAddNameNoStringAndNoInteger()
     {
-        $this->setExpectedException('Symfony\Component\Form\Exception\UnexpectedTypeException');
+        $this->expectException('Symfony\Component\Form\Exception\UnexpectedTypeException');
         $this->builder->add(true);
     }
 
     public function testAddTypeNoString()
     {
-        $this->setExpectedException('Symfony\Component\Form\Exception\UnexpectedTypeException');
+        $this->expectException('Symfony\Component\Form\Exception\UnexpectedTypeException');
         $this->builder->add('foo', 1234);
     }
 
@@ -67,7 +68,7 @@ class FormBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testAddIsFluent()
     {
-        $builder = $this->builder->add('foo', 'Symfony\Component\Form\Extension\Core\Type\TextType', array('bar' => 'baz'));
+        $builder = $this->builder->add('foo', 'Symfony\Component\Form\Extension\Core\Type\TextType', ['bar' => 'baz']);
         $this->assertSame($builder, $this->builder);
     }
 
@@ -90,7 +91,7 @@ class FormBuilderTest extends \PHPUnit_Framework_TestCase
         $this->factory->expects($this->once())
             ->method('createNamedBuilder')
             ->with('foo', 'Symfony\Component\Form\Extension\Core\Type\TextType')
-            ->will($this->returnValue(new FormBuilder('foo', null, $this->dispatcher, $this->factory)));
+            ->willReturn(new FormBuilder('foo', null, $this->dispatcher, $this->factory));
 
         $this->assertCount(0, $this->builder->all());
         $this->assertFalse($this->builder->has('foo'));
@@ -114,13 +115,13 @@ class FormBuilderTest extends \PHPUnit_Framework_TestCase
 
         $children = $this->builder->all();
 
-        $this->assertSame(array('foo', 'bar', 'baz'), array_keys($children));
+        $this->assertSame(['foo', 'bar', 'baz'], array_keys($children));
     }
 
     public function testAddFormType()
     {
         $this->assertFalse($this->builder->has('foo'));
-        $this->builder->add('foo', $this->getMock('Symfony\Component\Form\FormTypeInterface'));
+        $this->builder->add('foo', $this->getMockBuilder('Symfony\Component\Form\FormTypeInterface')->getMock());
         $this->assertTrue($this->builder->has('foo'));
     }
 
@@ -150,7 +151,7 @@ class FormBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $this->factory->expects($this->once())
             ->method('createNamedBuilder')
-            ->with('foo', 'Symfony\Component\Form\Extension\Core\Type\TextType', null, array())
+            ->with('foo', 'Symfony\Component\Form\Extension\Core\Type\TextType', null, [])
         ;
 
         $this->builder->create('foo');
@@ -160,11 +161,15 @@ class FormBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $this->builder->add(new ButtonBuilder('reset'));
         $this->builder->add(new SubmitButtonBuilder('submit'));
+
+        $this->assertCount(2, $this->builder->all());
     }
 
     public function testGetUnknown()
     {
-        $this->setExpectedException('Symfony\Component\Form\Exception\InvalidArgumentException', 'The child with the name "foo" does not exist.');
+        $this->expectException('Symfony\Component\Form\Exception\InvalidArgumentException');
+        $this->expectExceptionMessage('The child with the name "foo" does not exist.');
+
         $this->builder->get('foo');
     }
 
@@ -172,12 +177,12 @@ class FormBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $expectedType = 'Symfony\Component\Form\Extension\Core\Type\TextType';
         $expectedName = 'foo';
-        $expectedOptions = array('bar' => 'baz');
+        $expectedOptions = ['bar' => 'baz'];
 
         $this->factory->expects($this->once())
             ->method('createNamedBuilder')
             ->with($expectedName, $expectedType, null, $expectedOptions)
-            ->will($this->returnValue($this->getFormBuilder()));
+            ->willReturn($this->getFormBuilder());
 
         $this->builder->add($expectedName, $expectedType, $expectedOptions);
         $builder = $this->builder->get($expectedName);
@@ -188,12 +193,12 @@ class FormBuilderTest extends \PHPUnit_Framework_TestCase
     public function testGetGuessedType()
     {
         $expectedName = 'foo';
-        $expectedOptions = array('bar' => 'baz');
+        $expectedOptions = ['bar' => 'baz'];
 
         $this->factory->expects($this->once())
             ->method('createBuilderForProperty')
             ->with('stdClass', $expectedName, null, $expectedOptions)
-            ->will($this->returnValue($this->getFormBuilder()));
+            ->willReturn($this->getFormBuilder());
 
         $this->builder = new FormBuilder('name', 'stdClass', $this->dispatcher, $this->factory);
         $this->builder->add($expectedName, null, $expectedOptions);
@@ -227,7 +232,7 @@ class FormBuilderTest extends \PHPUnit_Framework_TestCase
 
         $mock->expects($this->any())
             ->method('getName')
-            ->will($this->returnValue($name));
+            ->willReturn($name);
 
         return $mock;
     }

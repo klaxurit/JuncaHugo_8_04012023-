@@ -11,31 +11,21 @@
 
 namespace Symfony\Component\Form\Tests\Extension\Core\DataTransformer;
 
-class BaseDateTimeTransformerTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class BaseDateTimeTransformerTest extends TestCase
 {
-    /**
-     * @expectedException \Symfony\Component\Form\Exception\InvalidArgumentException
-     * @expectedExceptionMessage this_timezone_does_not_exist
-     */
     public function testConstructFailsIfInputTimezoneIsInvalid()
     {
-        $this->getMock(
-            'Symfony\Component\Form\Extension\Core\DataTransformer\BaseDateTimeTransformer',
-            array(),
-            array('this_timezone_does_not_exist')
-        );
+        $this->expectException('Symfony\Component\Form\Exception\InvalidArgumentException');
+        $this->expectExceptionMessage('this_timezone_does_not_exist');
+        $this->getMockBuilder('Symfony\Component\Form\Extension\Core\DataTransformer\BaseDateTimeTransformer')->setConstructorArgs(['this_timezone_does_not_exist'])->getMock();
     }
 
-    /**
-     * @expectedException \Symfony\Component\Form\Exception\InvalidArgumentException
-     * @expectedExceptionMessage that_timezone_does_not_exist
-     */
     public function testConstructFailsIfOutputTimezoneIsInvalid()
     {
-        $this->getMock(
-            'Symfony\Component\Form\Extension\Core\DataTransformer\BaseDateTimeTransformer',
-            array(),
-            array(null, 'that_timezone_does_not_exist')
-        );
+        $this->expectException('Symfony\Component\Form\Exception\InvalidArgumentException');
+        $this->expectExceptionMessage('that_timezone_does_not_exist');
+        $this->getMockBuilder('Symfony\Component\Form\Extension\Core\DataTransformer\BaseDateTimeTransformer')->setConstructorArgs([null, 'that_timezone_does_not_exist'])->getMock();
     }
 }

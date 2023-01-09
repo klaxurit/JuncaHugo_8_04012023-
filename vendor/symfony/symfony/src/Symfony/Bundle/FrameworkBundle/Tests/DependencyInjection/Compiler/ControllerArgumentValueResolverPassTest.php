@@ -11,29 +11,33 @@
 
 namespace Symfony\Bundle\FrameworkBundle\Tests\DependencyInjection\Compiler;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\DependencyInjection\Compiler\ControllerArgumentValueResolverPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
 
-class ControllerArgumentValueResolverPassTest extends \PHPUnit_Framework_TestCase
+/**
+ * @group legacy
+ */
+class ControllerArgumentValueResolverPassTest extends TestCase
 {
     public function testServicesAreOrderedAccordingToPriority()
     {
-        $services = array(
-            'n3' => array(array()),
-            'n1' => array(array('priority' => 200)),
-            'n2' => array(array('priority' => 100)),
-        );
+        $services = [
+            'n3' => [[]],
+            'n1' => [['priority' => 200]],
+            'n2' => [['priority' => 100]],
+        ];
 
-        $expected = array(
+        $expected = [
             new Reference('n1'),
             new Reference('n2'),
             new Reference('n3'),
-        );
+        ];
 
-        $definition = new Definition(ArgumentResolver::class, array(null, array()));
+        $definition = new Definition(ArgumentResolver::class, [null, []]);
         $container = new ContainerBuilder();
         $container->setDefinition('argument_resolver', $definition);
 
@@ -42,17 +46,17 @@ class ControllerArgumentValueResolverPassTest extends \PHPUnit_Framework_TestCas
         }
 
         (new ControllerArgumentValueResolverPass())->process($container);
-        $this->assertEquals($expected, $definition->getArgument(1));
+        $this->assertEquals($expected, $definition->getArgument(1)->getValues());
     }
 
     public function testReturningEmptyArrayWhenNoService()
     {
-        $definition = new Definition(ArgumentResolver::class, array(null, array()));
+        $definition = new Definition(ArgumentResolver::class, [null, []]);
         $container = new ContainerBuilder();
         $container->setDefinition('argument_resolver', $definition);
 
         (new ControllerArgumentValueResolverPass())->process($container);
-        $this->assertEquals(array(), $definition->getArgument(1));
+        $this->assertEquals([], $definition->getArgument(1)->getValues());
     }
 
     public function testNoArgumentResolver()

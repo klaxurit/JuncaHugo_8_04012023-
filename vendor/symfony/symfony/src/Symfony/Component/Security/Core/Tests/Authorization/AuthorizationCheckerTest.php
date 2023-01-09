@@ -11,10 +11,11 @@
 
 namespace Symfony\Component\Security\Core\Tests\Authorization;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 
-class AuthorizationCheckerTest extends \PHPUnit_Framework_TestCase
+class AuthorizationCheckerTest extends TestCase
 {
     private $authenticationManager;
     private $accessDecisionManager;
@@ -23,8 +24,8 @@ class AuthorizationCheckerTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->authenticationManager = $this->getMock('Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface');
-        $this->accessDecisionManager = $this->getMock('Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface');
+        $this->authenticationManager = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface')->getMock();
+        $this->accessDecisionManager = $this->getMockBuilder('Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface')->getMock();
         $this->tokenStorage = new TokenStorage();
 
         $this->authorizationChecker = new AuthorizationChecker(
@@ -36,16 +37,16 @@ class AuthorizationCheckerTest extends \PHPUnit_Framework_TestCase
 
     public function testVoteAuthenticatesTokenIfNecessary()
     {
-        $token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
+        $token = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\TokenInterface')->getMock();
         $this->tokenStorage->setToken($token);
 
-        $newToken = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
+        $newToken = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\TokenInterface')->getMock();
 
         $this->authenticationManager
             ->expects($this->once())
             ->method('authenticate')
             ->with($this->equalTo($token))
-            ->will($this->returnValue($newToken));
+            ->willReturn($newToken);
 
         // default with() isn't a strict check
         $tokenComparison = function ($value) use ($newToken) {
@@ -57,19 +58,17 @@ class AuthorizationCheckerTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('decide')
             ->with($this->callback($tokenComparison))
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         // first run the token has not been re-authenticated yet, after isGranted is called, it should be equal
-        $this->assertFalse($newToken === $this->tokenStorage->getToken());
+        $this->assertNotSame($newToken, $this->tokenStorage->getToken());
         $this->assertTrue($this->authorizationChecker->isGranted('foo'));
-        $this->assertTrue($newToken === $this->tokenStorage->getToken());
+        $this->assertSame($newToken, $this->tokenStorage->getToken());
     }
 
-    /**
-     * @expectedException \Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException
-     */
     public function testVoteWithoutAuthenticationToken()
     {
+        $this->expectException('Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException');
         $this->authorizationChecker->isGranted('ROLE_FOO');
     }
 
@@ -78,22 +77,22 @@ class AuthorizationCheckerTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsGranted($decide)
     {
-        $token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
+        $token = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\TokenInterface')->getMock();
         $token
             ->expects($this->once())
             ->method('isAuthenticated')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         $this->accessDecisionManager
             ->expects($this->once())
             ->method('decide')
-            ->will($this->returnValue($decide));
+            ->willReturn($decide);
         $this->tokenStorage->setToken($token);
-        $this->assertTrue($decide === $this->authorizationChecker->isGranted('ROLE_FOO'));
+        $this->assertSame($decide, $this->authorizationChecker->isGranted('ROLE_FOO'));
     }
 
     public function isGrantedProvider()
     {
-        return array(array(true), array(false));
+        return [[true], [false]];
     }
 }

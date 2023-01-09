@@ -11,16 +11,20 @@
 
 namespace Symfony\Component\Form\Tests\ChoiceList\Factory;
 
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Form\ChoiceList\ArrayChoiceList;
 use Symfony\Component\Form\ChoiceList\Factory\PropertyAccessDecorator;
+use Symfony\Component\Form\ChoiceList\View\ChoiceListView;
 use Symfony\Component\PropertyAccess\PropertyPath;
 
 /**
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
-class PropertyAccessDecoratorTest extends \PHPUnit_Framework_TestCase
+class PropertyAccessDecoratorTest extends TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var MockObject
      */
     private $decoratedFactory;
 
@@ -31,36 +35,36 @@ class PropertyAccessDecoratorTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->decoratedFactory = $this->getMock('Symfony\Component\Form\ChoiceList\Factory\ChoiceListFactoryInterface');
+        $this->decoratedFactory = $this->getMockBuilder('Symfony\Component\Form\ChoiceList\Factory\ChoiceListFactoryInterface')->getMock();
         $this->factory = new PropertyAccessDecorator($this->decoratedFactory);
     }
 
     public function testCreateFromChoicesPropertyPath()
     {
-        $choices = array((object) array('property' => 'value'));
+        $choices = [(object) ['property' => 'value']];
 
         $this->decoratedFactory->expects($this->once())
             ->method('createListFromChoices')
             ->with($choices, $this->isInstanceOf('\Closure'))
-            ->will($this->returnCallback(function ($choices, $callback) {
-                return array_map($callback, $choices);
-            }));
+            ->willReturnCallback(function ($choices, $callback) {
+                return new ArrayChoiceList(array_map($callback, $choices));
+            });
 
-        $this->assertSame(array('value'), $this->factory->createListFromChoices($choices, 'property'));
+        $this->assertSame(['value' => 'value'], $this->factory->createListFromChoices($choices, 'property')->getChoices());
     }
 
     public function testCreateFromChoicesPropertyPathInstance()
     {
-        $choices = array((object) array('property' => 'value'));
+        $choices = [(object) ['property' => 'value']];
 
         $this->decoratedFactory->expects($this->once())
             ->method('createListFromChoices')
             ->with($choices, $this->isInstanceOf('\Closure'))
-            ->will($this->returnCallback(function ($choices, $callback) {
-                return array_map($callback, $choices);
-            }));
+            ->willReturnCallback(function ($choices, $callback) {
+                return new ArrayChoiceList(array_map($callback, $choices));
+            });
 
-        $this->assertSame(array('value'), $this->factory->createListFromChoices($choices, new PropertyPath('property')));
+        $this->assertSame(['value' => 'value'], $this->factory->createListFromChoices($choices, new PropertyPath('property'))->getChoices());
     }
 
     /**
@@ -68,7 +72,7 @@ class PropertyAccessDecoratorTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateFromChoicesPropertyPathWithCallableString()
     {
-        $choices = array('foo' => 'bar');
+        $choices = ['foo' => 'bar'];
 
         $this->decoratedFactory->expects($this->once())
             ->method('createListFromChoices')
@@ -80,16 +84,16 @@ class PropertyAccessDecoratorTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateFromLoaderPropertyPath()
     {
-        $loader = $this->getMock('Symfony\Component\Form\ChoiceList\Loader\ChoiceLoaderInterface');
+        $loader = $this->getMockBuilder('Symfony\Component\Form\ChoiceList\Loader\ChoiceLoaderInterface')->getMock();
 
         $this->decoratedFactory->expects($this->once())
             ->method('createListFromLoader')
             ->with($loader, $this->isInstanceOf('\Closure'))
-            ->will($this->returnCallback(function ($loader, $callback) {
-                return $callback((object) array('property' => 'value'));
-            }));
+            ->willReturnCallback(function ($loader, $callback) {
+                return new ArrayChoiceList((array) $callback((object) ['property' => 'value']));
+            });
 
-        $this->assertSame('value', $this->factory->createListFromLoader($loader, 'property'));
+        $this->assertSame(['value' => 'value'], $this->factory->createListFromLoader($loader, 'property')->getChoices());
     }
 
     /**
@@ -97,7 +101,7 @@ class PropertyAccessDecoratorTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateFromLoaderPropertyPathWithCallableString()
     {
-        $loader = $this->getMock('Symfony\Component\Form\ChoiceList\Loader\ChoiceLoaderInterface');
+        $loader = $this->getMockBuilder('Symfony\Component\Form\ChoiceList\Loader\ChoiceLoaderInterface')->getMock();
 
         $this->decoratedFactory->expects($this->once())
             ->method('createListFromLoader')
@@ -110,62 +114,59 @@ class PropertyAccessDecoratorTest extends \PHPUnit_Framework_TestCase
     // https://github.com/symfony/symfony/issues/5494
     public function testCreateFromChoicesAssumeNullIfValuePropertyPathUnreadable()
     {
-        $choices = array(null);
+        $choices = [null];
 
         $this->decoratedFactory->expects($this->once())
             ->method('createListFromChoices')
             ->with($choices, $this->isInstanceOf('\Closure'))
-            ->will($this->returnCallback(function ($choices, $callback) {
-                return array_map($callback, $choices);
-            }));
+            ->willReturnCallback(function ($choices, $callback) {
+                return new ArrayChoiceList(array_map($callback, $choices));
+            });
 
-        $this->assertSame(array(null), $this->factory->createListFromChoices($choices, 'property'));
+        $this->assertSame([null], $this->factory->createListFromChoices($choices, 'property')->getChoices());
     }
 
     // https://github.com/symfony/symfony/issues/5494
     public function testCreateFromChoiceLoaderAssumeNullIfValuePropertyPathUnreadable()
     {
-        $loader = $this->getMock('Symfony\Component\Form\ChoiceList\Loader\ChoiceLoaderInterface');
+        $loader = $this->getMockBuilder('Symfony\Component\Form\ChoiceList\Loader\ChoiceLoaderInterface')->getMock();
 
         $this->decoratedFactory->expects($this->once())
             ->method('createListFromLoader')
             ->with($loader, $this->isInstanceOf('\Closure'))
-            ->will($this->returnCallback(function ($loader, $callback) {
-                return $callback(null);
-            }));
+            ->willReturnCallback(function ($loader, $callback) {
+                return new ArrayChoiceList((array) $callback(null));
+            });
 
-        $this->assertNull($this->factory->createListFromLoader($loader, 'property'));
+        $this->assertSame([], $this->factory->createListFromLoader($loader, 'property')->getChoices());
     }
 
     public function testCreateFromLoaderPropertyPathInstance()
     {
-        $loader = $this->getMock('Symfony\Component\Form\ChoiceList\Loader\ChoiceLoaderInterface');
+        $loader = $this->getMockBuilder('Symfony\Component\Form\ChoiceList\Loader\ChoiceLoaderInterface')->getMock();
 
         $this->decoratedFactory->expects($this->once())
             ->method('createListFromLoader')
             ->with($loader, $this->isInstanceOf('\Closure'))
-            ->will($this->returnCallback(function ($loader, $callback) {
-                return $callback((object) array('property' => 'value'));
-            }));
+            ->willReturnCallback(function ($loader, $callback) {
+                return new ArrayChoiceList((array) $callback((object) ['property' => 'value']));
+            });
 
-        $this->assertSame('value', $this->factory->createListFromLoader($loader, new PropertyPath('property')));
+        $this->assertSame(['value' => 'value'], $this->factory->createListFromLoader($loader, new PropertyPath('property'))->getChoices());
     }
 
     public function testCreateViewPreferredChoicesAsPropertyPath()
     {
-        $list = $this->getMock('Symfony\Component\Form\ChoiceList\ChoiceListInterface');
+        $list = $this->getMockBuilder('Symfony\Component\Form\ChoiceList\ChoiceListInterface')->getMock();
 
         $this->decoratedFactory->expects($this->once())
             ->method('createView')
             ->with($list, $this->isInstanceOf('\Closure'))
-            ->will($this->returnCallback(function ($list, $preferred) {
-                return $preferred((object) array('property' => true));
-            }));
+            ->willReturnCallback(function ($list, $preferred) {
+                return new ChoiceListView((array) $preferred((object) ['property' => true]));
+            });
 
-        $this->assertTrue($this->factory->createView(
-            $list,
-            'property'
-        ));
+        $this->assertSame([true], $this->factory->createView($list, 'property')->choices);
     }
 
     /**
@@ -173,7 +174,7 @@ class PropertyAccessDecoratorTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateViewPreferredChoicesAsPropertyPathWithCallableString()
     {
-        $list = $this->getMock('Symfony\Component\Form\ChoiceList\ChoiceListInterface');
+        $list = $this->getMockBuilder('Symfony\Component\Form\ChoiceList\ChoiceListInterface')->getMock();
 
         $this->decoratedFactory->expects($this->once())
             ->method('createView')
@@ -188,55 +189,45 @@ class PropertyAccessDecoratorTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateViewPreferredChoicesAsPropertyPathInstance()
     {
-        $list = $this->getMock('Symfony\Component\Form\ChoiceList\ChoiceListInterface');
+        $list = $this->getMockBuilder('Symfony\Component\Form\ChoiceList\ChoiceListInterface')->getMock();
 
         $this->decoratedFactory->expects($this->once())
             ->method('createView')
             ->with($list, $this->isInstanceOf('\Closure'))
-            ->will($this->returnCallback(function ($list, $preferred) {
-                return $preferred((object) array('property' => true));
-            }));
+            ->willReturnCallback(function ($list, $preferred) {
+                return new ChoiceListView((array) $preferred((object) ['property' => true]));
+            });
 
-        $this->assertTrue($this->factory->createView(
-            $list,
-            new PropertyPath('property')
-        ));
+        $this->assertSame([true], $this->factory->createView($list, 'property')->choices);
     }
 
     // https://github.com/symfony/symfony/issues/5494
     public function testCreateViewAssumeNullIfPreferredChoicesPropertyPathUnreadable()
     {
-        $list = $this->getMock('Symfony\Component\Form\ChoiceList\ChoiceListInterface');
+        $list = $this->getMockBuilder('Symfony\Component\Form\ChoiceList\ChoiceListInterface')->getMock();
 
         $this->decoratedFactory->expects($this->once())
             ->method('createView')
             ->with($list, $this->isInstanceOf('\Closure'))
-            ->will($this->returnCallback(function ($list, $preferred) {
-                return $preferred((object) array('category' => null));
-            }));
+            ->willReturnCallback(function ($list, $preferred) {
+                return new ChoiceListView((array) $preferred((object) ['category' => null]));
+            });
 
-        $this->assertFalse($this->factory->createView(
-            $list,
-            'category.preferred'
-        ));
+        $this->assertSame([false], $this->factory->createView($list, 'category.preferred')->choices);
     }
 
     public function testCreateViewLabelsAsPropertyPath()
     {
-        $list = $this->getMock('Symfony\Component\Form\ChoiceList\ChoiceListInterface');
+        $list = $this->getMockBuilder('Symfony\Component\Form\ChoiceList\ChoiceListInterface')->getMock();
 
         $this->decoratedFactory->expects($this->once())
             ->method('createView')
             ->with($list, null, $this->isInstanceOf('\Closure'))
-            ->will($this->returnCallback(function ($list, $preferred, $label) {
-                return $label((object) array('property' => 'label'));
-            }));
+            ->willReturnCallback(function ($list, $preferred, $label) {
+                return new ChoiceListView((array) $label((object) ['property' => 'label']));
+            });
 
-        $this->assertSame('label', $this->factory->createView(
-            $list,
-            null, // preferred choices
-            'property'
-        ));
+        $this->assertSame(['label'], $this->factory->createView($list, null, 'property')->choices);
     }
 
     /**
@@ -244,7 +235,7 @@ class PropertyAccessDecoratorTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateViewLabelsAsPropertyPathWithCallableString()
     {
-        $list = $this->getMock('Symfony\Component\Form\ChoiceList\ChoiceListInterface');
+        $list = $this->getMockBuilder('Symfony\Component\Form\ChoiceList\ChoiceListInterface')->getMock();
 
         $this->decoratedFactory->expects($this->once())
             ->method('createView')
@@ -260,39 +251,30 @@ class PropertyAccessDecoratorTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateViewLabelsAsPropertyPathInstance()
     {
-        $list = $this->getMock('Symfony\Component\Form\ChoiceList\ChoiceListInterface');
+        $list = $this->getMockBuilder('Symfony\Component\Form\ChoiceList\ChoiceListInterface')->getMock();
 
         $this->decoratedFactory->expects($this->once())
             ->method('createView')
             ->with($list, null, $this->isInstanceOf('\Closure'))
-            ->will($this->returnCallback(function ($list, $preferred, $label) {
-                return $label((object) array('property' => 'label'));
-            }));
+            ->willReturnCallback(function ($list, $preferred, $label) {
+                return new ChoiceListView((array) $label((object) ['property' => 'label']));
+            });
 
-        $this->assertSame('label', $this->factory->createView(
-            $list,
-            null, // preferred choices
-            new PropertyPath('property')
-        ));
+        $this->assertSame(['label'], $this->factory->createView($list, null, new PropertyPath('property'))->choices);
     }
 
     public function testCreateViewIndicesAsPropertyPath()
     {
-        $list = $this->getMock('Symfony\Component\Form\ChoiceList\ChoiceListInterface');
+        $list = $this->getMockBuilder('Symfony\Component\Form\ChoiceList\ChoiceListInterface')->getMock();
 
         $this->decoratedFactory->expects($this->once())
             ->method('createView')
             ->with($list, null, null, $this->isInstanceOf('\Closure'))
-            ->will($this->returnCallback(function ($list, $preferred, $label, $index) {
-                return $index((object) array('property' => 'index'));
-            }));
+            ->willReturnCallback(function ($list, $preferred, $label, $index) {
+                return new ChoiceListView((array) $index((object) ['property' => 'index']));
+            });
 
-        $this->assertSame('index', $this->factory->createView(
-            $list,
-            null, // preferred choices
-            null, // label
-            'property'
-        ));
+        $this->assertSame(['index'], $this->factory->createView($list, null, null, 'property')->choices);
     }
 
     /**
@@ -300,7 +282,7 @@ class PropertyAccessDecoratorTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateViewIndicesAsPropertyPathWithCallableString()
     {
-        $list = $this->getMock('Symfony\Component\Form\ChoiceList\ChoiceListInterface');
+        $list = $this->getMockBuilder('Symfony\Component\Form\ChoiceList\ChoiceListInterface')->getMock();
 
         $this->decoratedFactory->expects($this->once())
             ->method('createView')
@@ -317,41 +299,30 @@ class PropertyAccessDecoratorTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateViewIndicesAsPropertyPathInstance()
     {
-        $list = $this->getMock('Symfony\Component\Form\ChoiceList\ChoiceListInterface');
+        $list = $this->getMockBuilder('Symfony\Component\Form\ChoiceList\ChoiceListInterface')->getMock();
 
         $this->decoratedFactory->expects($this->once())
             ->method('createView')
             ->with($list, null, null, $this->isInstanceOf('\Closure'))
-            ->will($this->returnCallback(function ($list, $preferred, $label, $index) {
-                return $index((object) array('property' => 'index'));
-            }));
+            ->willReturnCallback(function ($list, $preferred, $label, $index) {
+                return new ChoiceListView((array) $index((object) ['property' => 'index']));
+            });
 
-        $this->assertSame('index', $this->factory->createView(
-            $list,
-            null, // preferred choices
-            null, // label
-            new PropertyPath('property')
-        ));
+        $this->assertSame(['index'], $this->factory->createView($list, null, null, new PropertyPath('property'))->choices);
     }
 
     public function testCreateViewGroupsAsPropertyPath()
     {
-        $list = $this->getMock('Symfony\Component\Form\ChoiceList\ChoiceListInterface');
+        $list = $this->getMockBuilder('Symfony\Component\Form\ChoiceList\ChoiceListInterface')->getMock();
 
         $this->decoratedFactory->expects($this->once())
             ->method('createView')
             ->with($list, null, null, null, $this->isInstanceOf('\Closure'))
-            ->will($this->returnCallback(function ($list, $preferred, $label, $index, $groupBy) {
-                return $groupBy((object) array('property' => 'group'));
-            }));
+            ->willReturnCallback(function ($list, $preferred, $label, $index, $groupBy) {
+                return new ChoiceListView((array) $groupBy((object) ['property' => 'group']));
+            });
 
-        $this->assertSame('group', $this->factory->createView(
-            $list,
-            null, // preferred choices
-            null, // label
-            null, // index
-            'property'
-        ));
+        $this->assertSame(['group'], $this->factory->createView($list, null, null, null, 'property')->choices);
     }
 
     /**
@@ -359,7 +330,7 @@ class PropertyAccessDecoratorTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateViewGroupsAsPropertyPathWithCallableString()
     {
-        $list = $this->getMock('Symfony\Component\Form\ChoiceList\ChoiceListInterface');
+        $list = $this->getMockBuilder('Symfony\Component\Form\ChoiceList\ChoiceListInterface')->getMock();
 
         $this->decoratedFactory->expects($this->once())
             ->method('createView')
@@ -377,64 +348,45 @@ class PropertyAccessDecoratorTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateViewGroupsAsPropertyPathInstance()
     {
-        $list = $this->getMock('Symfony\Component\Form\ChoiceList\ChoiceListInterface');
+        $list = $this->getMockBuilder('Symfony\Component\Form\ChoiceList\ChoiceListInterface')->getMock();
 
         $this->decoratedFactory->expects($this->once())
             ->method('createView')
             ->with($list, null, null, null, $this->isInstanceOf('\Closure'))
-            ->will($this->returnCallback(function ($list, $preferred, $label, $index, $groupBy) {
-                return $groupBy((object) array('property' => 'group'));
-            }));
+            ->willReturnCallback(function ($list, $preferred, $label, $index, $groupBy) {
+                return new ChoiceListView((array) $groupBy((object) ['property' => 'group']));
+            });
 
-        $this->assertSame('group', $this->factory->createView(
-            $list,
-            null, // preferred choices
-            null, // label
-            null, // index
-            new PropertyPath('property')
-        ));
+        $this->assertSame(['group'], $this->factory->createView($list, null, null, null, new PropertyPath('property'))->choices);
     }
 
     // https://github.com/symfony/symfony/issues/5494
     public function testCreateViewAssumeNullIfGroupsPropertyPathUnreadable()
     {
-        $list = $this->getMock('Symfony\Component\Form\ChoiceList\ChoiceListInterface');
+        $list = $this->getMockBuilder('Symfony\Component\Form\ChoiceList\ChoiceListInterface')->getMock();
 
         $this->decoratedFactory->expects($this->once())
             ->method('createView')
             ->with($list, null, null, null, $this->isInstanceOf('\Closure'))
-            ->will($this->returnCallback(function ($list, $preferred, $label, $index, $groupBy) {
-                return $groupBy((object) array('group' => null));
-            }));
+            ->willReturnCallback(function ($list, $preferred, $label, $index, $groupBy) {
+                return new ChoiceListView((array) $groupBy((object) ['group' => null]));
+            });
 
-        $this->assertNull($this->factory->createView(
-            $list,
-            null, // preferred choices
-            null, // label
-            null, // index
-            'group.name'
-        ));
+        $this->assertSame([], $this->factory->createView($list, null, null, null, 'group.name')->choices);
     }
 
     public function testCreateViewAttrAsPropertyPath()
     {
-        $list = $this->getMock('Symfony\Component\Form\ChoiceList\ChoiceListInterface');
+        $list = $this->getMockBuilder('Symfony\Component\Form\ChoiceList\ChoiceListInterface')->getMock();
 
         $this->decoratedFactory->expects($this->once())
             ->method('createView')
             ->with($list, null, null, null, null, $this->isInstanceOf('\Closure'))
-            ->will($this->returnCallback(function ($list, $preferred, $label, $index, $groupBy, $attr) {
-                return $attr((object) array('property' => 'attr'));
-            }));
+            ->willReturnCallback(function ($list, $preferred, $label, $index, $groupBy, $attr) {
+                return new ChoiceListView((array) $attr((object) ['property' => 'attr']));
+            });
 
-        $this->assertSame('attr', $this->factory->createView(
-            $list,
-            null, // preferred choices
-            null, // label
-            null, // index
-            null, // groups
-            'property'
-        ));
+        $this->assertSame(['attr'], $this->factory->createView($list, null, null, null, null, 'property')->choices);
     }
 
     /**
@@ -442,7 +394,7 @@ class PropertyAccessDecoratorTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateViewAttrAsPropertyPathWithCallableString()
     {
-        $list = $this->getMock('Symfony\Component\Form\ChoiceList\ChoiceListInterface');
+        $list = $this->getMockBuilder('Symfony\Component\Form\ChoiceList\ChoiceListInterface')->getMock();
 
         $this->decoratedFactory->expects($this->once())
             ->method('createView')
@@ -461,22 +413,15 @@ class PropertyAccessDecoratorTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateViewAttrAsPropertyPathInstance()
     {
-        $list = $this->getMock('Symfony\Component\Form\ChoiceList\ChoiceListInterface');
+        $list = $this->getMockBuilder('Symfony\Component\Form\ChoiceList\ChoiceListInterface')->getMock();
 
         $this->decoratedFactory->expects($this->once())
             ->method('createView')
             ->with($list, null, null, null, null, $this->isInstanceOf('\Closure'))
-            ->will($this->returnCallback(function ($list, $preferred, $label, $index, $groupBy, $attr) {
-                return $attr((object) array('property' => 'attr'));
-            }));
+            ->willReturnCallback(function ($list, $preferred, $label, $index, $groupBy, $attr) {
+                return new ChoiceListView((array) $attr((object) ['property' => 'attr']));
+            });
 
-        $this->assertSame('attr', $this->factory->createView(
-            $list,
-            null, // preferred choices
-            null, // label
-            null, // index
-            null, // groups
-            new PropertyPath('property')
-        ));
+        $this->assertSame(['attr'], $this->factory->createView($list, null, null, null, null, new PropertyPath('property'))->choices);
     }
 }

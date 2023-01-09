@@ -1,5 +1,4 @@
 {
-    "Version": "2.1.23.7",
     "Names": {
         "Arab": "ərəb",
         "Armi": "armi",
@@ -37,6 +36,7 @@
         "Grek": "yunan",
         "Gujr": "qucarat",
         "Guru": "qurmuxi",
+        "Hanb": "hanb",
         "Hang": "hanqıl",
         "Hani": "han",
         "Hano": "hanunu",
@@ -45,10 +45,11 @@
         "Hebr": "ibrani",
         "Hira": "iraqana",
         "Hmng": "pahav monq",
-        "Hrkt": "katakana vəya hiraqana",
+        "Hrkt": "hecalı yapon əlifbası",
         "Hung": "qədimi macar",
         "Inds": "hindistan",
         "Ital": "qədimi italyalı",
+        "Jamo": "jamo",
         "Java": "cava",
         "Jpan": "yapon",
         "Kali": "kayax li",
@@ -121,10 +122,11 @@
         "Xpeo": "qədimi fars",
         "Xsux": "sumer-akadyan kuneyform",
         "Yiii": "yi",
-        "Zmth": "zmth",
+        "Zmth": "riyazi notasiya",
+        "Zsye": "emoji",
         "Zsym": "simvollar",
         "Zxxx": "yazısız",
         "Zyyy": "ümumi yazı",
-        "Zzzz": "naməlum skript"
+        "Zzzz": "tanınmayan yazı"
     }
 }

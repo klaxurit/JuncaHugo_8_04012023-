@@ -11,12 +11,13 @@
 
 namespace Symfony\Component\PropertyInfo\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\PropertyInfo\Type;
 
 /**
  * @author Kévin Dunglas <dunglas@gmail.com>
  */
-class TypeTest extends \PHPUnit_Framework_TestCase
+class TypeTest extends TestCase
 {
     public function testConstruct()
     {
@@ -36,12 +37,16 @@ class TypeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(Type::BUILTIN_TYPE_STRING, $collectionValueType->getBuiltinType());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage "foo" is not a valid PHP type.
-     */
+    public function testIterable()
+    {
+        $type = new Type('iterable');
+        $this->assertSame('iterable', $type->getBuiltinType());
+    }
+
     public function testInvalidType()
     {
+        $this->expectException('InvalidArgumentException');
+        $this->expectExceptionMessage('"foo" is not a valid PHP type.');
         new Type('foo');
     }
 }

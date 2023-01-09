@@ -1,5 +1,4 @@
 {
-    "Version": "2.1.24.17",
     "Names": {
         "ADP": [
             "ADP",
@@ -110,7 +109,7 @@
             "Bugarski tvrdi lev"
         ],
         "BGN": [
-            "[BGN]",
+            "BGN",
             "Bugarski lev"
         ],
         "BHD": [
@@ -185,9 +184,13 @@
             "BYB",
             "Beloruska nova rublja (1994–1999)"
         ],
-        "BYR": [
-            "[BYR]",
+        "BYN": [
+            "BYN",
             "Beloruska rublja"
+        ],
+        "BYR": [
+            "BYR",
+            "Beloruska rublja (2000–2016)"
         ],
         "BZD": [
             "BZD",
@@ -220,6 +223,10 @@
         "CLP": [
             "CLP",
             "Čileanski pezos"
+        ],
+        "CNH": [
+            "CNH",
+            "Kineski juan (ostrvski)"
         ],
         "CNY": [
             "CN¥",
@@ -275,7 +282,7 @@
         ],
         "DJF": [
             "DJF",
-            "Džibutanski franak"
+            "Džibutski franak"
         ],
         "DKK": [
             "DKK",
@@ -507,7 +514,7 @@
         ],
         "KRW": [
             "KRW",
-            "Južnokorejski Von"
+            "Južnokorejski von"
         ],
         "KWD": [
             "KWD",
@@ -615,7 +622,11 @@
         ],
         "MRO": [
             "MRO",
-            "Mauritanijska ogija"
+            "Mauritanijska ogija (1973–2017)"
+        ],
+        "MRU": [
+            "MRU",
+            "Mauritanska ogija"
         ],
         "MTL": [
             "MTL",
@@ -711,11 +722,11 @@
         ],
         "PEN": [
             "PEN",
-            "Peruanski novi sol"
+            "Peruanski sol"
         ],
         "PES": [
             "PES",
-            "Peruanski sol"
+            "Peruanski sol (1863–1965)"
         ],
         "PGK": [
             "PGK",
@@ -755,11 +766,11 @@
         ],
         "ROL": [
             "ROL",
-            "Rumunski lej"
+            "Rumunski lej (1952–2006)"
         ],
         "RON": [
             "RON",
-            "Rumunski lej (1952–2006)"
+            "Rumunski lej"
         ],
         "RSD": [
             "RSD",
@@ -811,7 +822,7 @@
         ],
         "SHP": [
             "SHP",
-            "Sv. jelenska funta"
+            "Svete Jelene funta"
         ],
         "SIT": [
             "SIT",
@@ -843,6 +854,10 @@
         ],
         "STD": [
             "STD",
+            "Saotomska dobra (1977–2017)"
+        ],
+        "STN": [
+            "STN",
             "Saotomska dobra"
         ],
         "SUR": [
@@ -871,7 +886,7 @@
         ],
         "TJS": [
             "TJS",
-            "Tadžihistanski somon"
+            "Tadžikistanski somon"
         ],
         "TMM": [
             "TMM",
@@ -963,6 +978,10 @@
         ],
         "VEF": [
             "VEF",
+            "Venecuelanski bolivar (2008–2018)"
+        ],
+        "VES": [
+            "VES",
             "Venecuelanski bolivar"
         ],
         "VND": [

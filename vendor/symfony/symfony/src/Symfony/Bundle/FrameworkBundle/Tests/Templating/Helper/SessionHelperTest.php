@@ -11,13 +11,14 @@
 
 namespace Symfony\Bundle\FrameworkBundle\Tests\Templating\Helper;
 
+use PHPUnit\Framework\TestCase;
+use Symfony\Bundle\FrameworkBundle\Templating\Helper\SessionHelper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
-use Symfony\Bundle\FrameworkBundle\Templating\Helper\SessionHelper;
 
-class SessionHelperTest extends \PHPUnit_Framework_TestCase
+class SessionHelperTest extends TestCase
 {
     protected $requestStack;
 
@@ -46,13 +47,13 @@ class SessionHelperTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($helper->hasFlash('notice'));
 
-        $this->assertEquals(array('bar'), $helper->getFlash('notice'));
+        $this->assertEquals(['bar'], $helper->getFlash('notice'));
     }
 
     public function testGetFlashes()
     {
         $helper = new SessionHelper($this->requestStack);
-        $this->assertEquals(array('notice' => array('bar')), $helper->getFlashes());
+        $this->assertEquals(['notice' => ['bar']], $helper->getFlashes());
     }
 
     public function testGet()

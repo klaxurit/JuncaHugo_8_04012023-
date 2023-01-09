@@ -1,5 +1,4 @@
 {
-    "Version": "2.1.22.93",
     "Names": {
         "ADP": [
             "ADP",
@@ -7,7 +6,7 @@
         ],
         "AED": [
             "AED",
-            "Dirrã dos Emirados Árabes Unidos"
+            "Dirham dos Emirados Árabes Unidos"
         ],
         "AFA": [
             "AFA",
@@ -95,7 +94,7 @@
         ],
         "BAM": [
             "BAM",
-            "Marco bósnio-herzegovino conversível"
+            "Marco conversível da Bósnia e Herzegovina"
         ],
         "BAN": [
             "BAN",
@@ -107,7 +106,7 @@
         ],
         "BDT": [
             "BDT",
-            "Taka bengalesa"
+            "Taka bengali"
         ],
         "BEC": [
             "BEC",
@@ -155,7 +154,7 @@
         ],
         "BOB": [
             "BOB",
-            "Boliviano"
+            "Boliviano da Bolívia"
         ],
         "BOL": [
             "BOL",
@@ -217,9 +216,13 @@
             "BYB",
             "Rublo novo bielo-russo (1994–1999)"
         ],
+        "BYN": [
+            "BYN",
+            "Rublo bielorrusso"
+        ],
         "BYR": [
             "BYR",
-            "Rublo bielorrusso"
+            "Rublo bielorrusso (2000–2016)"
         ],
         "BZD": [
             "BZD",
@@ -256,6 +259,10 @@
         "CLP": [
             "CLP",
             "Peso chileno"
+        ],
+        "CNH": [
+            "CNH",
+            "Yuan chinês (offshore)"
         ],
         "CNX": [
             "CNX",
@@ -315,7 +322,7 @@
         ],
         "DJF": [
             "DJF",
-            "Franco djibutiense"
+            "Franco djiboutiano"
         ],
         "DKK": [
             "DKK",
@@ -387,7 +394,7 @@
         ],
         "GBP": [
             "£",
-            "Libra britânica"
+            "Libra esterlina"
         ],
         "GEK": [
             "GEK",
@@ -431,7 +438,7 @@
         ],
         "GTQ": [
             "GTQ",
-            "Quetzal guatemalense"
+            "Quetzal guatemalteco"
         ],
         "GWE": [
             "GWE",
@@ -467,7 +474,7 @@
         ],
         "HUF": [
             "HUF",
-            "Forint húngaro"
+            "Florim húngaro"
         ],
         "IDR": [
             "IDR",
@@ -487,7 +494,7 @@
         ],
         "ILS": [
             "₪",
-            "Sheqel novo israelita"
+            "Novo shekel israelense"
         ],
         "INR": [
             "₹",
@@ -539,7 +546,7 @@
         ],
         "KMF": [
             "KMF",
-            "Franco comorense"
+            "Franco comoriano"
         ],
         "KPW": [
             "KPW",
@@ -563,7 +570,7 @@
         ],
         "KYD": [
             "KYD",
-            "Dólar das Ilhas Caiman"
+            "Dólar das Ilhas Cayman"
         ],
         "KZT": [
             "KZT",
@@ -579,7 +586,7 @@
         ],
         "LKR": [
             "LKR",
-            "Rupia ceilandesa"
+            "Rupia do Sri Lanka"
         ],
         "LRD": [
             "LRD",
@@ -623,7 +630,7 @@
         ],
         "MAD": [
             "MAD",
-            "Dirrã marroquino"
+            "Dirham marroquino"
         ],
         "MAF": [
             "MAF",
@@ -663,7 +670,7 @@
         ],
         "MMK": [
             "MMK",
-            "Kyat mianmarense"
+            "Quiat de Myanmar"
         ],
         "MNT": [
             "MNT",
@@ -671,10 +678,14 @@
         ],
         "MOP": [
             "MOP",
-            "Pataca macaense"
+            "Pataca de Macau"
         ],
         "MRO": [
             "MRO",
+            "Ouguiya mauritana (1973–2017)"
+        ],
+        "MRU": [
+            "MRU",
             "Ouguiya mauritana"
         ],
         "MTL": [
@@ -691,11 +702,11 @@
         ],
         "MVR": [
             "MVR",
-            "Rupia maldiva"
+            "Rupia maldivana"
         ],
         "MWK": [
             "MWK",
-            "Kwacha malawiana"
+            "Kwacha malauiana"
         ],
         "MXN": [
             "MX$",
@@ -763,7 +774,7 @@
         ],
         "PAB": [
             "PAB",
-            "Balboa panamenha"
+            "Balboa panamenho"
         ],
         "PEI": [
             "PEI",
@@ -791,7 +802,7 @@
         ],
         "PLN": [
             "PLN",
-            "Zloti polonês"
+            "Zloty polonês"
         ],
         "PLZ": [
             "PLZ",
@@ -887,7 +898,7 @@
         ],
         "SOS": [
             "SOS",
-            "Xelim somaliano"
+            "Xelim somali"
         ],
         "SRD": [
             "SRD",
@@ -903,6 +914,10 @@
         ],
         "STD": [
             "STD",
+            "Dobra de São Tomé e Príncipe (1977–2017)"
+        ],
+        "STN": [
+            "STN",
             "Dobra de São Tomé e Príncipe"
         ],
         "SUR": [
@@ -1023,6 +1038,10 @@
         ],
         "VEF": [
             "VEF",
+            "Bolívar venezuelano (2008–2018)"
+        ],
+        "VES": [
+            "VES",
             "Bolívar venezuelano"
         ],
         "VND": [
@@ -1035,7 +1054,7 @@
         ],
         "VUV": [
             "VUV",
-            "Vatu vanuatuense"
+            "Vatu de Vanuatu"
         ],
         "WST": [
             "WST",

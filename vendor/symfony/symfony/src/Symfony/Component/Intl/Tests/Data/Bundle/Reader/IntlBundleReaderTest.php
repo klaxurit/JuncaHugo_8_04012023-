@@ -11,13 +11,14 @@
 
 namespace Symfony\Component\Intl\Tests\Data\Bundle\Reader;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Intl\Data\Bundle\Reader\IntlBundleReader;
 
 /**
  * @author Bernhard Schussek <bschussek@gmail.com>
  * @requires extension intl
  */
-class IntlBundleReaderTest extends \PHPUnit_Framework_TestCase
+class IntlBundleReaderTest extends TestCase
 {
     /**
      * @var IntlBundleReader
@@ -35,7 +36,7 @@ class IntlBundleReaderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('\ArrayAccess', $data);
         $this->assertSame('Bar', $data['Foo']);
-        $this->assertFalse(isset($data['ExistsNot']));
+        $this->assertArrayNotHasKey('ExistsNot', $data);
     }
 
     public function testReadFollowsAlias()
@@ -45,12 +46,12 @@ class IntlBundleReaderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('\ArrayAccess', $data);
         $this->assertSame('Bar', $data['Foo']);
-        $this->assertFalse(isset($data['ExistsNot']));
+        $this->assertArrayNotHasKey('ExistsNot', $data);
     }
 
     public function testReadDoesNotFollowFallback()
     {
-        if (defined('HHVM_VERSION')) {
+        if (\defined('HHVM_VERSION')) {
             $this->markTestSkipped('ResourceBundle does not support disabling fallback properly on HHVM.');
         }
 
@@ -59,14 +60,14 @@ class IntlBundleReaderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('\ArrayAccess', $data);
         $this->assertSame('Bam', $data['Baz']);
-        $this->assertFalse(isset($data['Foo']));
+        $this->assertArrayNotHasKey('Foo', $data);
         $this->assertNull($data['Foo']);
-        $this->assertFalse(isset($data['ExistsNot']));
+        $this->assertArrayNotHasKey('ExistsNot', $data);
     }
 
     public function testReadDoesNotFollowFallbackAlias()
     {
-        if (defined('HHVM_VERSION')) {
+        if (\defined('HHVM_VERSION')) {
             $this->markTestSkipped('ResourceBundle does not support disabling fallback properly on HHVM.');
         }
 
@@ -75,32 +76,26 @@ class IntlBundleReaderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('\ArrayAccess', $data);
         $this->assertSame('Bam', $data['Baz'], 'data from the aliased locale can be accessed');
-        $this->assertFalse(isset($data['Foo']));
+        $this->assertArrayNotHasKey('Foo', $data);
         $this->assertNull($data['Foo']);
-        $this->assertFalse(isset($data['ExistsNot']));
+        $this->assertArrayNotHasKey('ExistsNot', $data);
     }
 
-    /**
-     * @expectedException \Symfony\Component\Intl\Exception\ResourceBundleNotFoundException
-     */
     public function testReadFailsIfNonExistingLocale()
     {
+        $this->expectException('Symfony\Component\Intl\Exception\ResourceBundleNotFoundException');
         $this->reader->read(__DIR__.'/Fixtures/res', 'foo');
     }
 
-    /**
-     * @expectedException \Symfony\Component\Intl\Exception\ResourceBundleNotFoundException
-     */
     public function testReadFailsIfNonExistingFallbackLocale()
     {
+        $this->expectException('Symfony\Component\Intl\Exception\ResourceBundleNotFoundException');
         $this->reader->read(__DIR__.'/Fixtures/res', 'ro_AT');
     }
 
-    /**
-     * @expectedException \Symfony\Component\Intl\Exception\RuntimeException
-     */
     public function testReadFailsIfNonExistingDirectory()
     {
+        $this->expectException('Symfony\Component\Intl\Exception\RuntimeException');
         $this->reader->read(__DIR__.'/foo', 'ro');
     }
 }

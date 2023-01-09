@@ -11,12 +11,13 @@
 
 namespace Symfony\Component\Serializer\Tests\Mapping;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Mapping\AttributeMetadata;
 
 /**
  * @author Kévin Dunglas <dunglas@gmail.com>
  */
-class AttributeMetadataTest extends \PHPUnit_Framework_TestCase
+class AttributeMetadataTest extends TestCase
 {
     public function testInterface()
     {
@@ -37,7 +38,7 @@ class AttributeMetadataTest extends \PHPUnit_Framework_TestCase
         $attributeMetadata->addGroup('a');
         $attributeMetadata->addGroup('b');
 
-        $this->assertEquals(array('a', 'b'), $attributeMetadata->getGroups());
+        $this->assertEquals(['a', 'b'], $attributeMetadata->getGroups());
     }
 
     public function testMaxDepth()
@@ -61,7 +62,7 @@ class AttributeMetadataTest extends \PHPUnit_Framework_TestCase
 
         $attributeMetadata1->merge($attributeMetadata2);
 
-        $this->assertEquals(array('a', 'b', 'c'), $attributeMetadata1->getGroups());
+        $this->assertEquals(['a', 'b', 'c'], $attributeMetadata1->getGroups());
         $this->assertEquals(2, $attributeMetadata1->getMaxDepth());
     }
 

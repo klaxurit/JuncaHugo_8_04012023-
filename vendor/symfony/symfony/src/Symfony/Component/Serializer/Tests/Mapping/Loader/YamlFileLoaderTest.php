@@ -11,14 +11,15 @@
 
 namespace Symfony\Component\Serializer\Tests\Mapping\Loader;
 
-use Symfony\Component\Serializer\Mapping\Loader\YamlFileLoader;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Mapping\ClassMetadata;
+use Symfony\Component\Serializer\Mapping\Loader\YamlFileLoader;
 use Symfony\Component\Serializer\Tests\Mapping\TestClassMetadataFactory;
 
 /**
  * @author Kévin Dunglas <dunglas@gmail.com>
  */
-class YamlFileLoaderTest extends \PHPUnit_Framework_TestCase
+class YamlFileLoaderTest extends TestCase
 {
     /**
      * @var YamlFileLoader
@@ -51,11 +52,9 @@ class YamlFileLoaderTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($loader->loadClassMetadata($this->metadata));
     }
 
-    /**
-     * @expectedException \Symfony\Component\Serializer\Exception\MappingException
-     */
     public function testLoadClassMetadataReturnsThrowsInvalidMapping()
     {
+        $this->expectException('Symfony\Component\Serializer\Exception\MappingException');
         $loader = new YamlFileLoader(__DIR__.'/../../Fixtures/invalid-mapping.yml');
         $loader->loadClassMetadata($this->metadata);
     }

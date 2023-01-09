@@ -11,14 +11,14 @@
 
 namespace Symfony\Component\Ldap;
 
-@trigger_error('The '.__NAMESPACE__.'\LdapClient class is deprecated since version 3.1 and will be removed in 4.0. Use the Ldap class directly instead.', E_USER_DEPRECATED);
+@trigger_error('The '.__NAMESPACE__.'\LdapClient class is deprecated since Symfony 3.1 and will be removed in 4.0. Use the Ldap class directly instead.', \E_USER_DEPRECATED);
 
 /**
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
  * @author Francis Besset <francis.besset@gmail.com>
  * @author Charles Sarrazin <charles@sarraz.in>
  *
- * @deprecated The LdapClient class will be removed in Symfony 4.0. You should use the Ldap class instead.
+ * @deprecated since version 3.1, to be removed in 4.0. Use the Ldap class instead.
  */
 final class LdapClient implements LdapClientInterface
 {
@@ -42,7 +42,7 @@ final class LdapClient implements LdapClientInterface
     /**
      * {@inheritdoc}
      */
-    public function query($dn, $query, array $options = array())
+    public function query($dn, $query, array $options = [])
     {
         return $this->ldap->query($dn, $query, $options);
     }
@@ -60,38 +60,38 @@ final class LdapClient implements LdapClientInterface
      */
     public function find($dn, $query, $filter = '*')
     {
-        @trigger_error('The "find" method is deprecated since version 3.1 and will be removed in 4.0. Use the "query" method instead.', E_USER_DEPRECATED);
+        @trigger_error('The "find" method is deprecated since Symfony 3.1 and will be removed in 4.0. Use the "query" method instead.', \E_USER_DEPRECATED);
 
-        $query = $this->ldap->query($dn, $query, array('filter' => $filter));
+        $query = $this->ldap->query($dn, $query, ['filter' => $filter]);
         $entries = $query->execute();
-        $result = array(
+        $result = [
             'count' => 0,
-        );
+        ];
 
         foreach ($entries as $entry) {
-            $resultEntry = array();
+            $resultEntry = [];
 
             foreach ($entry->getAttributes() as $attribute => $values) {
-                $resultAttribute = array(
-                    'count' => count($values),
-                );
+                $resultAttribute = [
+                    'count' => \count($values),
+                ];
 
                 foreach ($values as $val) {
                     $resultAttribute[] = $val;
                 }
                 $attributeName = strtolower($attribute);
 
-                $resultAttribute['count'] = count($values);
+                $resultAttribute['count'] = \count($values);
                 $resultEntry[$attributeName] = $resultAttribute;
                 $resultEntry[] = $attributeName;
             }
 
-            $resultEntry['count'] = count($resultEntry) / 2;
+            $resultEntry['count'] = \count($resultEntry) / 2;
             $resultEntry['dn'] = $entry->getDn();
             $result[] = $resultEntry;
         }
 
-        $result['count'] = count($result) - 1;
+        $result['count'] = \count($result) - 1;
 
         return $result;
     }
@@ -114,14 +114,14 @@ final class LdapClient implements LdapClientInterface
             $encryption = 'none';
         }
 
-        return array(
+        return [
             'host' => $host,
             'port' => $port,
             'encryption' => $encryption,
-            'options' => array(
+            'options' => [
                 'protocol_version' => $version,
                 'referrals' => (bool) $optReferrals,
-            ),
-        );
+            ],
+        ];
     }
 }

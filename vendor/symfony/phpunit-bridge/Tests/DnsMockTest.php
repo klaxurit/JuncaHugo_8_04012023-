@@ -11,9 +11,10 @@
 
 namespace Symfony\Bridge\PhpUnit\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\PhpUnit\DnsMock;
 
-class DnsMockTest extends \PHPUnit_Framework_TestCase
+class DnsMockTest extends TestCase
 {
     protected function tearDown()
     {
@@ -140,8 +141,8 @@ class DnsMockTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse(DnsMock::dns_get_record('foobar.com'));
         $this->assertSame($records, DnsMock::dns_get_record('example.com'));
-        $this->assertSame($records, DnsMock::dns_get_record('example.com', DNS_ALL));
-        $this->assertSame($records, DnsMock::dns_get_record('example.com', DNS_A | DNS_PTR));
-        $this->assertSame(array($ptr), DnsMock::dns_get_record('example.com', DNS_PTR));
+        $this->assertSame($records, DnsMock::dns_get_record('example.com', \DNS_ALL));
+        $this->assertSame($records, DnsMock::dns_get_record('example.com', \DNS_A | \DNS_PTR));
+        $this->assertSame(array($ptr), DnsMock::dns_get_record('example.com', \DNS_PTR));
     }
 }
