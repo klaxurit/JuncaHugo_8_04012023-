@@ -2619,7 +2619,7 @@
       <argument type="service" id="debug.event_dispatcher" on-invalid="null"/>
       <argument type="service" id="security.authentication.trust_resolver"/>
       <call method="setLogoutOnUserChange">
-        <argument>false</argument>
+        <argument>true</argument>
       </call>
     </service>
     <service id="security.logout_listener.main" class="Symfony\Component\Security\Http\Firewall\LogoutListener" public="false">
