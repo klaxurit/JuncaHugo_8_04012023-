@@ -22,7 +22,7 @@
         "doctrine/doctrine-bundle": "^1.6",
         "symfony/polyfill-apcu": "^1.0",
         "incenteev/composer-parameter-handler": "^2.0",
-        "symfony/symfony": "^4.0",
+        "symfony/symfony": "4.4.*",
         "twig/twig": "^1.0||^2.0",
         "symfony/monolog-bundle": "^3.1.0"
     },
@@ -47,6 +47,9 @@
         "symfony-web-dir": "web",
         "symfony-tests-dir": "tests",
         "symfony-assets-install": "relative",
+        "symfony": {
+            "require": "4.4.*"
+        },
         "incenteev-parameters": {
             "file": "app/config/parameters.yml"
         }

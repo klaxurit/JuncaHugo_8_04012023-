@@ -75,7 +75,7 @@ final class Versions
   'symfony/symfony' => 'v4.4.49@3da1b76795bb874619b46ced70fb33806936169e',
   'twig/twig' => 'v2.15.4@3e059001d6d597dd50ea7c74dd2464b4adea48d3',
   'symfony/phpunit-bridge' => 'v3.4.47@120273ad5d03a8deee08ca9260e2598f288f2bac',
-  'saro0h/to-do-list' => 'dev-main@0851dbca628c7420af14b47fa4141c59fa9f043c',
+  'saro0h/to-do-list' => 'dev-main@c4b0aa9273492d1fd41c914630192cf0449421ab',
 );
 
     private function __construct()
