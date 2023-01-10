@@ -12,7 +12,7 @@ use Twig\Sandbox\SecurityNotAllowedFunctionError;
 use Twig\Source;
 use Twig\Template;
 
-/* WebProfilerBundle:Collector:exception.css.twig */
+/* @WebProfiler/Collector/exception.css.twig */
 class __TwigTemplate_140188e2e6bd4f15bc900e40c82aaedcd3051e55f64f07f7e65e1681c2b45111 extends \Twig\Template
 {
     private $source;
@@ -34,10 +34,10 @@ class __TwigTemplate_140188e2e6bd4f15bc900e40c82aaedcd3051e55f64f07f7e65e1681c2b
     {
         $macros = $this->macros;
         $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e = $this->extensions["Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension"];
-        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "WebProfilerBundle:Collector:exception.css.twig"));
+        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "@WebProfiler/Collector/exception.css.twig"));
 
         $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02 = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
-        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "WebProfilerBundle:Collector:exception.css.twig"));
+        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "@WebProfiler/Collector/exception.css.twig"));
 
         // line 1
         echo ".container {
@@ -83,7 +83,7 @@ class __TwigTemplate_140188e2e6bd4f15bc900e40c82aaedcd3051e55f64f07f7e65e1681c2b
 
     public function getTemplateName()
     {
-        return "WebProfilerBundle:Collector:exception.css.twig";
+        return "@WebProfiler/Collector/exception.css.twig";
     }
 
     public function getDebugInfo()
@@ -125,6 +125,6 @@ class __TwigTemplate_140188e2e6bd4f15bc900e40c82aaedcd3051e55f64f07f7e65e1681c2b
 .exception-message-wrapper .container {
     min-height: unset;
 }
-", "WebProfilerBundle:Collector:exception.css.twig", "/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/vendor/symfony/symfony/src/Symfony/Bundle/WebProfilerBundle/Resources/views/Collector/exception.css.twig");
+", "@WebProfiler/Collector/exception.css.twig", "/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/vendor/symfony/symfony/src/Symfony/Bundle/WebProfilerBundle/Resources/views/Collector/exception.css.twig");
     }
 }

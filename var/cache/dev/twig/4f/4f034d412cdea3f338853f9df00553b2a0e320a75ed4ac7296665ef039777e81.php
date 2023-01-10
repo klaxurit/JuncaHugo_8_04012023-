@@ -12,7 +12,7 @@ use Twig\Sandbox\SecurityNotAllowedFunctionError;
 use Twig\Source;
 use Twig\Template;
 
-/* FrameworkBundle:Form:form_widget_compound.html.php */
+/* @Framework/Form/form_widget_compound.html.php */
 class __TwigTemplate_e90481bebce952c0a9efa8c1f51b633cd4dafec1e47d36a60ae6792f7d604404 extends \Twig\Template
 {
     private $source;
@@ -34,10 +34,10 @@ class __TwigTemplate_e90481bebce952c0a9efa8c1f51b633cd4dafec1e47d36a60ae6792f7d6
     {
         $macros = $this->macros;
         $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e = $this->extensions["Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension"];
-        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "FrameworkBundle:Form:form_widget_compound.html.php"));
+        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "@Framework/Form/form_widget_compound.html.php"));
 
         $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02 = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
-        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "FrameworkBundle:Form:form_widget_compound.html.php"));
+        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "@Framework/Form/form_widget_compound.html.php"));
 
         // line 1
         echo "<div <?php echo \$view['form']->block(\$form, 'widget_container_attributes') ?>>
@@ -58,7 +58,7 @@ class __TwigTemplate_e90481bebce952c0a9efa8c1f51b633cd4dafec1e47d36a60ae6792f7d6
 
     public function getTemplateName()
     {
-        return "FrameworkBundle:Form:form_widget_compound.html.php";
+        return "@Framework/Form/form_widget_compound.html.php";
     }
 
     public function getDebugInfo()
@@ -75,6 +75,6 @@ class __TwigTemplate_e90481bebce952c0a9efa8c1f51b633cd4dafec1e47d36a60ae6792f7d6
     <?php echo \$view['form']->block(\$form, 'form_rows') ?>
     <?php echo \$view['form']->rest(\$form) ?>
 </div>
-", "FrameworkBundle:Form:form_widget_compound.html.php", "/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Resources/views/Form/form_widget_compound.html.php");
+", "@Framework/Form/form_widget_compound.html.php", "/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Resources/views/Form/form_widget_compound.html.php");
     }
 }

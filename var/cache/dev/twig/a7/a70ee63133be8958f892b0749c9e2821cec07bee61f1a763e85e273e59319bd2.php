@@ -12,7 +12,7 @@ use Twig\Sandbox\SecurityNotAllowedFunctionError;
 use Twig\Source;
 use Twig\Template;
 
-/* FrameworkBundle:Form:number_widget.html.php */
+/* @Framework/Form/number_widget.html.php */
 class __TwigTemplate_a9c878b6fa5eaddb9814e54dad7a0e2a6bcf8b7f244c563e8d4a6321feb85469 extends \Twig\Template
 {
     private $source;
@@ -34,10 +34,10 @@ class __TwigTemplate_a9c878b6fa5eaddb9814e54dad7a0e2a6bcf8b7f244c563e8d4a6321feb
     {
         $macros = $this->macros;
         $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e = $this->extensions["Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension"];
-        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "FrameworkBundle:Form:number_widget.html.php"));
+        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "@Framework/Form/number_widget.html.php"));
 
         $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02 = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
-        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "FrameworkBundle:Form:number_widget.html.php"));
+        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "@Framework/Form/number_widget.html.php"));
 
         // line 1
         echo "<?php echo \$view['form']->block(\$form, 'form_widget_simple', ['type' => \$type ?? 'text']) ?>
@@ -52,7 +52,7 @@ class __TwigTemplate_a9c878b6fa5eaddb9814e54dad7a0e2a6bcf8b7f244c563e8d4a6321feb
 
     public function getTemplateName()
     {
-        return "FrameworkBundle:Form:number_widget.html.php";
+        return "@Framework/Form/number_widget.html.php";
     }
 
     public function getDebugInfo()
@@ -63,6 +63,6 @@ class __TwigTemplate_a9c878b6fa5eaddb9814e54dad7a0e2a6bcf8b7f244c563e8d4a6321feb
     public function getSourceContext()
     {
         return new Source("<?php echo \$view['form']->block(\$form, 'form_widget_simple', ['type' => \$type ?? 'text']) ?>
-", "FrameworkBundle:Form:number_widget.html.php", "/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Resources/views/Form/number_widget.html.php");
+", "@Framework/Form/number_widget.html.php", "/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Resources/views/Form/number_widget.html.php");
     }
 }

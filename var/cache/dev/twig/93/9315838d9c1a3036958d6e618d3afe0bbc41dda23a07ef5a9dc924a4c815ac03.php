@@ -12,7 +12,7 @@ use Twig\Sandbox\SecurityNotAllowedFunctionError;
 use Twig\Source;
 use Twig\Template;
 
-/* FrameworkBundle:Form:form_row.html.php */
+/* @Framework/Form/form_row.html.php */
 class __TwigTemplate_2b801915e3455d9d6f90c6ade07455cab2afa26a912d36fd312bd59e330903f9 extends \Twig\Template
 {
     private $source;
@@ -34,10 +34,10 @@ class __TwigTemplate_2b801915e3455d9d6f90c6ade07455cab2afa26a912d36fd312bd59e330
     {
         $macros = $this->macros;
         $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e = $this->extensions["Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension"];
-        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "FrameworkBundle:Form:form_row.html.php"));
+        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "@Framework/Form/form_row.html.php"));
 
         $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02 = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
-        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "FrameworkBundle:Form:form_row.html.php"));
+        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "@Framework/Form/form_row.html.php"));
 
         // line 1
         echo "<div>
@@ -58,7 +58,7 @@ class __TwigTemplate_2b801915e3455d9d6f90c6ade07455cab2afa26a912d36fd312bd59e330
 
     public function getTemplateName()
     {
-        return "FrameworkBundle:Form:form_row.html.php";
+        return "@Framework/Form/form_row.html.php";
     }
 
     public function getDebugInfo()
@@ -75,6 +75,6 @@ class __TwigTemplate_2b801915e3455d9d6f90c6ade07455cab2afa26a912d36fd312bd59e330
     <?php echo \$view['form']->widget(\$form, \$widgetAttr); ?>
     <?php echo \$view['form']->help(\$form); ?>
 </div>
-", "FrameworkBundle:Form:form_row.html.php", "/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Resources/views/Form/form_row.html.php");
+", "@Framework/Form/form_row.html.php", "/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Resources/views/Form/form_row.html.php");
     }
 }

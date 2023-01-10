@@ -12,7 +12,7 @@ use Twig\Sandbox\SecurityNotAllowedFunctionError;
 use Twig\Source;
 use Twig\Template;
 
-/* WebProfilerBundle:Profiler:settings.html.twig */
+/* @WebProfiler/Profiler/settings.html.twig */
 class __TwigTemplate_cd8c448f1353c268d8826c0de74d565035508dd829c737f7a741b1dc220ad13a extends \Twig\Template
 {
     private $source;
@@ -34,10 +34,10 @@ class __TwigTemplate_cd8c448f1353c268d8826c0de74d565035508dd829c737f7a741b1dc220
     {
         $macros = $this->macros;
         $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e = $this->extensions["Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension"];
-        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "WebProfilerBundle:Profiler:settings.html.twig"));
+        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "@WebProfiler/Profiler/settings.html.twig"));
 
         $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02 = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
-        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "WebProfilerBundle:Profiler:settings.html.twig"));
+        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "@WebProfiler/Profiler/settings.html.twig"));
 
         // line 1
         echo "<style>
@@ -229,7 +229,7 @@ class __TwigTemplate_cd8c448f1353c268d8826c0de74d565035508dd829c737f7a741b1dc220
 
     public function getTemplateName()
     {
-        return "WebProfilerBundle:Profiler:settings.html.twig";
+        return "@WebProfiler/Profiler/settings.html.twig";
     }
 
     public function getDebugInfo()
@@ -417,6 +417,6 @@ class __TwigTemplate_cd8c448f1353c268d8826c0de74d565035508dd829c737f7a741b1dc220
     });
 })();
 </script>
-", "WebProfilerBundle:Profiler:settings.html.twig", "/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/vendor/symfony/symfony/src/Symfony/Bundle/WebProfilerBundle/Resources/views/Profiler/settings.html.twig");
+", "@WebProfiler/Profiler/settings.html.twig", "/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/vendor/symfony/symfony/src/Symfony/Bundle/WebProfilerBundle/Resources/views/Profiler/settings.html.twig");
     }
 }

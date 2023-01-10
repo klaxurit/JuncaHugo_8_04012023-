@@ -12,7 +12,7 @@ use Twig\Sandbox\SecurityNotAllowedFunctionError;
 use Twig\Source;
 use Twig\Template;
 
-/* :user:edit.html.twig */
+/* user/edit.html.twig */
 class __TwigTemplate_7feed8e19219347b1e12ac6092402261220aaadce2dd4eed75c8707279461dcf extends \Twig\Template
 {
     private $source;
@@ -41,12 +41,12 @@ class __TwigTemplate_7feed8e19219347b1e12ac6092402261220aaadce2dd4eed75c87072794
     {
         $macros = $this->macros;
         $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e = $this->extensions["Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension"];
-        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", ":user:edit.html.twig"));
+        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "user/edit.html.twig"));
 
         $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02 = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
-        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", ":user:edit.html.twig"));
+        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "user/edit.html.twig"));
 
-        $this->parent = $this->loadTemplate("base.html.twig", ":user:edit.html.twig", 1);
+        $this->parent = $this->loadTemplate("base.html.twig", "user/edit.html.twig", 1);
         $this->parent->display($context, array_merge($this->blocks, $blocks));
         
         $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->leave($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof);
@@ -133,7 +133,7 @@ class __TwigTemplate_7feed8e19219347b1e12ac6092402261220aaadce2dd4eed75c87072794
 
     public function getTemplateName()
     {
-        return ":user:edit.html.twig";
+        return "user/edit.html.twig";
     }
 
     public function isTraitable()
@@ -162,6 +162,6 @@ class __TwigTemplate_7feed8e19219347b1e12ac6092402261220aaadce2dd4eed75c87072794
         {{ form_end(form) }}
     </div>
 {% endblock %}
-", ":user:edit.html.twig", "/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/app/Resources/views/user/edit.html.twig");
+", "user/edit.html.twig", "/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/app/Resources/views/user/edit.html.twig");
     }
 }

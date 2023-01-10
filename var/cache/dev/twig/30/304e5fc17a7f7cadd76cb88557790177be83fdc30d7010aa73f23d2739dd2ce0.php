@@ -12,7 +12,7 @@ use Twig\Sandbox\SecurityNotAllowedFunctionError;
 use Twig\Source;
 use Twig\Template;
 
-/* FrameworkBundle:FormTable:hidden_row.html.php */
+/* @Framework/FormTable/hidden_row.html.php */
 class __TwigTemplate_1a1c8d336c5502aae3d5c28affd80383df896ec863329d42e95bca84d8e385cf extends \Twig\Template
 {
     private $source;
@@ -34,10 +34,10 @@ class __TwigTemplate_1a1c8d336c5502aae3d5c28affd80383df896ec863329d42e95bca84d8e
     {
         $macros = $this->macros;
         $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e = $this->extensions["Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension"];
-        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "FrameworkBundle:FormTable:hidden_row.html.php"));
+        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "@Framework/FormTable/hidden_row.html.php"));
 
         $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02 = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
-        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "FrameworkBundle:FormTable:hidden_row.html.php"));
+        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "@Framework/FormTable/hidden_row.html.php"));
 
         // line 1
         echo "<tr style=\"display: none\">
@@ -56,7 +56,7 @@ class __TwigTemplate_1a1c8d336c5502aae3d5c28affd80383df896ec863329d42e95bca84d8e
 
     public function getTemplateName()
     {
-        return "FrameworkBundle:FormTable:hidden_row.html.php";
+        return "@Framework/FormTable/hidden_row.html.php";
     }
 
     public function getDebugInfo()
@@ -71,6 +71,6 @@ class __TwigTemplate_1a1c8d336c5502aae3d5c28affd80383df896ec863329d42e95bca84d8e
         <?php echo \$view['form']->widget(\$form); ?>
     </td>
 </tr>
-", "FrameworkBundle:FormTable:hidden_row.html.php", "/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Resources/views/FormTable/hidden_row.html.php");
+", "@Framework/FormTable/hidden_row.html.php", "/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Resources/views/FormTable/hidden_row.html.php");
     }
 }

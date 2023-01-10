@@ -12,7 +12,7 @@ use Twig\Sandbox\SecurityNotAllowedFunctionError;
 use Twig\Source;
 use Twig\Template;
 
-/* TwigBundle::base_js.html.twig */
+/* @Twig/base_js.html.twig */
 class __TwigTemplate_b6b9cd039dd53d41cd8ac03b5f0e4bd1540472e781e862971d3164310b0c554a extends \Twig\Template
 {
     private $source;
@@ -34,14 +34,14 @@ class __TwigTemplate_b6b9cd039dd53d41cd8ac03b5f0e4bd1540472e781e862971d3164310b0
     {
         $macros = $this->macros;
         $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e = $this->extensions["Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension"];
-        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "TwigBundle::base_js.html.twig"));
+        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "@Twig/base_js.html.twig"));
 
         $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02 = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
-        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "TwigBundle::base_js.html.twig"));
+        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "@Twig/base_js.html.twig"));
 
         // line 1
         $__internal_compile_0 = (("The template \"" . $this->getTemplateName()) . "\" is deprecated since Symfony 4.4, will be removed in 5.0.");
-        @trigger_error($__internal_compile_0." (\"TwigBundle::base_js.html.twig\" at line 1).", E_USER_DEPRECATED);
+        @trigger_error($__internal_compile_0." (\"@Twig/base_js.html.twig\" at line 1).", E_USER_DEPRECATED);
         // line 4
         echo "<script";
         if (((isset($context["csp_script_nonce"]) || array_key_exists("csp_script_nonce", $context)) && (isset($context["csp_script_nonce"]) || array_key_exists("csp_script_nonce", $context) ? $context["csp_script_nonce"] : (function () { throw new RuntimeError('Variable "csp_script_nonce" does not exist.', 4, $this->source); })()))) {
@@ -340,7 +340,7 @@ class __TwigTemplate_b6b9cd039dd53d41cd8ac03b5f0e4bd1540472e781e862971d3164310b0
 
     public function getTemplateName()
     {
-        return "TwigBundle::base_js.html.twig";
+        return "@Twig/base_js.html.twig";
     }
 
     public function isTraitable()
@@ -639,6 +639,6 @@ class __TwigTemplate_b6b9cd039dd53d41cd8ac03b5f0e4bd1540472e781e862971d3164310b0
     });
 
 /*]]>*/</script>
-", "TwigBundle::base_js.html.twig", "/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/vendor/symfony/symfony/src/Symfony/Bundle/TwigBundle/Resources/views/base_js.html.twig");
+", "@Twig/base_js.html.twig", "/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/vendor/symfony/symfony/src/Symfony/Bundle/TwigBundle/Resources/views/base_js.html.twig");
     }
 }

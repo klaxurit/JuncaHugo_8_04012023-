@@ -74,8 +74,8 @@ final class Versions
   'symfony/polyfill-php81' => 'v1.27.0@707403074c8ea6e2edaf8794b0157a0bfa52157a',
   'symfony/symfony' => 'v4.4.49@3da1b76795bb874619b46ced70fb33806936169e',
   'twig/twig' => 'v2.15.4@3e059001d6d597dd50ea7c74dd2464b4adea48d3',
-  'symfony/phpunit-bridge' => 'v3.4.47@120273ad5d03a8deee08ca9260e2598f288f2bac',
-  'saro0h/to-do-list' => 'dev-main@c4b0aa9273492d1fd41c914630192cf0449421ab',
+  'symfony/phpunit-bridge' => 'v6.2.3@3766b8269d3bac5c214a04ebd6870e71e52bcb60',
+  'saro0h/to-do-list' => 'dev-main@454f684220f00ec2eb88cfa4dfd0e0b31c0277d2',
 );
 
     private function __construct()

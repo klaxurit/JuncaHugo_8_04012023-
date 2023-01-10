@@ -2,19 +2,19 @@
 
 namespace Doctrine\Bundle\DoctrineBundle;
 
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMException;
-use ProxyManager\Proxy\LazyLoadingInterface;
+use Doctrine\ORM\EntityManager;
 use Psr\Container\ContainerInterface;
-use Symfony\Bridge\Doctrine\ManagerRegistry;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
+use ProxyManager\Proxy\LazyLoadingInterface;
 use Symfony\Contracts\Service\ResetInterface;
+use Symfony\Bridge\Doctrine\ManagerRegistry as Manager;
 
 /**
  * References all Doctrine connections and entity managers in a given Container.
  */
-class Registry extends ManagerRegistry implements RegistryInterface, ResetInterface
+class Registry extends Manager implements ManagerRegistry, ResetInterface
 {
     /**
      * @param string[] $connections

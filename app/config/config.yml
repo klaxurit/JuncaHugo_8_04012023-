@@ -19,8 +19,8 @@ framework:
     csrf_protection: ~
     validation:      { enable_annotations: true }
     #serializer:      { enable_annotations: true }
-    templating:
-        engines: ['twig']
+    # templating:
+    #     engines: ['twig']
     default_locale:  "%locale%"
     trusted_hosts:   ~
     session:
@@ -56,7 +56,7 @@ doctrine:
 
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
-        naming_strategy: doctrine.orm.naming_strategy.underscore
+        naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
         auto_mapping: true
 
 # Swiftmailer Configuration

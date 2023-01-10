@@ -115,10 +115,6 @@
     <parameter key="form.type_extension.csrf.field_name">_token</parameter>
     <parameter key="asset.request_context.base_path"></parameter>
     <parameter key="asset.request_context.secure">false</parameter>
-    <parameter key="templating.loader.cache.path">null</parameter>
-    <parameter key="templating.engines" type="collection">
-      <parameter>twig</parameter>
-    </parameter>
     <parameter key="validator.mapping.cache.file">/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/var/cache/dev/validation.php</parameter>
     <parameter key="validator.translation_domain">validators</parameter>
     <parameter key="profiler_listener.only_exceptions">false</parameter>
@@ -394,6 +390,14 @@
       <argument>error_controller</argument>
       <argument type="service" id="twig.error_renderer.html"/>
     </service>
+    <service id="exception_listener" class="Symfony\Component\HttpKernel\EventListener\ErrorListener" public="false">
+      <tag name="kernel.event_subscriber"/>
+      <tag name="monolog.logger" channel="request"/>
+      <tag name="container.hot_path"/>
+      <argument>error_controller</argument>
+      <argument type="service" id="monolog.logger.request" on-invalid="null"/>
+      <argument>true</argument>
+    </service>
     <service id="parameter_bag" class="Symfony\Component\DependencyInjection\ParameterBag\ContainerBag" public="false">
       <argument type="service" id="service_container"/>
     </service>
@@ -542,7 +546,6 @@
       </call>
     </service>
     <service id="fragment.renderer.hinclude" class="Symfony\Component\HttpKernel\Fragment\HIncludeFragmentRenderer" public="false">
-      <tag name="kernel.fragment_renderer" alias="hinclude"/>
       <tag name="kernel.fragment_renderer" alias="hinclude"/>
       <argument type="service" id="twig"/>
       <argument type="service" id="uri_signer"/>
@@ -1174,53 +1177,6 @@
       <argument type="service" id="assets.empty_version_strategy"/>
       <argument type="service" id="assets.context"/>
     </service>
-    <service id="templating.engine.delegating" class="Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine" public="false">
-      <argument type="service" id="service_container"/>
-      <argument type="collection"/>
-      <deprecated>The "%service_id%" service is deprecated since Symfony 4.3 and will be removed in 5.0.</deprecated>
-    </service>
-    <service id="templating.name_parser" class="Symfony\Bundle\FrameworkBundle\Templating\TemplateNameParser" public="false">
-      <argument type="service" id="kernel"/>
-      <deprecated>The "%service_id%" service is deprecated since Symfony 4.3 and will be removed in 5.0.</deprecated>
-    </service>
-    <service id="templating.filename_parser" class="Symfony\Bundle\FrameworkBundle\Templating\TemplateFilenameParser" public="false"/>
-    <service id="templating.locator" class="Symfony\Bundle\FrameworkBundle\Templating\Loader\TemplateLocator" public="false">
-      <argument type="service" id="file_locator"/>
-      <argument>/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/var/cache/dev</argument>
-      <deprecated>The "%service_id%" service is deprecated since Symfony 4.3 and will be removed in 5.0.</deprecated>
-    </service>
-    <service id="templating.finder" class="Symfony\Bundle\FrameworkBundle\CacheWarmer\TemplateFinder" public="false">
-      <argument type="service" id="kernel"/>
-      <argument type="service" id="templating.filename_parser"/>
-      <argument>/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/app/Resources</argument>
-      <deprecated>The "%service_id%" service is deprecated since Symfony 4.3 and will be removed in 5.0.</deprecated>
-    </service>
-    <service id="templating.cache_warmer.template_paths" class="Symfony\Bundle\FrameworkBundle\CacheWarmer\TemplatePathsCacheWarmer" public="false">
-      <tag name="kernel.cache_warmer" priority="20"/>
-      <argument type="service" id="templating.finder"/>
-      <argument type="service" id="templating.locator"/>
-      <deprecated>The "%service_id%" service is deprecated since Symfony 4.3 and will be removed in 5.0.</deprecated>
-    </service>
-    <service id="templating.loader.filesystem" class="Symfony\Bundle\FrameworkBundle\Templating\Loader\FilesystemLoader" public="false">
-      <argument type="service" id="templating.locator"/>
-      <deprecated>The "%service_id%" service is deprecated since Symfony 4.3 and will be removed in 5.0.</deprecated>
-    </service>
-    <service id="templating.loader.cache" class="Symfony\Component\Templating\Loader\CacheLoader" public="false">
-      <tag name="monolog.logger" channel="templating"/>
-      <argument type="service" id="templating.loader.wrapped"/>
-      <argument>null</argument>
-      <call method="setLogger">
-        <argument type="service" id="monolog.logger.templating" on-invalid="ignore"/>
-      </call>
-      <deprecated>The "%service_id%" service is deprecated since Symfony 4.3 and will be removed in 5.0.</deprecated>
-    </service>
-    <service id="templating.loader.chain" class="Symfony\Component\Templating\Loader\ChainLoader" public="false">
-      <tag name="monolog.logger" channel="templating"/>
-      <call method="setLogger">
-        <argument type="service" id="monolog.logger.templating" on-invalid="ignore"/>
-      </call>
-      <deprecated>The "%service_id%" service is deprecated since Symfony 4.3 and will be removed in 5.0.</deprecated>
-    </service>
     <service id="validator.builder" class="Symfony\Component\Validator\ValidatorBuilder" public="false">
       <call method="setConstraintValidatorFactory">
         <argument type="service" id="validator.validator_factory"/>
@@ -1567,6 +1523,30 @@
         <argument>-255</argument>
       </call>
       <call method="addListener">
+        <argument>kernel.controller_arguments</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="exception_listener"/>
+          <argument>onControllerArguments</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+      <call method="addListener">
+        <argument>kernel.exception</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="exception_listener"/>
+          <argument>logKernelException</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+      <call method="addListener">
+        <argument>kernel.exception</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="exception_listener"/>
+          <argument>onKernelException</argument>
+        </argument>
+        <argument>-128</argument>
+      </call>
+      <call method="addListener">
         <argument>console.error</argument>
         <argument type="collection">
           <argument type="service_closure" id="console.error_listener"/>
@@ -1743,22 +1723,6 @@
         <argument>0</argument>
       </call>
       <call method="addListener">
-        <argument>kernel.exception</argument>
-        <argument type="collection">
-          <argument type="service_closure" id="twig.exception_listener"/>
-          <argument>logKernelException</argument>
-        </argument>
-        <argument>0</argument>
-      </call>
-      <call method="addListener">
-        <argument>kernel.exception</argument>
-        <argument type="collection">
-          <argument type="service_closure" id="twig.exception_listener"/>
-          <argument>onKernelException</argument>
-        </argument>
-        <argument>-128</argument>
-      </call>
-      <call method="addListener">
         <argument>Symfony\Component\Mailer\Event\MessageEvent</argument>
         <argument type="collection">
           <argument type="service_closure" id="twig.mailer.message_listener"/>
@@ -1896,7 +1860,7 @@
     <service id="router.default" class="Symfony\Bundle\FrameworkBundle\Routing\Router" public="false">
       <tag name="monolog.logger" channel="router"/>
       <tag name="container.service_subscriber" id="routing.loader"/>
-      <argument type="service" id=".service_locator.BFjFsQa.router.default"/>
+      <argument type="service" id=".service_locator._4eGLoe.router.default"/>
       <argument>/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/app/config/routing_dev.yml</argument>
       <argument type="collection">
         <argument key="cache_dir">/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/var/cache/dev</argument>
@@ -1947,7 +1911,7 @@
     </service>
     <service id="Symfony\Bundle\FrameworkBundle\Controller\TemplateController" class="Symfony\Bundle\FrameworkBundle\Controller\TemplateController" public="true">
       <argument type="service" id="twig" on-invalid="ignore"/>
-      <argument type="service" id="templating.engine.twig" on-invalid="ignore"/>
+      <argument>null</argument>
     </service>
     <service id="routing.loader.annotation" class="Symfony\Bundle\FrameworkBundle\Routing\AnnotatedRouteControllerLoader" public="false">
       <tag name="routing.loader" priority="-10"/>
@@ -2766,7 +2730,7 @@
       <factory class="Symfony\Bridge\Twig\ErrorRenderer\TwigErrorRenderer" method="isDebug"/>
     </service>
     <service id="twig" class="Twig\Environment" public="true">
-      <argument type="service" id="twig.loader.filesystem"/>
+      <argument type="service" id="twig.loader.native_filesystem"/>
       <argument type="collection">
         <argument key="debug">true</argument>
         <argument key="strict_variables">true</argument>
@@ -2848,16 +2812,6 @@
         <argument type="service" id="request_stack" on-invalid="ignore"/>
       </call>
     </service>
-    <service id="twig.cache_warmer" class="Symfony\Bundle\TwigBundle\CacheWarmer\TemplateCacheCacheWarmer" public="false">
-      <tag name="kernel.cache_warmer"/>
-      <tag name="container.service_subscriber" id="twig"/>
-      <argument type="service" id=".service_locator.o9nGMXB.twig.cache_warmer"/>
-      <argument type="service" id="templating.finder" on-invalid="ignore"/>
-      <argument type="collection">
-        <argument key="/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/vendor/symfony/symfony/src/Symfony/Bridge/Twig/Resources/views/Form">null</argument>
-      </argument>
-      <deprecated>The "%service_id%" service is deprecated since Symfony 4.4 and will be removed in 5.0.</deprecated>
-    </service>
     <service id="twig.template_iterator" class="Symfony\Bundle\TwigBundle\TemplateIterator" public="false">
       <argument type="service" id="kernel"/>
       <argument>/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/app</argument>
@@ -2873,6 +2827,7 @@
       <argument type="service" id="twig.template_iterator"/>
     </service>
     <service id="twig.loader.native_filesystem" class="Symfony\Bundle\TwigBundle\Loader\NativeFilesystemLoader" public="false">
+      <tag name="twig.loader"/>
       <argument type="collection"/>
       <argument>/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023</argument>
       <call method="addPath">
@@ -2924,7 +2879,7 @@
         <argument>!WebProfiler</argument>
       </call>
       <call method="addPath">
-        <argument>/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/app/Resources/views</argument>
+        <argument>/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/templates</argument>
       </call>
       <call method="addPath">
         <argument>/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/vendor/symfony/symfony/src/Symfony/Bridge/Twig/Resources/views/Form</argument>
@@ -2990,14 +2945,6 @@
       <tag name="translation.extractor" alias="twig"/>
       <argument type="service" id="twig"/>
     </service>
-    <service id="twig.exception_listener" class="Symfony\Component\HttpKernel\EventListener\ExceptionListener" public="false">
-      <tag name="kernel.event_subscriber"/>
-      <tag name="monolog.logger" channel="request"/>
-      <argument>twig.controller.exception::showAction</argument>
-      <argument type="service" id="monolog.logger.request" on-invalid="null"/>
-      <argument>true</argument>
-      <deprecated>The "%service_id%" service is deprecated since Symfony 4.4.</deprecated>
-    </service>
     <service id="twig.controller.exception" class="Symfony\Bundle\TwigBundle\Controller\ExceptionController" public="true">
       <argument type="service" id="twig"/>
       <argument>true</argument>
@@ -3036,72 +2983,6 @@
       <tag name="twig.runtime"/>
       <argument type="service" id="twig.form.engine"/>
       <argument type="service" id="security.csrf.token_manager" on-invalid="null"/>
-    </service>
-    <service id="twig.loader.filesystem" class="Symfony\Bundle\TwigBundle\Loader\FilesystemLoader" public="false">
-      <tag name="twig.loader"/>
-      <argument type="service" id="templating.locator"/>
-      <argument type="service" id="templating.name_parser"/>
-      <argument>/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023</argument>
-      <call method="addPath">
-        <argument>/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Resources/views</argument>
-        <argument>Framework</argument>
-      </call>
-      <call method="addPath">
-        <argument>/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Resources/views</argument>
-        <argument>!Framework</argument>
-      </call>
-      <call method="addPath">
-        <argument>/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/vendor/symfony/symfony/src/Symfony/Bundle/SecurityBundle/Resources/views</argument>
-        <argument>Security</argument>
-      </call>
-      <call method="addPath">
-        <argument>/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/vendor/symfony/symfony/src/Symfony/Bundle/SecurityBundle/Resources/views</argument>
-        <argument>!Security</argument>
-      </call>
-      <call method="addPath">
-        <argument>/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/vendor/symfony/symfony/src/Symfony/Bundle/TwigBundle/Resources/views</argument>
-        <argument>Twig</argument>
-      </call>
-      <call method="addPath">
-        <argument>/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/vendor/symfony/symfony/src/Symfony/Bundle/TwigBundle/Resources/views</argument>
-        <argument>!Twig</argument>
-      </call>
-      <call method="addPath">
-        <argument>/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/vendor/doctrine/doctrine-bundle/Resources/views</argument>
-        <argument>Doctrine</argument>
-      </call>
-      <call method="addPath">
-        <argument>/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/vendor/doctrine/doctrine-bundle/Resources/views</argument>
-        <argument>!Doctrine</argument>
-      </call>
-      <call method="addPath">
-        <argument>/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/vendor/symfony/symfony/src/Symfony/Bundle/DebugBundle/Resources/views</argument>
-        <argument>Debug</argument>
-      </call>
-      <call method="addPath">
-        <argument>/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/vendor/symfony/symfony/src/Symfony/Bundle/DebugBundle/Resources/views</argument>
-        <argument>!Debug</argument>
-      </call>
-      <call method="addPath">
-        <argument>/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/vendor/symfony/symfony/src/Symfony/Bundle/WebProfilerBundle/Resources/views</argument>
-        <argument>WebProfiler</argument>
-      </call>
-      <call method="addPath">
-        <argument>/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/vendor/symfony/symfony/src/Symfony/Bundle/WebProfilerBundle/Resources/views</argument>
-        <argument>!WebProfiler</argument>
-      </call>
-      <call method="addPath">
-        <argument>/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/app/Resources/views</argument>
-      </call>
-      <call method="addPath">
-        <argument>/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/vendor/symfony/symfony/src/Symfony/Bridge/Twig/Resources/views/Form</argument>
-      </call>
-    </service>
-    <service id="templating.engine.twig" class="Symfony\Bundle\TwigBundle\TwigEngine" public="false">
-      <argument type="service" id="twig"/>
-      <argument type="service" id="templating.name_parser"/>
-      <argument type="service" id="templating.locator"/>
-      <deprecated>The "%service_id%" service is deprecated since Symfony 4.4 and will be removed in 5.0.</deprecated>
     </service>
     <service id="twig.command.debug" class="Symfony\Bridge\Twig\Command\DebugCommand" public="false">
       <tag name="console.command" command="debug:twig"/>
@@ -3531,7 +3412,7 @@
         <argument>Doctrine\ORM\EntityRepository</argument>
       </call>
       <call method="setNamingStrategy">
-        <argument type="service" id="doctrine.orm.naming_strategy.underscore"/>
+        <argument type="service" id="doctrine.orm.naming_strategy.underscore_number_aware"/>
       </call>
       <call method="setQuoteStrategy">
         <argument type="service" id="doctrine.orm.quote_strategy.default"/>
@@ -3914,19 +3795,6 @@
       </call>
       <configurator class="Symfony\Bundle\FrameworkBundle\DependencyInjection\Compiler\AddDebugLogProcessorPass" method="configureLogger"/>
     </service>
-    <service id="monolog.logger.templating" class="Symfony\Bridge\Monolog\Logger">
-      <argument>templating</argument>
-      <call method="pushProcessor">
-        <argument type="service" id="debug.log_processor"/>
-      </call>
-      <call method="pushHandler">
-        <argument type="service" id="monolog.handler.console"/>
-      </call>
-      <call method="pushHandler">
-        <argument type="service" id="monolog.handler.main"/>
-      </call>
-      <configurator class="Symfony\Bundle\FrameworkBundle\DependencyInjection\Compiler\AddDebugLogProcessorPass" method="configureLogger"/>
-    </service>
     <service id="monolog.logger.profiler" class="Symfony\Bridge\Monolog\Logger">
       <argument>profiler</argument>
       <call method="pushProcessor">
@@ -4019,17 +3887,17 @@
         <argument key="doctrine.orm.default_listeners.attach_entity_listeners" type="service_closure" id="doctrine.orm.default_listeners.attach_entity_listeners"/>
       </argument>
     </service>
-    <service id=".service_locator.BFjFsQa" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id=".service_locator._4eGLoe" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="routing.loader" type="service_closure" id="routing.loader"/>
       </argument>
     </service>
-    <service id=".service_locator.BFjFsQa.router.default" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id=".service_locator._4eGLoe.router.default" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator_context" id="router.default"/>
       <argument>router.default</argument>
       <argument type="service" id="service_container"/>
-      <factory service=".service_locator.BFjFsQa" method="withContext"/>
+      <factory service=".service_locator._4eGLoe" method="withContext"/>
     </service>
     <service id=".service_locator.m90YCjy" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
@@ -4048,12 +3916,6 @@
       <argument type="collection">
         <argument key="twig" type="service_closure" id="twig"/>
       </argument>
-    </service>
-    <service id=".service_locator.o9nGMXB.twig.cache_warmer" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
-      <tag name="container.service_locator_context" id="twig.cache_warmer"/>
-      <argument>twig.cache_warmer</argument>
-      <argument type="service" id="service_container"/>
-      <factory service=".service_locator.o9nGMXB" method="withContext"/>
     </service>
     <service id=".service_locator.o9nGMXB.twig.template_cache_warmer" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator_context" id="twig.template_cache_warmer"/>
@@ -4370,8 +4232,6 @@
     <service id="form.property_accessor" alias="property_accessor" public="false"/>
     <service id="form.choice_list_factory" alias="form.choice_list_factory.cached" public="false"/>
     <service id="Symfony\Component\Asset\Packages" alias="assets.packages" public="false"/>
-    <service id="templating.loader" alias="templating.loader.filesystem" public="true"/>
-    <service id="templating" alias="templating.engine.twig" public="true"/>
     <service id="Symfony\Component\Validator\Validator\ValidatorInterface" alias="debug.validator" public="false"/>
     <service id="validator.mapping.class_metadata_factory" alias="debug.validator" public="false"/>
     <service id="Symfony\Component\HttpKernel\Debug\FileLinkFormatter" alias="debug.file_link_formatter" public="false"/>
@@ -4434,14 +4294,12 @@
     <service id="doctrine.orm.default_query_cache" alias="doctrine.orm.cache.provider.cache.doctrine.orm.default.query" public="false"/>
     <service id="doctrine.orm.default_entity_manager.event_manager" alias="doctrine.dbal.default_connection.event_manager" public="false"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.CmORmuK" public="true"/>
+    <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem" public="false"/>
     <service id="argument_resolver.controller_locator" alias=".service_locator.I3K77mT"/>
-    <service id="Symfony\Component\Templating\EngineInterface" alias="templating.engine.twig" public="false"/>
-    <service id="Symfony\Bundle\FrameworkBundle\Templating\EngineInterface" alias="templating.engine.twig" public="false"/>
-    <service id="twig.loader" alias="twig.loader.filesystem"/>
+    <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id="Psr\Log\LoggerInterface $requestLogger" alias="monolog.logger.request"/>
     <service id="Psr\Log\LoggerInterface $consoleLogger" alias="monolog.logger.console"/>
     <service id="Psr\Log\LoggerInterface $cacheLogger" alias="monolog.logger.cache"/>
-    <service id="Psr\Log\LoggerInterface $templatingLogger" alias="monolog.logger.templating"/>
     <service id="Psr\Log\LoggerInterface $profilerLogger" alias="monolog.logger.profiler"/>
     <service id="Psr\Log\LoggerInterface $phpLogger" alias="monolog.logger.php"/>
     <service id="Psr\Log\LoggerInterface $eventLogger" alias="monolog.logger.event"/>

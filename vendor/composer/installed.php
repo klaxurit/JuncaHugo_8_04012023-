@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'c4b0aa9273492d1fd41c914630192cf0449421ab',
+        'reference' => '454f684220f00ec2eb88cfa4dfd0e0b31c0277d2',
         'name' => 'saro0h/to-do-list',
         'dev' => true,
     ),
@@ -326,7 +326,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'c4b0aa9273492d1fd41c914630192cf0449421ab',
+            'reference' => '454f684220f00ec2eb88cfa4dfd0e0b31c0277d2',
             'dev_requirement' => false,
         ),
         'symfony/amazon-mailer' => array(
@@ -594,12 +594,12 @@
             ),
         ),
         'symfony/phpunit-bridge' => array(
-            'pretty_version' => 'v3.4.47',
-            'version' => '3.4.47.0',
+            'pretty_version' => 'v6.2.3',
+            'version' => '6.2.3.0',
             'type' => 'symfony-bridge',
             'install_path' => __DIR__ . '/../symfony/phpunit-bridge',
             'aliases' => array(),
-            'reference' => '120273ad5d03a8deee08ca9260e2598f288f2bac',
+            'reference' => '3766b8269d3bac5c214a04ebd6870e71e52bcb60',
             'dev_requirement' => true,
         ),
         'symfony/polyfill-apcu' => array(

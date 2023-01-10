@@ -12,7 +12,7 @@ use Twig\Sandbox\SecurityNotAllowedFunctionError;
 use Twig\Source;
 use Twig\Template;
 
-/* TwigBundle:Exception:exception.css.twig */
+/* @Twig/Exception/exception.css.twig */
 class __TwigTemplate_cc7e13e3cd29a980e24d93d6c1c2259c79867c677b64766f0cff324038469697 extends \Twig\Template
 {
     private $source;
@@ -34,14 +34,14 @@ class __TwigTemplate_cc7e13e3cd29a980e24d93d6c1c2259c79867c677b64766f0cff3240384
     {
         $macros = $this->macros;
         $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e = $this->extensions["Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension"];
-        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "TwigBundle:Exception:exception.css.twig"));
+        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "@Twig/Exception/exception.css.twig"));
 
         $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02 = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
-        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "TwigBundle:Exception:exception.css.twig"));
+        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "@Twig/Exception/exception.css.twig"));
 
         // line 1
         $__internal_compile_0 = (("The template \"" . $this->getTemplateName()) . "\" is deprecated since Symfony 4.4, will be removed in 5.0.");
-        @trigger_error($__internal_compile_0." (\"TwigBundle:Exception:exception.css.twig\" at line 1).", E_USER_DEPRECATED);
+        @trigger_error($__internal_compile_0." (\"@Twig/Exception/exception.css.twig\" at line 1).", E_USER_DEPRECATED);
         // line 2
         echo "/*
 ";
@@ -60,7 +60,7 @@ class __TwigTemplate_cc7e13e3cd29a980e24d93d6c1c2259c79867c677b64766f0cff3240384
 
     public function getTemplateName()
     {
-        return "TwigBundle:Exception:exception.css.twig";
+        return "@Twig/Exception/exception.css.twig";
     }
 
     public function isTraitable()
@@ -79,6 +79,6 @@ class __TwigTemplate_cc7e13e3cd29a980e24d93d6c1c2259c79867c677b64766f0cff3240384
 /*
 {{ include('@Twig/Exception/exception.txt.twig', { exception: exception }) }}
 */
-", "TwigBundle:Exception:exception.css.twig", "/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/vendor/symfony/symfony/src/Symfony/Bundle/TwigBundle/Resources/views/Exception/exception.css.twig");
+", "@Twig/Exception/exception.css.twig", "/home/axurit/Projets/SYMFONY/JuncaHugo_8_04012023/vendor/symfony/symfony/src/Symfony/Bundle/TwigBundle/Resources/views/Exception/exception.css.twig");
     }
 }
