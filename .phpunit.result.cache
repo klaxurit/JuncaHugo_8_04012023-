@@ -1,1 +1,1 @@
-{"version":1,"defects":{"Tests\\AppBundle\\Controller\\DefaultControllerTest::testIndex":3},"times":{"Tests\\AppBundle\\Controller\\DefaultControllerTest::testIndex":0.139}}
+{"version":1,"defects":{"Tests\\AppBundle\\Controller\\DefaultControllerTest::testIndex":4},"times":{"Tests\\AppBundle\\Controller\\DefaultControllerTest::testIndex":0.079}}
