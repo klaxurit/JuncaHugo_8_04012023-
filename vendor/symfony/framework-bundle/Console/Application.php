@@ -19,7 +19,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Debug\Exception\FatalThrowableError;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\HttpKernel\Kernel;
@@ -148,7 +147,7 @@ class Application extends BaseApplication
      */
     public function getLongVersion()
     {
-        return parent::getLongVersion().sprintf(' (env: <comment>%s</>, debug: <comment>%s</>) <bg=blue;fg=yellow>#StandWith</><bg=yellow;fg=blue>Ukraine</> <href=https://sf.to/ukraine>https://sf.to/ukraine</>', $this->kernel->getEnvironment(), $this->kernel->isDebug() ? 'true' : 'false');
+        return parent::getLongVersion().sprintf(' (env: <comment>%s</>, debug: <comment>%s</>)', $this->kernel->getEnvironment(), $this->kernel->isDebug() ? 'true' : 'false');
     }
 
     public function add(Command $command)
@@ -207,15 +206,7 @@ class Application extends BaseApplication
         (new SymfonyStyle($input, $output))->warning('Some commands could not be registered:');
 
         foreach ($this->registrationErrors as $error) {
-            if (method_exists($this, 'doRenderThrowable')) {
-                $this->doRenderThrowable($error, $output);
-            } else {
-                if (!$error instanceof \Exception) {
-                    $error = new FatalThrowableError($error);
-                }
-
-                $this->doRenderException($error, $output);
-            }
+            $this->doRenderThrowable($error, $output);
         }
     }
 }

@@ -13,7 +13,6 @@ namespace Symfony\Bridge\Doctrine\Security\RememberMe;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Result as DriverResult;
-use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Result;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
@@ -58,13 +57,13 @@ class DoctrineTokenProvider implements TokenProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function loadTokenBySeries($series)
+    public function loadTokenBySeries(string $series)
     {
         // the alias for lastUsed works around case insensitivity in PostgreSQL
         $sql = 'SELECT class, username, value, lastUsed AS last_used'
             .' FROM rememberme_token WHERE series=:series';
         $paramValues = ['series' => $series];
-        $paramTypes = ['series' => ParameterType::STRING];
+        $paramTypes = ['series' => \PDO::PARAM_STR];
         $stmt = $this->conn->executeQuery($sql, $paramValues, $paramTypes);
         $row = $stmt instanceof Result || $stmt instanceof DriverResult ? $stmt->fetchAssociative() : $stmt->fetch(\PDO::FETCH_ASSOC);
 
@@ -78,11 +77,11 @@ class DoctrineTokenProvider implements TokenProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function deleteTokenBySeries($series)
+    public function deleteTokenBySeries(string $series)
     {
         $sql = 'DELETE FROM rememberme_token WHERE series=:series';
         $paramValues = ['series' => $series];
-        $paramTypes = ['series' => ParameterType::STRING];
+        $paramTypes = ['series' => \PDO::PARAM_STR];
         if (method_exists($this->conn, 'executeStatement')) {
             $this->conn->executeStatement($sql, $paramValues, $paramTypes);
         } else {
@@ -93,7 +92,7 @@ class DoctrineTokenProvider implements TokenProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function updateToken($series, $tokenValue, \DateTime $lastUsed)
+    public function updateToken(string $series, string $tokenValue, \DateTime $lastUsed)
     {
         $sql = 'UPDATE rememberme_token SET value=:value, lastUsed=:lastUsed'
             .' WHERE series=:series';
@@ -103,9 +102,9 @@ class DoctrineTokenProvider implements TokenProviderInterface
             'series' => $series,
         ];
         $paramTypes = [
-            'value' => ParameterType::STRING,
+            'value' => \PDO::PARAM_STR,
             'lastUsed' => self::$useDeprecatedConstants ? Type::DATETIME : Types::DATETIME_MUTABLE,
-            'series' => ParameterType::STRING,
+            'series' => \PDO::PARAM_STR,
         ];
         if (method_exists($this->conn, 'executeStatement')) {
             $updated = $this->conn->executeStatement($sql, $paramValues, $paramTypes);
@@ -133,10 +132,10 @@ class DoctrineTokenProvider implements TokenProviderInterface
             'lastUsed' => $token->getLastUsed(),
         ];
         $paramTypes = [
-            'class' => ParameterType::STRING,
-            'username' => ParameterType::STRING,
-            'series' => ParameterType::STRING,
-            'value' => ParameterType::STRING,
+            'class' => \PDO::PARAM_STR,
+            'username' => \PDO::PARAM_STR,
+            'series' => \PDO::PARAM_STR,
+            'value' => \PDO::PARAM_STR,
             'lastUsed' => self::$useDeprecatedConstants ? Type::DATETIME : Types::DATETIME_MUTABLE,
         ];
         if (method_exists($this->conn, 'executeStatement')) {

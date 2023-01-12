@@ -29,6 +29,19 @@
     "doctrine/doctrine-cache-bundle": {
         "version": "1.4.0"
     },
+    "doctrine/doctrine-migrations-bundle": {
+        "version": "3.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "3.1",
+            "ref": "1d01ec03c6ecbd67c3375c5478c9a423ae5d6a33"
+        },
+        "files": [
+            "config/packages/doctrine_migrations.yaml",
+            "migrations/.gitignore"
+        ]
+    },
     "phpunit/phpunit": {
         "version": "8.5",
         "recipe": {
@@ -66,6 +79,18 @@
         "files": [
             "bin/console",
             "config/bootstrap.php"
+        ]
+    },
+    "symfony/debug-bundle": {
+        "version": "5.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "4.1",
+            "ref": "0ce7a032d344fb7b661cd25d31914cd703ad445b"
+        },
+        "files": [
+            "config/packages/dev/debug.yaml"
         ]
     },
     "symfony/flex": {

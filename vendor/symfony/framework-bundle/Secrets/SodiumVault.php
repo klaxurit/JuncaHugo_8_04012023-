@@ -12,7 +12,6 @@
 namespace Symfony\Bundle\FrameworkBundle\Secrets;
 
 use Symfony\Component\DependencyInjection\EnvVarLoaderInterface;
-use Symfony\Component\VarExporter\VarExporter;
 
 /**
  * @author Tobias Schultze <http://tobion.de>
@@ -35,7 +34,7 @@ class SodiumVault extends AbstractVault implements EnvVarLoaderInterface
     public function __construct(string $secretsDir, $decryptionKey = null)
     {
         if (null !== $decryptionKey && !\is_string($decryptionKey) && !(\is_object($decryptionKey) && method_exists($decryptionKey, '__toString'))) {
-            throw new \TypeError(sprintf('Decryption key should be a string or an object that implements the __toString() method, "%s" given.', \gettype($decryptionKey)));
+            throw new \TypeError(sprintf('Decryption key should be a string or an object that implements the __toString() method, "%s" given.', get_debug_type($decryptionKey)));
         }
 
         $this->pathPrefix = rtrim(strtr($secretsDir, '/', \DIRECTORY_SEPARATOR), \DIRECTORY_SEPARATOR).\DIRECTORY_SEPARATOR.basename($secretsDir).'.';
@@ -59,7 +58,7 @@ class SodiumVault extends AbstractVault implements EnvVarLoaderInterface
             // ignore failures to load keys
         }
 
-        if ('' !== $this->decryptionKey && !file_exists($this->pathPrefix.'encrypt.public.php')) {
+        if ('' !== $this->decryptionKey && !is_file($this->pathPrefix.'encrypt.public.php')) {
             $this->export('encrypt.public', $this->encryptionKey);
         }
 
@@ -90,7 +89,7 @@ class SodiumVault extends AbstractVault implements EnvVarLoaderInterface
         $list = $this->list();
         $list[$name] = null;
         uksort($list, 'strnatcmp');
-        file_put_contents($this->pathPrefix.'list.php', sprintf("<?php\n\nreturn %s;\n", VarExporter::export($list)), \LOCK_EX);
+        file_put_contents($this->pathPrefix.'list.php', sprintf("<?php\n\nreturn %s;\n", var_export($list, true), \LOCK_EX));
 
         $this->lastMessage = sprintf('Secret "%s" encrypted in "%s"; you can commit it.', $name, $this->getPrettyPath(\dirname($this->pathPrefix).\DIRECTORY_SEPARATOR));
     }
@@ -100,7 +99,7 @@ class SodiumVault extends AbstractVault implements EnvVarLoaderInterface
         $this->lastMessage = null;
         $this->validateName($name);
 
-        if (!file_exists($file = $this->pathPrefix.$name.'.'.substr_replace(md5($name), '.php', -26))) {
+        if (!is_file($file = $this->pathPrefix.$name.'.'.substr_replace(md5($name), '.php', -26))) {
             $this->lastMessage = sprintf('Secret "%s" not found in "%s".', $name, $this->getPrettyPath(\dirname($this->pathPrefix).\DIRECTORY_SEPARATOR));
 
             return null;
@@ -134,7 +133,7 @@ class SodiumVault extends AbstractVault implements EnvVarLoaderInterface
         $this->lastMessage = null;
         $this->validateName($name);
 
-        if (!file_exists($file = $this->pathPrefix.$name.'.'.substr_replace(md5($name), '.php', -26))) {
+        if (!is_file($file = $this->pathPrefix.$name.'.'.substr_replace(md5($name), '.php', -26))) {
             $this->lastMessage = sprintf('Secret "%s" not found in "%s".', $name, $this->getPrettyPath(\dirname($this->pathPrefix).\DIRECTORY_SEPARATOR));
 
             return false;
@@ -142,7 +141,7 @@ class SodiumVault extends AbstractVault implements EnvVarLoaderInterface
 
         $list = $this->list();
         unset($list[$name]);
-        file_put_contents($this->pathPrefix.'list.php', sprintf("<?php\n\nreturn %s;\n", VarExporter::export($list)), \LOCK_EX);
+        file_put_contents($this->pathPrefix.'list.php', sprintf("<?php\n\nreturn %s;\n", var_export($list, true), \LOCK_EX));
 
         $this->lastMessage = sprintf('Secret "%s" removed from "%s".', $name, $this->getPrettyPath(\dirname($this->pathPrefix).\DIRECTORY_SEPARATOR));
 
@@ -153,7 +152,7 @@ class SodiumVault extends AbstractVault implements EnvVarLoaderInterface
     {
         $this->lastMessage = null;
 
-        if (!file_exists($file = $this->pathPrefix.'list.php')) {
+        if (!is_file($file = $this->pathPrefix.'list.php')) {
             return [];
         }
 
@@ -185,11 +184,11 @@ class SodiumVault extends AbstractVault implements EnvVarLoaderInterface
             return;
         }
 
-        if (file_exists($this->pathPrefix.'decrypt.private.php')) {
+        if (is_file($this->pathPrefix.'decrypt.private.php')) {
             $this->decryptionKey = (string) include $this->pathPrefix.'decrypt.private.php';
         }
 
-        if (file_exists($this->pathPrefix.'encrypt.public.php')) {
+        if (is_file($this->pathPrefix.'encrypt.public.php')) {
             $this->encryptionKey = (string) include $this->pathPrefix.'encrypt.public.php';
         } elseif ('' !== $this->decryptionKey) {
             $this->encryptionKey = sodium_crypto_box_publickey($this->decryptionKey);

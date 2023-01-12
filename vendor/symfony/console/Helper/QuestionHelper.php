@@ -11,6 +11,7 @@
 
 namespace Symfony\Component\Console\Helper;
 
+use Symfony\Component\Console\Cursor;
 use Symfony\Component\Console\Exception\MissingInputException;
 use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Formatter\OutputFormatter;
@@ -23,6 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Terminal;
+use function Symfony\Component\String\s;
 
 /**
  * The QuestionHelper class provides helpers to interact with the user.
@@ -97,7 +99,7 @@ class QuestionHelper extends Helper
     /**
      * Asks the question to the user.
      *
-     * @return mixed
+     * @return bool|mixed|string|null
      *
      * @throws RuntimeException In case the fallback is deactivated and the response cannot be hidden
      */
@@ -107,6 +109,11 @@ class QuestionHelper extends Helper
 
         $inputStream = $this->inputStream ?: \STDIN;
         $autocomplete = $question->getAutocompleterCallback();
+
+        if (\function_exists('sapi_windows_cp_set')) {
+            // Codepage used by cmd.exe on Windows to allow special characters (éàüñ).
+            @sapi_windows_cp_set(1252);
+        }
 
         if (null === $autocomplete || !self::$stty || !Terminal::hasSttyAvailable()) {
             $ret = false;
@@ -122,9 +129,7 @@ class QuestionHelper extends Helper
             }
 
             if (false === $ret) {
-                $cp = $this->setIOCodepage();
                 $ret = fgets($inputStream, 4096);
-                $ret = $this->resetIOCodepage($cp, $ret);
                 if (false === $ret) {
                     throw new MissingInputException('Aborted.');
                 }
@@ -199,15 +204,13 @@ class QuestionHelper extends Helper
     }
 
     /**
-     * @param string $tag
-     *
      * @return string[]
      */
-    protected function formatChoiceQuestionChoices(ChoiceQuestion $question, $tag)
+    protected function formatChoiceQuestionChoices(ChoiceQuestion $question, string $tag)
     {
         $messages = [];
 
-        $maxWidth = max(array_map([__CLASS__, 'strlen'], array_keys($choices = $question->getChoices())));
+        $maxWidth = max(array_map('self::strlen', array_keys($choices = $question->getChoices())));
 
         foreach ($choices as $key => $value) {
             $padding = str_repeat(' ', $maxWidth - self::strlen($key));
@@ -239,6 +242,8 @@ class QuestionHelper extends Helper
      */
     private function autocomplete(OutputInterface $output, Question $question, $inputStream, callable $autocomplete): string
     {
+        $cursor = new Cursor($output, $inputStream);
+
         $fullChoice = '';
         $ret = '';
 
@@ -266,9 +271,9 @@ class QuestionHelper extends Helper
             } elseif ("\177" === $c) { // Backspace Character
                 if (0 === $numMatches && 0 !== $i) {
                     --$i;
+                    $cursor->moveLeft(s($fullChoice)->slice(-1)->width(false));
+
                     $fullChoice = self::substr($fullChoice, 0, $i);
-                    // Move cursor backwards
-                    $output->write("\033[1D");
                 }
 
                 if (0 === $i) {
@@ -306,12 +311,12 @@ class QuestionHelper extends Helper
                         $remainingCharacters = substr($ret, \strlen(trim($this->mostRecentlyEnteredValue($fullChoice))));
                         $output->write($remainingCharacters);
                         $fullChoice .= $remainingCharacters;
-                        $i = (false === $encoding = mb_detect_encoding($fullChoice, null, true)) ? \strlen($fullChoice) : mb_strlen($fullChoice, $encoding);
+                        $i = self::strlen($fullChoice);
 
                         $matches = array_filter(
                             $autocomplete($ret),
                             function ($match) use ($ret) {
-                                return '' === $ret || str_starts_with($match, $ret);
+                                return '' === $ret || 0 === strpos($match, $ret);
                             }
                         );
                         $numMatches = \count($matches);
@@ -348,23 +353,20 @@ class QuestionHelper extends Helper
 
                 foreach ($autocomplete($ret) as $value) {
                     // If typed characters match the beginning chunk of value (e.g. [AcmeDe]moBundle)
-                    if (str_starts_with($value, $tempRet)) {
+                    if (0 === strpos($value, $tempRet)) {
                         $matches[$numMatches++] = $value;
                     }
                 }
             }
 
-            // Erase characters from cursor to end of line
-            $output->write("\033[K");
+            $cursor->clearLineAfter();
 
             if ($numMatches > 0 && -1 !== $ofs) {
-                // Save cursor position
-                $output->write("\0337");
+                $cursor->savePosition();
                 // Write highlighted text, complete the partially entered response
                 $charactersEntered = \strlen(trim($this->mostRecentlyEnteredValue($fullChoice)));
                 $output->write('<hl>'.OutputFormatter::escapeTrailingBackslash(substr($matches[$ofs], $charactersEntered)).'</hl>');
-                // Restore cursor position
-                $output->write("\0338");
+                $cursor->restorePosition();
             }
         }
 
@@ -377,12 +379,12 @@ class QuestionHelper extends Helper
     private function mostRecentlyEnteredValue(string $entered): string
     {
         // Determine the most recent value that the user entered
-        if (!str_contains($entered, ',')) {
+        if (false === strpos($entered, ',')) {
             return $entered;
         }
 
         $choices = explode(',', $entered);
-        if ('' !== $lastChoice = trim($choices[\count($choices) - 1])) {
+        if (\strlen($lastChoice = trim($choices[\count($choices) - 1])) > 0) {
             return $lastChoice;
         }
 
@@ -409,7 +411,7 @@ class QuestionHelper extends Helper
                 $exe = $tmpExe;
             }
 
-            $sExec = shell_exec('"'.$exe.'"');
+            $sExec = shell_exec($exe);
             $value = $trimmable ? rtrim($sExec) : $sExec;
             $output->writeln('');
 
@@ -485,11 +487,11 @@ class QuestionHelper extends Helper
         }
 
         if (\function_exists('stream_isatty')) {
-            return self::$stdinIsInteractive = @stream_isatty(fopen('php://stdin', 'r'));
+            return self::$stdinIsInteractive = stream_isatty(fopen('php://stdin', 'r'));
         }
 
         if (\function_exists('posix_isatty')) {
-            return self::$stdinIsInteractive = @posix_isatty(fopen('php://stdin', 'r'));
+            return self::$stdinIsInteractive = posix_isatty(fopen('php://stdin', 'r'));
         }
 
         if (!\function_exists('exec')) {
@@ -499,42 +501,5 @@ class QuestionHelper extends Helper
         exec('stty 2> /dev/null', $output, $status);
 
         return self::$stdinIsInteractive = 1 !== $status;
-    }
-
-    /**
-     * Sets console I/O to the host code page.
-     *
-     * @return int Previous code page in IBM/EBCDIC format
-     */
-    private function setIOCodepage(): int
-    {
-        if (\function_exists('sapi_windows_cp_set')) {
-            $cp = sapi_windows_cp_get();
-            sapi_windows_cp_set(sapi_windows_cp_get('oem'));
-
-            return $cp;
-        }
-
-        return 0;
-    }
-
-    /**
-     * Sets console I/O to the specified code page and converts the user input.
-     *
-     * @param string|false $input
-     *
-     * @return string|false
-     */
-    private function resetIOCodepage(int $cp, $input)
-    {
-        if (0 !== $cp) {
-            sapi_windows_cp_set($cp);
-
-            if (false !== $input && '' !== $input) {
-                $input = sapi_windows_cp_conv(sapi_windows_cp_get('oem'), $cp, $input);
-            }
-        }
-
-        return $input;
     }
 }

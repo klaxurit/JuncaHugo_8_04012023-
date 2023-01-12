@@ -12,7 +12,6 @@
 namespace Symfony\Component\Config\Definition\Dumper;
 
 use Symfony\Component\Config\Definition\ArrayNode;
-use Symfony\Component\Config\Definition\BaseNode;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\EnumNode;
 use Symfony\Component\Config\Definition\NodeInterface;
@@ -35,7 +34,7 @@ class YamlReferenceDumper
         return $this->dumpNode($configuration->getConfigTreeBuilder()->buildTree());
     }
 
-    public function dumpAtPath(ConfigurationInterface $configuration, $path)
+    public function dumpAtPath(ConfigurationInterface $configuration, string $path)
     {
         $rootNode = $node = $configuration->getConfigTreeBuilder()->buildTree();
 
@@ -77,10 +76,7 @@ class YamlReferenceDumper
         $default = '';
         $defaultArray = null;
         $children = null;
-        $example = null;
-        if ($node instanceof BaseNode) {
-            $example = $node->getExample();
-        }
+        $example = $node->getExample();
 
         // defaults
         if ($node instanceof ArrayNode) {
@@ -127,8 +123,9 @@ class YamlReferenceDumper
         }
 
         // deprecated?
-        if ($node instanceof BaseNode && $node->isDeprecated()) {
-            $comments[] = sprintf('Deprecated (%s)', $node->getDeprecationMessage($node->getName(), $parentNode ? $parentNode->getPath() : $node->getPath()));
+        if ($node->isDeprecated()) {
+            $deprecation = $node->getDeprecation($node->getName(), $parentNode ? $parentNode->getPath() : $node->getPath());
+            $comments[] = sprintf('Deprecated (%s)', ($deprecation['package'] || $deprecation['version'] ? "Since {$deprecation['package']} {$deprecation['version']}: " : '').$deprecation['message']);
         }
 
         // example
@@ -142,7 +139,7 @@ class YamlReferenceDumper
         $key = $prototypedArray ? '-' : $node->getName().':';
         $text = rtrim(sprintf('%-21s%s %s', $key, $default, $comments), ' ');
 
-        if ($node instanceof BaseNode && $info = $node->getInfo()) {
+        if ($info = $node->getInfo()) {
             $this->writeLine('');
             // indenting multi-line info
             $info = str_replace("\n", sprintf("\n%".($depth * 4).'s# ', ' '), $info);

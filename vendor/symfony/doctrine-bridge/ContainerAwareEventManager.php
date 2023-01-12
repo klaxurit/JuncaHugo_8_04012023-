@@ -54,7 +54,7 @@ class ContainerAwareEventManager extends EventManager
             return;
         }
 
-        $eventArgs = $eventArgs ?? EventArgs::getEmptyInstance();
+        $eventArgs = null === $eventArgs ? EventArgs::getEmptyInstance() : $eventArgs;
 
         if (!isset($this->initialized[$eventName])) {
             $this->initializeListeners($eventName);
@@ -164,23 +164,11 @@ class ContainerAwareEventManager extends EventManager
     private function initializeSubscribers()
     {
         $this->initializedSubscribers = true;
-
-        $eventListeners = $this->listeners;
-        // reset eventListener to respect priority: EventSubscribers have a higher priority
-        $this->listeners = [];
         foreach ($this->subscribers as $id => $subscriber) {
             if (\is_string($subscriber)) {
                 parent::addEventSubscriber($this->subscribers[$id] = $this->container->get($subscriber));
             }
         }
-        foreach ($eventListeners as $event => $listeners) {
-            if (!isset($this->listeners[$event])) {
-                $this->listeners[$event] = [];
-            }
-            unset($this->initialized[$event]);
-            $this->listeners[$event] += $listeners;
-        }
-        $this->subscribers = [];
     }
 
     /**

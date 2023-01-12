@@ -45,7 +45,7 @@ class_exists(ArgumentServiceLocator::class);
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class Container implements ResettableContainerInterface
+class Container implements ContainerInterface, ResetInterface
 {
     protected $parameterBag;
     protected $services = [];
@@ -64,7 +64,7 @@ class Container implements ResettableContainerInterface
 
     public function __construct(ParameterBagInterface $parameterBag = null)
     {
-        $this->parameterBag = $parameterBag ?? new EnvPlaceholderParameterBag();
+        $this->parameterBag = $parameterBag ?: new EnvPlaceholderParameterBag();
     }
 
     /**
@@ -109,11 +109,11 @@ class Container implements ResettableContainerInterface
      *
      * @param string $name The parameter name
      *
-     * @return array|bool|string|int|float|\UnitEnum|null
+     * @return array|bool|float|int|string|null The parameter value
      *
      * @throws InvalidArgumentException if the parameter is not defined
      */
-    public function getParameter($name)
+    public function getParameter(string $name)
     {
         return $this->parameterBag->get($name);
     }
@@ -125,7 +125,7 @@ class Container implements ResettableContainerInterface
      *
      * @return bool The presence of parameter in container
      */
-    public function hasParameter($name)
+    public function hasParameter(string $name)
     {
         return $this->parameterBag->has($name);
     }
@@ -133,10 +133,10 @@ class Container implements ResettableContainerInterface
     /**
      * Sets a parameter.
      *
-     * @param string                                     $name  The parameter name
-     * @param array|bool|string|int|float|\UnitEnum|null $value The parameter value
+     * @param string $name  The parameter name
+     * @param mixed  $value The parameter value
      */
-    public function setParameter($name, $value)
+    public function setParameter(string $name, $value)
     {
         $this->parameterBag->set($name, $value);
     }
@@ -146,11 +146,8 @@ class Container implements ResettableContainerInterface
      *
      * Setting a synthetic service to null resets it: has() returns false and get()
      * behaves in the same way as if the service was never created.
-     *
-     * @param string      $id      The service identifier
-     * @param object|null $service The service instance
      */
-    public function set($id, $service)
+    public function set(string $id, ?object $service)
     {
         // Runs the internal initializer; used by the dumped container to include always-needed files
         if (isset($this->privates['service_container']) && $this->privates['service_container'] instanceof \Closure) {
@@ -224,17 +221,11 @@ class Container implements ResettableContainerInterface
      *
      * @see Reference
      */
-    public function get($id, $invalidBehavior = /* self::EXCEPTION_ON_INVALID_REFERENCE */ 1)
+    public function get($id, int $invalidBehavior = /* self::EXCEPTION_ON_INVALID_REFERENCE */ 1)
     {
-        $service = $this->services[$id]
+        return $this->services[$id]
             ?? $this->services[$id = $this->aliases[$id] ?? $id]
             ?? ('service_container' === $id ? $this : ($this->factories[$id] ?? [$this, 'make'])($id, $invalidBehavior));
-
-        if (!\is_object($service) && null !== $service) {
-            @trigger_error(sprintf('Non-object services are deprecated since Symfony 4.4, please fix the "%s" service which is of type "%s" right now.', $id, \gettype($service)), \E_USER_DEPRECATED);
-        }
-
-        return $service;
     }
 
     /**
@@ -281,7 +272,7 @@ class Container implements ResettableContainerInterface
                     continue;
                 }
                 $lev = levenshtein($id, $knownId);
-                if ($lev <= \strlen($id) / 3 || str_contains($knownId, $id)) {
+                if ($lev <= \strlen($id) / 3 || false !== strpos($knownId, $id)) {
                     $alternatives[] = $knownId;
                 }
             }
@@ -299,7 +290,7 @@ class Container implements ResettableContainerInterface
      *
      * @return bool true if service has already been initialized, false otherwise
      */
-    public function initialized($id)
+    public function initialized(string $id)
     {
         if (isset($this->aliases[$id])) {
             $id = $this->aliases[$id];
@@ -404,7 +395,9 @@ class Container implements ResettableContainerInterface
             $this->set($id, new ServiceLocator([]));
         }
         if (!$this->getEnv) {
-            $this->getEnv = \Closure::fromCallable([$this, 'getEnv']);
+            $this->getEnv = new \ReflectionMethod($this, __FUNCTION__);
+            $this->getEnv->setAccessible(true);
+            $this->getEnv = $this->getEnv->getClosure($this);
         }
         $processors = $this->get($id);
 

@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  *
  * @author Jérémy Romey <jeremy@free-agent.fr>
  *
- * @final since Symfony 4.3
+ * @final
  */
 class FileLinkFormatter
 {
@@ -30,12 +30,12 @@ class FileLinkFormatter
     private $urlFormat;
 
     /**
-     * @param string|array|null $fileLinkFormat
-     * @param string|\Closure   $urlFormat the URL format, or a closure that returns it on-demand
+     * @param string|\Closure $urlFormat the URL format, or a closure that returns it on-demand
      */
     public function __construct($fileLinkFormat = null, RequestStack $requestStack = null, string $baseDir = null, $urlFormat = null)
     {
-        if (!\is_array($fileLinkFormat) && $fileLinkFormat = $fileLinkFormat ?: \ini_get('xdebug.file_link_format') ?: get_cfg_var('xdebug.file_link_format')) {
+        $fileLinkFormat = $fileLinkFormat ?: ini_get('xdebug.file_link_format') ?: get_cfg_var('xdebug.file_link_format');
+        if ($fileLinkFormat && !\is_array($fileLinkFormat)) {
             $i = strpos($f = $fileLinkFormat, '&', max(strrpos($f, '%f'), strrpos($f, '%l'))) ?: \strlen($f);
             $fileLinkFormat = [substr($f, 0, $i)] + preg_split('/&([^>]++)>/', substr($f, $i), -1, \PREG_SPLIT_DELIM_CAPTURE);
         }
@@ -46,11 +46,11 @@ class FileLinkFormatter
         $this->urlFormat = $urlFormat;
     }
 
-    public function format($file, $line)
+    public function format(string $file, int $line)
     {
         if ($fmt = $this->getFileLinkFormat()) {
             for ($i = 1; isset($fmt[$i]); ++$i) {
-                if (str_starts_with($file, $k = $fmt[$i++])) {
+                if (0 === strpos($file, $k = $fmt[$i++])) {
                     $file = substr_replace($file, $fmt[$i], 0, \strlen($k));
                     break;
                 }
@@ -75,7 +75,7 @@ class FileLinkFormatter
     /**
      * @internal
      */
-    public static function generateUrlFormat(UrlGeneratorInterface $router, $routeName, $queryString)
+    public static function generateUrlFormat(UrlGeneratorInterface $router, string $routeName, string $queryString): ?string
     {
         try {
             return $router->generate($routeName).$queryString;

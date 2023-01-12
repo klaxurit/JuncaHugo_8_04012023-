@@ -13,8 +13,7 @@ namespace Symfony\Component\HttpFoundation\Session\Storage;
 
 /**
  * MockFileSessionStorage is used to mock sessions for
- * functional testing where you may need to persist session data
- * across separate PHP processes.
+ * functional testing when done in a single PHP process.
  *
  * No PHP session is actually started since a session can be initialized
  * and shutdown only once per PHP execution cycle and this class does
@@ -29,7 +28,6 @@ class MockFileSessionStorage extends MockArraySessionStorage
 
     /**
      * @param string $savePath Path of directory to save session files
-     * @param string $name     Session name
      */
     public function __construct(string $savePath = null, string $name = 'MOCKSESSID', MetadataBag $metaBag = null)
     {
@@ -69,7 +67,7 @@ class MockFileSessionStorage extends MockArraySessionStorage
     /**
      * {@inheritdoc}
      */
-    public function regenerate($destroy = false, $lifetime = null)
+    public function regenerate(bool $destroy = false, int $lifetime = null)
     {
         if (!$this->started) {
             $this->start();
@@ -115,8 +113,9 @@ class MockFileSessionStorage extends MockArraySessionStorage
             $this->data = $data;
         }
 
-        // this is needed when the session object is re-used across multiple requests
-        // in functional tests.
+        // this is needed for Silex, where the session object is re-used across requests
+        // in functional tests. In Symfony, the container is rebooted, so we don't have
+        // this issue
         $this->started = false;
     }
 

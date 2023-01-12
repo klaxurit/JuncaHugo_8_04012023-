@@ -80,7 +80,7 @@ abstract class AbstractTagAwareAdapter implements TagAwareAdapterInterface, TagA
                     $key = (string) $key;
                     if (null === $item->expiry) {
                         $ttl = 0 < $defaultLifetime ? $defaultLifetime : 0;
-                    } elseif (!$item->expiry) {
+                    } elseif (0 === $item->expiry) {
                         $ttl = 0;
                     } elseif (0 >= $ttl = (int) (0.1 + $item->expiry - $now)) {
                         $expiredIds[] = $getId($key);
@@ -110,7 +110,6 @@ abstract class AbstractTagAwareAdapter implements TagAwareAdapterInterface, TagA
                     }
 
                     $byLifetime[$ttl][$getId($key)] = $value;
-                    $item->metadata = $item->newMetadata;
                 }
 
                 return $byLifetime;
@@ -181,12 +180,7 @@ abstract class AbstractTagAwareAdapter implements TagAwareAdapterInterface, TagA
 
         if ($expiredIds) {
             // Tags are not cleaned up in this case, however that is done on invalidateTags().
-            try {
-                $this->doDelete($expiredIds);
-            } catch (\Exception $e) {
-                $ok = false;
-                CacheItem::log($this->logger, 'Failed to delete expired items: '.$e->getMessage(), ['exception' => $e, 'cache-adapter' => get_debug_type($this)]);
-            }
+            $this->doDelete($expiredIds);
         }
         foreach ($byLifetime as $lifetime => $values) {
             try {
@@ -201,9 +195,9 @@ abstract class AbstractTagAwareAdapter implements TagAwareAdapterInterface, TagA
                 foreach (\is_array($e) ? $e : array_keys($values) as $id) {
                     $ok = false;
                     $v = $values[$id];
-                    $type = \is_object($v) ? \get_class($v) : \gettype($v);
+                    $type = get_debug_type($v);
                     $message = sprintf('Failed to save key "{key}" of type %s%s', $type, $e instanceof \Exception ? ': '.$e->getMessage() : '.');
-                    CacheItem::log($this->logger, $message, ['key' => substr($id, \strlen($this->namespace)), 'exception' => $e instanceof \Exception ? $e : null]);
+                    CacheItem::log($this->logger, $message, ['key' => substr($id, \strlen($this->namespace)), 'exception' => $e instanceof \Exception ? $e : null, 'cache-adapter' => get_debug_type($this)]);
                 }
             } else {
                 foreach ($values as $id => $v) {
@@ -225,9 +219,9 @@ abstract class AbstractTagAwareAdapter implements TagAwareAdapterInterface, TagA
                     continue;
                 }
                 $ok = false;
-                $type = \is_object($v) ? \get_class($v) : \gettype($v);
+                $type = get_debug_type($v);
                 $message = sprintf('Failed to save key "{key}" of type %s%s', $type, $e instanceof \Exception ? ': '.$e->getMessage() : '.');
-                CacheItem::log($this->logger, $message, ['key' => substr($id, \strlen($this->namespace)), 'exception' => $e instanceof \Exception ? $e : null]);
+                CacheItem::log($this->logger, $message, ['key' => substr($id, \strlen($this->namespace)), 'exception' => $e instanceof \Exception ? $e : null, 'cache-adapter' => get_debug_type($this)]);
             }
         }
 
@@ -279,7 +273,7 @@ abstract class AbstractTagAwareAdapter implements TagAwareAdapterInterface, TagA
             } catch (\Exception $e) {
             }
             $message = 'Failed to delete key "{key}"'.($e instanceof \Exception ? ': '.$e->getMessage() : '.');
-            CacheItem::log($this->logger, $message, ['key' => $key, 'exception' => $e]);
+            CacheItem::log($this->logger, $message, ['key' => $key, 'exception' => $e, 'cache-adapter' => get_debug_type($this)]);
             $ok = false;
         }
 
@@ -300,12 +294,8 @@ abstract class AbstractTagAwareAdapter implements TagAwareAdapterInterface, TagA
             $tagIds[] = $this->getId(self::TAGS_PREFIX.$tag);
         }
 
-        try {
-            if ($this->doInvalidate($tagIds)) {
-                return true;
-            }
-        } catch (\Exception $e) {
-            CacheItem::log($this->logger, 'Failed to invalidate tags: '.$e->getMessage(), ['exception' => $e, 'cache-adapter' => get_debug_type($this)]);
+        if ($this->doInvalidate($tagIds)) {
+            return true;
         }
 
         return false;

@@ -20,7 +20,6 @@
             <xsd:element name="router" type="router" minOccurs="0" maxOccurs="1" />
             <xsd:element name="session" type="session" minOccurs="0" maxOccurs="1" />
             <xsd:element name="request" type="request" minOccurs="0" maxOccurs="1" />
-            <xsd:element name="templating" type="templating" minOccurs="0" maxOccurs="1" />
             <xsd:element name="translator" type="translator" minOccurs="0" maxOccurs="1" />
             <xsd:element name="validation" type="validation" minOccurs="0" maxOccurs="1" />
             <xsd:element name="annotations" type="annotations" minOccurs="0" maxOccurs="1" />
@@ -96,6 +95,7 @@
         <xsd:attribute name="https-port" type="xsd:string" />
         <xsd:attribute name="strict-requirements" type="xsd:string" />
         <xsd:attribute name="utf8" type="xsd:boolean" />
+        <xsd:attribute name="default-uri" type="xsd:string" />
     </xsd:complexType>
 
     <xsd:complexType name="session">
@@ -160,28 +160,11 @@
         <xsd:attribute name="json-manifest-path" type="xsd:string" />
     </xsd:complexType>
 
-    <xsd:complexType name="templating">
-        <xsd:sequence>
-            <xsd:element name="loader" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
-            <xsd:element name="engine" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
-            <xsd:element name="form" type="form-resources" minOccurs="0" maxOccurs="1" />
-        </xsd:sequence>
-
-        <xsd:attribute name="enabled" type="xsd:boolean" />
-        <xsd:attribute name="cache" type="xsd:string" />
-        <xsd:attribute name="hinclude-default-template" type="xsd:string" />
-    </xsd:complexType>
-
-    <xsd:complexType name="form-resources">
-        <xsd:choice minOccurs="1" maxOccurs="unbounded">
-            <xsd:element name="resource" type="xsd:string" />
-        </xsd:choice>
-    </xsd:complexType>
-
     <xsd:complexType name="translator">
         <xsd:sequence>
             <xsd:element name="fallback" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
             <xsd:element name="path" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+            <xsd:element name="enabled-locale" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
         </xsd:sequence>
         <xsd:attribute name="enabled" type="xsd:boolean" />
         <xsd:attribute name="fallback" type="xsd:string" />
@@ -267,14 +250,7 @@
             <xsd:element name="default-pdo-provider" type="xsd:string" minOccurs="0" maxOccurs="1" />
             <xsd:element name="pool" type="cache_pool" minOccurs="0" maxOccurs="unbounded" />
         </xsd:sequence>
-        <xsd:attribute name="app" type="xsd:string" />
-        <xsd:attribute name="system" type="xsd:string" />
-        <xsd:attribute name="directory" type="xsd:string" />
-        <xsd:attribute name="default-doctrine-provider" type="xsd:string" />
-        <xsd:attribute name="default-psr6-provider" type="xsd:string" />
-        <xsd:attribute name="default-redis-provider" type="xsd:string" />
-        <xsd:attribute name="default-memcached-provider" type="xsd:string" />
-        <xsd:attribute name="default-pdo-provider" type="xsd:string" />
+
         <xsd:attribute name="prefix-seed" type="xsd:string" />
     </xsd:complexType>
 
@@ -582,6 +558,7 @@
             <xsd:element name="envelope" type="mailer_envelope" minOccurs="0" maxOccurs="1" />
         </xsd:sequence>
         <xsd:attribute name="dsn" type="xsd:string" />
+        <xsd:attribute name="message-bus" type="xsd:string" />
     </xsd:complexType>
 
     <xsd:complexType name="mailer_transport" mixed="true">

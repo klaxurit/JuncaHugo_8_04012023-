@@ -43,9 +43,6 @@ class ArgvInput extends Input
     private $tokens;
     private $parsed;
 
-    /**
-     * @param array|null $argv An array of parameters from the CLI (in the argv format)
-     */
     public function __construct(array $argv = null, InputDefinition $definition = null)
     {
         $argv = $argv ?? $_SERVER['argv'] ?? [];
@@ -75,7 +72,7 @@ class ArgvInput extends Input
                 $this->parseArgument($token);
             } elseif ($parseOptions && '--' == $token) {
                 $parseOptions = false;
-            } elseif ($parseOptions && str_starts_with($token, '--')) {
+            } elseif ($parseOptions && 0 === strpos($token, '--')) {
                 $this->parseLongOption($token);
             } elseif ($parseOptions && '-' === $token[0] && '-' !== $token) {
                 $this->parseShortOption($token);
@@ -137,7 +134,7 @@ class ArgvInput extends Input
         $name = substr($token, 2);
 
         if (false !== $pos = strpos($name, '=')) {
-            if ('' === $value = substr($name, $pos + 1)) {
+            if (0 === \strlen($value = substr($name, $pos + 1))) {
                 array_unshift($this->parsed, $value);
             }
             $this->addLongOption(substr($name, 0, $pos), $value);
@@ -243,7 +240,7 @@ class ArgvInput extends Input
         $isOption = false;
         foreach ($this->tokens as $i => $token) {
             if ($token && '-' === $token[0]) {
-                if (str_contains($token, '=') || !isset($this->tokens[$i + 1])) {
+                if (false !== strpos($token, '=') || !isset($this->tokens[$i + 1])) {
                     continue;
                 }
 
@@ -273,7 +270,7 @@ class ArgvInput extends Input
     /**
      * {@inheritdoc}
      */
-    public function hasParameterOption($values, $onlyParams = false)
+    public function hasParameterOption($values, bool $onlyParams = false)
     {
         $values = (array) $values;
 
@@ -285,8 +282,8 @@ class ArgvInput extends Input
                 // Options with values:
                 //   For long options, test for '--option=' at beginning
                 //   For short options, test for '-o' at beginning
-                $leading = str_starts_with($value, '--') ? $value.'=' : $value;
-                if ($token === $value || '' !== $leading && str_starts_with($token, $leading)) {
+                $leading = 0 === strpos($value, '--') ? $value.'=' : $value;
+                if ($token === $value || '' !== $leading && 0 === strpos($token, $leading)) {
                     return true;
                 }
             }
@@ -298,7 +295,7 @@ class ArgvInput extends Input
     /**
      * {@inheritdoc}
      */
-    public function getParameterOption($values, $default = false, $onlyParams = false)
+    public function getParameterOption($values, $default = false, bool $onlyParams = false)
     {
         $values = (array) $values;
         $tokens = $this->tokens;
@@ -316,8 +313,8 @@ class ArgvInput extends Input
                 // Options with values:
                 //   For long options, test for '--option=' at beginning
                 //   For short options, test for '-o' at beginning
-                $leading = str_starts_with($value, '--') ? $value.'=' : $value;
-                if ('' !== $leading && str_starts_with($token, $leading)) {
+                $leading = 0 === strpos($value, '--') ? $value.'=' : $value;
+                if ('' !== $leading && 0 === strpos($token, $leading)) {
                     return substr($token, \strlen($leading));
                 }
             }

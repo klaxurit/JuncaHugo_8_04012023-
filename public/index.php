@@ -1,22 +1,29 @@
 <?php
 
 use App\Kernel;
+use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\ErrorHandler\Debug;
 use Symfony\Component\HttpFoundation\Request;
 
-// Si vous voulez utiliser la mise au point de Symfony, il vous suffit de décommenter la ligne ci-dessous
-Debug::enable();
+require dirname(__DIR__).'/vendor/autoload.php';
 
-require __DIR__.'/../vendor/autoload.php';
+(new Dotenv())->bootEnv(dirname(__DIR__).'/.env');
 
-// $kernel = new Kernel('prod', false);
+if ($_SERVER['APP_DEBUG']) {
+    umask(0000);
 
-// Si vous voulez utiliser la mise au point de Symfony, il vous suffit de décommenter la ligne ci-dessous
-$kernel = new Kernel('dev', true);
+    Debug::enable();
+}
 
-// Si vous voulez utiliser l'environnement de test, il vous suffit de décommenter la ligne ci-dessous
-// $kernel = new Kernel('test', true);
+if ($trustedProxies = $_SERVER['TRUSTED_PROXIES'] ?? false) {
+    Request::setTrustedProxies(explode(',', $trustedProxies), Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_PORT | Request::HEADER_X_FORWARDED_PROTO);
+}
 
+if ($trustedHosts = $_SERVER['TRUSTED_HOSTS'] ?? false) {
+    Request::setTrustedHosts([$trustedHosts]);
+}
+
+$kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
 $request = Request::createFromGlobals();
 $response = $kernel->handle($request);
 $response->send();

@@ -32,11 +32,8 @@ interface ContainerInterface extends PsrContainerInterface
 
     /**
      * Sets a service.
-     *
-     * @param string      $id      The service identifier
-     * @param object|null $service The service instance
      */
-    public function set($id, $service);
+    public function set(string $id, ?object $service);
 
     /**
      * Gets a service.
@@ -51,9 +48,11 @@ interface ContainerInterface extends PsrContainerInterface
      *
      * @see Reference
      */
-    public function get($id, $invalidBehavior = self::EXCEPTION_ON_INVALID_REFERENCE);
+    public function get($id, int $invalidBehavior = self::EXCEPTION_ON_INVALID_REFERENCE);
 
     /**
+     * Returns true if the given service is defined.
+     *
      * @param string $id The service identifier
      *
      * @return bool true if the service is defined, false otherwise
@@ -63,22 +62,20 @@ interface ContainerInterface extends PsrContainerInterface
     /**
      * Check for whether or not a service has been initialized.
      *
-     * @param string $id
-     *
      * @return bool true if the service has been initialized, false otherwise
      */
-    public function initialized($id);
+    public function initialized(string $id);
 
     /**
      * Gets a parameter.
      *
      * @param string $name The parameter name
      *
-     * @return array|bool|string|int|float|\UnitEnum|null
+     * @return array|bool|float|int|string|null The parameter value
      *
      * @throws InvalidArgumentException if the parameter is not defined
      */
-    public function getParameter($name);
+    public function getParameter(string $name);
 
     /**
      * Checks if a parameter exists.
@@ -87,13 +84,13 @@ interface ContainerInterface extends PsrContainerInterface
      *
      * @return bool The presence of parameter in container
      */
-    public function hasParameter($name);
+    public function hasParameter(string $name);
 
     /**
      * Sets a parameter.
      *
-     * @param string                                     $name  The parameter name
-     * @param array|bool|string|int|float|\UnitEnum|null $value The parameter value
+     * @param string $name  The parameter name
+     * @param mixed  $value The parameter value
      */
-    public function setParameter($name, $value);
+    public function setParameter(string $name, $value);
 }

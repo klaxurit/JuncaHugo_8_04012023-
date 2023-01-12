@@ -79,6 +79,10 @@ class MergeExtensionConfigurationPass implements CompilerPassInterface
                     $container->getParameterBag()->mergeEnvPlaceholders($resolvingBag);
                 }
 
+                if ($configAvailable) {
+                    BaseNode::resetPlaceholders();
+                }
+
                 throw $e;
             }
 
@@ -89,6 +93,10 @@ class MergeExtensionConfigurationPass implements CompilerPassInterface
 
             $container->merge($tmpContainer);
             $container->getParameterBag()->add($parameters);
+        }
+
+        if ($configAvailable) {
+            BaseNode::resetPlaceholders();
         }
 
         $container->addDefinitions($definitions);
@@ -135,7 +143,7 @@ class MergeExtensionConfigurationParameterBag extends EnvPlaceholderParameterBag
      */
     public function getEnvPlaceholders(): array
     {
-        return $this->processedEnvPlaceholders ?? parent::getEnvPlaceholders();
+        return null !== $this->processedEnvPlaceholders ? $this->processedEnvPlaceholders : parent::getEnvPlaceholders();
     }
 
     public function getUnusedEnvPlaceholders(): array
@@ -163,9 +171,9 @@ class MergeExtensionConfigurationContainerBuilder extends ContainerBuilder
     /**
      * {@inheritdoc}
      */
-    public function addCompilerPass(CompilerPassInterface $pass, $type = PassConfig::TYPE_BEFORE_OPTIMIZATION, int $priority = 0): self
+    public function addCompilerPass(CompilerPassInterface $pass, string $type = PassConfig::TYPE_BEFORE_OPTIMIZATION, int $priority = 0): self
     {
-        throw new LogicException(sprintf('You cannot add compiler pass "%s" from extension "%s". Compiler passes must be registered before the container is compiled.', \get_class($pass), $this->extensionClass));
+        throw new LogicException(sprintf('You cannot add compiler pass "%s" from extension "%s". Compiler passes must be registered before the container is compiled.', get_debug_type($pass), $this->extensionClass));
     }
 
     /**
@@ -173,7 +181,7 @@ class MergeExtensionConfigurationContainerBuilder extends ContainerBuilder
      */
     public function registerExtension(ExtensionInterface $extension)
     {
-        throw new LogicException(sprintf('You cannot register extension "%s" from "%s". Extensions must be registered before the container is compiled.', \get_class($extension), $this->extensionClass));
+        throw new LogicException(sprintf('You cannot register extension "%s" from "%s". Extensions must be registered before the container is compiled.', get_debug_type($extension), $this->extensionClass));
     }
 
     /**
@@ -201,7 +209,7 @@ class MergeExtensionConfigurationContainerBuilder extends ContainerBuilder
         }
 
         foreach ($bag->getEnvPlaceholders() as $env => $placeholders) {
-            if (!str_contains($env, ':')) {
+            if (false === strpos($env, ':')) {
                 continue;
             }
             foreach ($placeholders as $placeholder) {

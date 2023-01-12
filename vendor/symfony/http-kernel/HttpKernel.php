@@ -11,7 +11,6 @@
 
 namespace Symfony\Component\HttpKernel;
 
-use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Component\HttpFoundation\Exception\RequestExceptionInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -59,9 +58,9 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
 
     public function __construct(EventDispatcherInterface $dispatcher, ControllerResolverInterface $resolver, RequestStack $requestStack = null, ArgumentResolverInterface $argumentResolver = null)
     {
-        $this->dispatcher = LegacyEventDispatcherProxy::decorate($dispatcher);
+        $this->dispatcher = $dispatcher;
         $this->resolver = $resolver;
-        $this->requestStack = $requestStack ?? new RequestStack();
+        $this->requestStack = $requestStack ?: new RequestStack();
         $this->argumentResolver = $argumentResolver;
 
         if (null === $this->argumentResolver) {
@@ -72,11 +71,10 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
     /**
      * {@inheritdoc}
      */
-    public function handle(Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true)
+    public function handle(Request $request, int $type = HttpKernelInterface::MASTER_REQUEST, bool $catch = true)
     {
         $request->headers->set('X-Php-Ob-Level', (string) ob_get_level());
 
-        $this->requestStack->push($request);
         try {
             return $this->handleRaw($request, $type);
         } catch (\Exception $e) {
@@ -90,8 +88,6 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
             }
 
             return $this->handleThrowable($e, $request, $type);
-        } finally {
-            $this->requestStack->pop();
         }
     }
 
@@ -112,17 +108,7 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
             throw $exception;
         }
 
-        if ($pop = $request !== $this->requestStack->getMasterRequest()) {
-            $this->requestStack->push($request);
-        }
-
-        try {
-            $response = $this->handleThrowable($exception, $request, self::MASTER_REQUEST);
-        } finally {
-            if ($pop) {
-                $this->requestStack->pop();
-            }
-        }
+        $response = $this->handleThrowable($exception, $request, self::MASTER_REQUEST);
 
         $response->sendHeaders();
         $response->sendContent();
@@ -140,6 +126,8 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
      */
     private function handleRaw(Request $request, int $type = self::MASTER_REQUEST): Response
     {
+        $this->requestStack->push($request);
+
         // request
         $event = new RequestEvent($this, $request, $type);
         $this->dispatcher->dispatch($event, KernelEvents::REQUEST);
@@ -216,6 +204,7 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
     private function finishRequest(Request $request, int $type)
     {
         $this->dispatcher->dispatch(new FinishRequestEvent($this, $request, $type), KernelEvents::FINISH_REQUEST);
+        $this->requestStack->pop();
     }
 
     /**

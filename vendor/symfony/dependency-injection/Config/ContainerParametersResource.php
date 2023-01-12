@@ -18,7 +18,7 @@ use Symfony\Component\Config\Resource\ResourceInterface;
  *
  * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  *
- * @final since Symfony 4.3
+ * @final
  */
 class ContainerParametersResource implements ResourceInterface
 {
@@ -32,7 +32,10 @@ class ContainerParametersResource implements ResourceInterface
         $this->parameters = $parameters;
     }
 
-    public function __toString()
+    /**
+     * {@inheritdoc}
+     */
+    public function __toString(): string
     {
         return 'container_parameters_'.md5(serialize($this->parameters));
     }
@@ -40,7 +43,7 @@ class ContainerParametersResource implements ResourceInterface
     /**
      * @return array Tracked parameters
      */
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->parameters;
     }
