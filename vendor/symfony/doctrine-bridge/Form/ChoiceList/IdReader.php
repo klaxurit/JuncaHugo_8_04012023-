@@ -59,6 +59,9 @@ class IdReader
 
     /**
      * Returns whether the class has a single-column ID.
+     *
+     * @return bool returns `true` if the class has a single-column ID and
+     *              `false` otherwise
      */
     public function isSingleId(): bool
     {
@@ -67,6 +70,9 @@ class IdReader
 
     /**
      * Returns whether the class has a single-column integer ID.
+     *
+     * @return bool returns `true` if the class has a single-column integer ID
+     *              and `false` otherwise
      */
     public function isIntId(): bool
     {
@@ -77,15 +83,19 @@ class IdReader
      * Returns the ID value for an object.
      *
      * This method assumes that the object has a single-column ID.
+     *
+     * @param object $object The object
+     *
+     * @return mixed The ID value
      */
-    public function getIdValue(object $object = null): string
+    public function getIdValue($object)
     {
         if (!$object) {
-            return '';
+            return null;
         }
 
         if (!$this->om->contains($object)) {
-            throw new RuntimeException(sprintf('Entity of type "%s" passed to the choice field must be managed. Maybe you forget to persist it in the entity manager?', get_debug_type($object)));
+            throw new RuntimeException(sprintf('Entity of type "%s" passed to the choice field must be managed. Maybe you forget to persist it in the entity manager?', \get_class($object)));
         }
 
         $this->om->initializeObject($object);
@@ -96,13 +106,15 @@ class IdReader
             $idValue = $this->associationIdReader->getIdValue($idValue);
         }
 
-        return (string) $idValue;
+        return $idValue;
     }
 
     /**
      * Returns the name of the ID field.
      *
      * This method assumes that the object has a single-column ID.
+     *
+     * @return string The name of the ID field
      */
     public function getIdField(): string
     {

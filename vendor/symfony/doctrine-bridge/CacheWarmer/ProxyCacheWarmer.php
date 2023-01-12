@@ -34,7 +34,7 @@ class ProxyCacheWarmer implements CacheWarmerInterface
     /**
      * This cache warmer is not optional, without proxies fatal error occurs!
      *
-     * @return bool
+     * @return false
      */
     public function isOptional()
     {
@@ -43,16 +43,13 @@ class ProxyCacheWarmer implements CacheWarmerInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @return string[] A list of files to preload on PHP 7.4+
      */
-    public function warmUp(string $cacheDir)
+    public function warmUp($cacheDir)
     {
-        $files = [];
         foreach ($this->registry->getManagers() as $em) {
             // we need the directory no matter the proxy cache generation strategy
             if (!is_dir($proxyCacheDir = $em->getConfiguration()->getProxyDir())) {
-                if (false === @mkdir($proxyCacheDir, 0777, true) && !is_dir($proxyCacheDir)) {
+                if (false === @mkdir($proxyCacheDir, 0777, true)) {
                     throw new \RuntimeException(sprintf('Unable to create the Doctrine Proxy directory "%s".', $proxyCacheDir));
                 }
             } elseif (!is_writable($proxyCacheDir)) {
@@ -67,14 +64,6 @@ class ProxyCacheWarmer implements CacheWarmerInterface
             $classes = $em->getMetadataFactory()->getAllMetadata();
 
             $em->getProxyFactory()->generateProxyClasses($classes);
-
-            foreach (scandir($proxyCacheDir) as $file) {
-                if (!is_dir($file = $proxyCacheDir.'/'.$file)) {
-                    $files[] = $file;
-                }
-            }
         }
-
-        return $files;
     }
 }

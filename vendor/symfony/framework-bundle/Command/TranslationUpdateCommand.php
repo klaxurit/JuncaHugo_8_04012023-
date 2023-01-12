@@ -79,12 +79,13 @@ class TranslationUpdateCommand extends Command
                 new InputOption('output-format', null, InputOption::VALUE_OPTIONAL, 'Override the default output format', 'xlf'),
                 new InputOption('dump-messages', null, InputOption::VALUE_NONE, 'Should the messages be dumped in the console'),
                 new InputOption('force', null, InputOption::VALUE_NONE, 'Should the update be done'),
+                new InputOption('no-backup', null, InputOption::VALUE_NONE, 'Should backup be disabled'),
                 new InputOption('clean', null, InputOption::VALUE_NONE, 'Should clean not found messages'),
                 new InputOption('domain', null, InputOption::VALUE_OPTIONAL, 'Specify the domain to update'),
                 new InputOption('xliff-version', null, InputOption::VALUE_OPTIONAL, 'Override the default xliff version', '1.2'),
                 new InputOption('sort', null, InputOption::VALUE_OPTIONAL, 'Return list of messages sorted alphabetically', 'asc'),
             ])
-            ->setDescription('Updates the translation file')
+            ->setDescription('Update the translation file')
             ->setHelp(<<<'EOF'
 The <info>%command.name%</info> command extracts translation strings from templates
 of a given bundle or the default translations directory. It can display them or merge
@@ -136,13 +137,28 @@ EOF
         }
         /** @var KernelInterface $kernel */
         $kernel = $this->getApplication()->getKernel();
+        $rootDir = $kernel->getContainer()->getParameter('kernel.root_dir');
 
         // Define Root Paths
         $transPaths = $this->transPaths;
+        if (is_dir($dir = $rootDir.'/Resources/translations')) {
+            if ($dir !== $this->defaultTransPath) {
+                $notice = sprintf('Storing translations in the "%s" directory is deprecated since Symfony 4.2, ', $dir);
+                @trigger_error($notice.($this->defaultTransPath ? sprintf('use the "%s" directory instead.', $this->defaultTransPath) : 'configure and use "framework.translator.default_path" instead.'), \E_USER_DEPRECATED);
+            }
+            $transPaths[] = $dir;
+        }
         if ($this->defaultTransPath) {
             $transPaths[] = $this->defaultTransPath;
         }
         $viewsPaths = $this->viewsPaths;
+        if (is_dir($dir = $rootDir.'/Resources/views')) {
+            if ($dir !== $this->defaultViewsPath) {
+                $notice = sprintf('Storing templates in the "%s" directory is deprecated since Symfony 4.2, ', $dir);
+                @trigger_error($notice.($this->defaultViewsPath ? sprintf('use the "%s" directory instead.', $this->defaultViewsPath) : 'configure and use "twig.default_path" instead.'), \E_USER_DEPRECATED);
+            }
+            $viewsPaths[] = $dir;
+        }
         if ($this->defaultViewsPath) {
             $viewsPaths[] = $this->defaultViewsPath;
         }
@@ -158,8 +174,18 @@ EOF
                 if ($this->defaultTransPath) {
                     $transPaths[] = $this->defaultTransPath;
                 }
+                if (is_dir($dir = sprintf('%s/Resources/%s/translations', $rootDir, $foundBundle->getName()))) {
+                    $transPaths[] = $dir;
+                    $notice = sprintf('Storing translations files for "%s" in the "%s" directory is deprecated since Symfony 4.2, ', $foundBundle->getName(), $dir);
+                    @trigger_error($notice.($this->defaultTransPath ? sprintf('use the "%s" directory instead.', $this->defaultTransPath) : 'configure and use "framework.translator.default_path" instead.'), \E_USER_DEPRECATED);
+                }
                 if ($this->defaultViewsPath) {
                     $viewsPaths[] = $this->defaultViewsPath;
+                }
+                if (is_dir($dir = sprintf('%s/Resources/%s/views', $rootDir, $foundBundle->getName()))) {
+                    $viewsPaths[] = $dir;
+                    $notice = sprintf('Storing templates for "%s" in the "%s" directory is deprecated since Symfony 4.2, ', $foundBundle->getName(), $dir);
+                    @trigger_error($notice.($this->defaultViewsPath ? sprintf('use the "%s" directory instead.', $this->defaultViewsPath) : 'configure and use "twig.default_path" instead.'), \E_USER_DEPRECATED);
                 }
                 $currentName = $foundBundle->getName();
             } catch (\InvalidArgumentException $e) {
@@ -167,7 +193,20 @@ EOF
                 $path = $input->getArgument('bundle');
 
                 $transPaths = [$path.'/translations'];
+                if (is_dir($dir = $path.'/Resources/translations')) {
+                    if ($dir !== $this->defaultTransPath) {
+                        @trigger_error(sprintf('Storing translations in the "%s" directory is deprecated since Symfony 4.2, use the "%s" directory instead.', $dir, $path.'/translations'), \E_USER_DEPRECATED);
+                    }
+                    $transPaths[] = $dir;
+                }
+
                 $viewsPaths = [$path.'/templates'];
+                if (is_dir($dir = $path.'/Resources/views')) {
+                    if ($dir !== $this->defaultViewsPath) {
+                        @trigger_error(sprintf('Storing templates in the "%s" directory is deprecated since Symfony 4.2, use the "%s" directory instead.', $dir, $path.'/templates'), \E_USER_DEPRECATED);
+                    }
+                    $viewsPaths[] = $dir;
+                }
 
                 if (!is_dir($transPaths[0]) && !isset($transPaths[1])) {
                     throw new InvalidArgumentException(sprintf('"%s" is neither an enabled bundle nor a directory.', $transPaths[0]));
@@ -282,6 +321,10 @@ EOF
             $resultMessage = sprintf('%d message%s successfully extracted', $extractedMessagesCount, $extractedMessagesCount > 1 ? 's were' : ' was');
         }
 
+        if (true === $input->getOption('no-backup')) {
+            $this->writer->disableBackup();
+        }
+
         // save the files
         if (true === $input->getOption('force')) {
             $io->comment('Writing files...');
@@ -325,6 +368,11 @@ EOF
         }
         foreach ($catalogue->getResources() as $resource) {
             $filteredCatalogue->addResource($resource);
+        }
+        if ($metadata = $catalogue->getMetadata('', $intlDomain)) {
+            foreach ($metadata as $k => $v) {
+                $filteredCatalogue->setMetadata($k, $v, $intlDomain);
+            }
         }
         if ($metadata = $catalogue->getMetadata('', $domain)) {
             foreach ($metadata as $k => $v) {

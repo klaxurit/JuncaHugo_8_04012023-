@@ -42,8 +42,8 @@ final class SecretsDecryptToLocalCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Decrypts all secrets and stores them in the local vault')
-            ->addOption('force', 'f', InputOption::VALUE_NONE, 'Forces overriding of secrets that already exist in the local vault')
+            ->setDescription('Decrypt all secrets and stores them in the local vault.')
+            ->addOption('force', 'f', InputOption::VALUE_NONE, 'Force overriding of secrets that already exist in the local vault')
             ->setHelp(<<<'EOF'
 The <info>%command.name%</info> command decrypts all secrets and copies them in the local vault.
 
@@ -69,34 +69,19 @@ EOF
 
         $secrets = $this->vault->list(true);
 
-        $io->comment(sprintf('%d secret%s found in the vault.', \count($secrets), 1 !== \count($secrets) ? 's' : ''));
-
-        $skipped = 0;
         if (!$input->getOption('force')) {
             foreach ($this->localVault->list() as $k => $v) {
-                if (isset($secrets[$k])) {
-                    ++$skipped;
-                    unset($secrets[$k]);
-                }
+                unset($secrets[$k]);
             }
-        }
-
-        if ($skipped > 0) {
-            $io->warning([
-                sprintf('%d secret%s already overridden in the local vault and will be skipped.', $skipped, 1 !== $skipped ? 's are' : ' is'),
-                'Use the --force flag to override these.',
-            ]);
         }
 
         foreach ($secrets as $k => $v) {
             if (null === $v) {
-                $io->error($this->vault->getLastMessage());
-
-                return 1;
+                $io->error($this->vault->getLastMessage() ?? sprintf('Secret "%s" has been skipped as there was an error reading it.', $k));
+                continue;
             }
 
             $this->localVault->seal($k, $v);
-            $io->note($this->localVault->getLastMessage());
         }
 
         return 0;

@@ -17,7 +17,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\DependencyInjection\Dumper\Preloader;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
@@ -45,7 +44,7 @@ class CacheClearCommand extends Command
         parent::__construct();
 
         $this->cacheClearer = $cacheClearer;
-        $this->filesystem = $filesystem ?: new Filesystem();
+        $this->filesystem = $filesystem ?? new Filesystem();
     }
 
     /**
@@ -58,9 +57,9 @@ class CacheClearCommand extends Command
                 new InputOption('no-warmup', '', InputOption::VALUE_NONE, 'Do not warm up the cache'),
                 new InputOption('no-optional-warmers', '', InputOption::VALUE_NONE, 'Skip optional cache warmers (faster)'),
             ])
-            ->setDescription('Clears the cache')
+            ->setDescription('Clear the cache')
             ->setHelp(<<<'EOF'
-The <info>%command.name%</info> command clears the application cache for a given environment
+The <info>%command.name%</info> command clears and warms up the application cache for a given environment
 and debug mode:
 
   <info>php %command.full_name% --env=dev</info>
@@ -82,7 +81,7 @@ EOF
         $realCacheDir = $kernel->getContainer()->getParameter('kernel.cache_dir');
         // the old cache dir name must not be longer than the real one to avoid exceeding
         // the maximum length of a directory or file path within it (esp. Windows MAX_PATH)
-        $oldCacheDir = substr($realCacheDir, 0, -1).('~' === substr($realCacheDir, -1) ? '+' : '~');
+        $oldCacheDir = substr($realCacheDir, 0, -1).(str_ends_with($realCacheDir, '~') ? '+' : '~');
         $fs->remove($oldCacheDir);
 
         if (!is_writable($realCacheDir)) {
@@ -118,11 +117,7 @@ EOF
                 $warmer = $kernel->getContainer()->get('cache_warmer');
                 // non optional warmers already ran during container compilation
                 $warmer->enableOnlyOptionalWarmers();
-                $preload = (array) $warmer->warmUp($realCacheDir);
-
-                if ($preload && file_exists($preloadFile = $realCacheDir.'/'.$kernel->getContainer()->getParameter('kernel.container_class').'.preload.php')) {
-                    Preloader::append($preloadFile, $preload);
-                }
+                $warmer->warmUp($realCacheDir);
             }
         } else {
             $fs->mkdir($warmupDir);
@@ -147,7 +142,7 @@ EOF
                     }
                     $mount = implode(' ', $mount).'/';
 
-                    if (0 === strpos($realCacheDir, $mount)) {
+                    if (str_starts_with($realCacheDir, $mount)) {
                         $io->note('For better performances, you should move the cache and log directories to a non-shared folder of the VM.');
                         $oldCacheDir = false;
                         break;
@@ -198,11 +193,7 @@ EOF
             $warmer = $kernel->getContainer()->get('cache_warmer');
             // non optional warmers already ran during container compilation
             $warmer->enableOnlyOptionalWarmers();
-            $preload = (array) $warmer->warmUp($warmupDir);
-
-            if ($preload && file_exists($preloadFile = $warmupDir.'/'.$kernel->getContainer()->getParameter('kernel.container_class').'.preload.php')) {
-                Preloader::append($preloadFile, $preload);
-            }
+            $warmer->warmUp($warmupDir);
         }
 
         // fix references to cached files with the real cache directory name

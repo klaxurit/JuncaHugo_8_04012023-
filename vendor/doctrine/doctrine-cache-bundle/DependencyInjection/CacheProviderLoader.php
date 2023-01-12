@@ -1,5 +1,4 @@
 <?php
-
 namespace Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection;
 
 use Doctrine\Common\Inflector\Inflector;
@@ -45,7 +44,7 @@ class CacheProviderLoader
      * @param \Symfony\Component\DependencyInjection\ContainerBuilder   $container
      * @param array                                                     $config
      *
-     * @return \Symfony\Component\DependencyInjection\ChildDefinition
+     * @return \Symfony\Component\DependencyInjection\DefinitionDecorator
      */
     protected function getProviderDecorator(ContainerBuilder $container, array $config)
     {
@@ -55,7 +54,7 @@ class CacheProviderLoader
         static $childDefinition;
 
         if (null === $childDefinition) {
-            $childDefinition = class_exists('Symfony\Component\DependencyInjection\ChildDefinition') ? 'Symfony\Component\DependencyInjection\ChildDefinition' : 'Symfony\Component\DependencyInjection\ChildDefinition';
+            $childDefinition = class_exists('Symfony\Component\DependencyInjection\ChildDefinition') ? 'Symfony\Component\DependencyInjection\ChildDefinition' : 'Symfony\Component\DependencyInjection\DefinitionDecorator';
         }
 
         if ($type === 'custom_provider') {

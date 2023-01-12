@@ -1,7 +1,7 @@
 {
     "name": "symfony/filesystem",
     "type": "library",
-    "description": "Provides basic utilities for the filesystem",
+    "description": "Symfony Filesystem Component",
     "keywords": [],
     "homepage": "https://symfony.com",
     "license": "MIT",
@@ -16,10 +16,7 @@
         }
     ],
     "require": {
-        "php": ">=7.2.5",
-        "symfony/polyfill-ctype": "~1.8",
-        "symfony/polyfill-mbstring": "~1.8",
-        "symfony/polyfill-php80": "^1.16"
+        "php": "^5.5.9|>=7.0.8"
     },
     "autoload": {
         "psr-4": { "Symfony\\Component\\Filesystem\\": "" },
@@ -27,5 +24,10 @@
             "/Tests/"
         ]
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "3.4-dev"
+        }
+    }
 }

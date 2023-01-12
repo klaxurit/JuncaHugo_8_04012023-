@@ -37,7 +37,7 @@ class XliffLintCommand extends BaseLintCommand
         };
 
         $isReadableProvider = function ($fileOrDirectory, $default) {
-            return 0 === strpos($fileOrDirectory, '@') || $default($fileOrDirectory);
+            return str_starts_with($fileOrDirectory, '@') || $default($fileOrDirectory);
         };
 
         parent::__construct(null, $directoryIteratorProvider, $isReadableProvider);
@@ -57,6 +57,6 @@ Or find all files in a bundle:
   <info>php %command.full_name% @AcmeDemoBundle</info>
 
 EOF
-            );
+        );
     }
 }

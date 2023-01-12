@@ -32,7 +32,7 @@ class EntityType extends DoctrineType
                 $queryBuilder = $queryBuilder($options['em']->getRepository($options['class']));
 
                 if (null !== $queryBuilder && !$queryBuilder instanceof QueryBuilder) {
-                    throw new UnexpectedTypeException($queryBuilder, QueryBuilder::class);
+                    throw new UnexpectedTypeException($queryBuilder, 'Doctrine\ORM\QueryBuilder');
                 }
             }
 
@@ -40,20 +40,21 @@ class EntityType extends DoctrineType
         };
 
         $resolver->setNormalizer('query_builder', $queryBuilderNormalizer);
-        $resolver->setAllowedTypes('query_builder', ['null', 'callable', QueryBuilder::class]);
+        $resolver->setAllowedTypes('query_builder', ['null', 'callable', 'Doctrine\ORM\QueryBuilder']);
     }
 
     /**
      * Return the default loader object.
      *
      * @param QueryBuilder $queryBuilder
+     * @param string       $class
      *
      * @return ORMQueryBuilderLoader
      */
-    public function getLoader(ObjectManager $manager, object $queryBuilder, string $class)
+    public function getLoader(ObjectManager $manager, $queryBuilder, $class)
     {
         if (!$queryBuilder instanceof QueryBuilder) {
-            throw new \TypeError(sprintf('Expected an instance of "%s", but got "%s".', QueryBuilder::class, get_debug_type($queryBuilder)));
+            throw new \TypeError(sprintf('Expected an instance of "%s", but got "%s".', QueryBuilder::class, \is_object($queryBuilder) ? \get_class($queryBuilder) : \gettype($queryBuilder)));
         }
 
         return new ORMQueryBuilderLoader($queryBuilder);
@@ -76,10 +77,10 @@ class EntityType extends DoctrineType
      * @internal This method is public to be usable as callback. It should not
      *           be used in user code.
      */
-    public function getQueryBuilderPartsForCachingHash(object $queryBuilder): ?array
+    public function getQueryBuilderPartsForCachingHash($queryBuilder): ?array
     {
         if (!$queryBuilder instanceof QueryBuilder) {
-            throw new \TypeError(sprintf('Expected an instance of "%s", but got "%s".', QueryBuilder::class, get_debug_type($queryBuilder)));
+            throw new \TypeError(sprintf('Expected an instance of "%s", but got "%s".', QueryBuilder::class, \is_object($queryBuilder) ? \get_class($queryBuilder) : \gettype($queryBuilder)));
         }
 
         return [
@@ -96,3 +97,5 @@ class EntityType extends DoctrineType
         return [$parameter->getName(), $parameter->getType(), $parameter->getValue()];
     }
 }
+
+interface_exists(ObjectManager::class);

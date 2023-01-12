@@ -2,14 +2,14 @@
 
 namespace Tests\AppBundle\Controller;
 
-use AppKernel;
+use App\Kernel;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class DefaultControllerTest extends WebTestCase
 {
     protected static function getKernelClass()
     {
-        return AppKernel::class;
+        return Kernel::class;
     }
 
     public function testIndex()
