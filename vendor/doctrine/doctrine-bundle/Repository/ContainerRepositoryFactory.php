@@ -10,6 +10,11 @@ use Doctrine\Persistence\ObjectRepository;
 use Psr\Container\ContainerInterface;
 use RuntimeException;
 
+use function class_exists;
+use function is_a;
+use function spl_object_hash;
+use function sprintf;
+
 /**
  * Fetches repositories from the container or falls back to normal creation.
  */
@@ -18,7 +23,7 @@ final class ContainerRepositoryFactory implements RepositoryFactory
     /** @var ObjectRepository[] */
     private $managedRepositories = [];
 
-    /** @var ContainerInterface|null */
+    /** @var ContainerInterface */
     private $container;
 
     /**
@@ -32,7 +37,7 @@ final class ContainerRepositoryFactory implements RepositoryFactory
     /**
      * {@inheritdoc}
      */
-    public function getRepository(EntityManagerInterface $entityManager, $entityName)
+    public function getRepository(EntityManagerInterface $entityManager, $entityName): ObjectRepository
     {
         $metadata            = $entityManager->getClassMetadata($entityName);
         $repositoryServiceId = $metadata->customRepositoryClassName;
@@ -40,7 +45,7 @@ final class ContainerRepositoryFactory implements RepositoryFactory
         $customRepositoryName = $metadata->customRepositoryClassName;
         if ($customRepositoryName !== null) {
             // fetch from the container
-            if ($this->container && $this->container->has($customRepositoryName)) {
+            if ($this->container->has($customRepositoryName)) {
                 $repository = $this->container->get($customRepositoryName);
 
                 if (! $repository instanceof ObjectRepository) {
@@ -65,8 +70,10 @@ final class ContainerRepositoryFactory implements RepositoryFactory
         return $this->getOrCreateRepository($entityManager, $metadata);
     }
 
-    private function getOrCreateRepository(EntityManagerInterface $entityManager, ClassMetadata $metadata)
-    {
+    private function getOrCreateRepository(
+        EntityManagerInterface $entityManager,
+        ClassMetadata $metadata
+    ): ObjectRepository {
         $repositoryHash = $metadata->getName() . spl_object_hash($entityManager);
         if (isset($this->managedRepositories[$repositoryHash])) {
             return $this->managedRepositories[$repositoryHash];
