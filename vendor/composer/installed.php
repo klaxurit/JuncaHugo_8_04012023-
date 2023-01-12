@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '9e855bf81b6ef562266221119c1be83457726a11',
+        'reference' => '0ce2c07a0affe0fa898ae8dbee7941328ef19e2f',
         'name' => 'saro0h/to-do-list',
         'dev' => true,
     ),
@@ -386,7 +386,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '9e855bf81b6ef562266221119c1be83457726a11',
+            'reference' => '0ce2c07a0affe0fa898ae8dbee7941328ef19e2f',
             'dev_requirement' => false,
         ),
         'sebastian/code-unit-reverse-lookup' => array(
