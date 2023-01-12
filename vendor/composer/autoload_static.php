@@ -34,6 +34,7 @@ class ComposerStaticInit51292f21e4bba0b45ff14b03a5811f8c
         ),
         'S' => 
         array (
+            'Symfony\\Runtime\\Symfony\\Component\\' => 34,
             'Symfony\\Polyfill\\Php81\\' => 23,
             'Symfony\\Polyfill\\Php80\\' => 23,
             'Symfony\\Polyfill\\Php73\\' => 23,
@@ -58,6 +59,7 @@ class ComposerStaticInit51292f21e4bba0b45ff14b03a5811f8c
             'Symfony\\Component\\Security\\Guard\\' => 33,
             'Symfony\\Component\\Security\\Csrf\\' => 32,
             'Symfony\\Component\\Security\\Core\\' => 32,
+            'Symfony\\Component\\Runtime\\' => 26,
             'Symfony\\Component\\Routing\\' => 26,
             'Symfony\\Component\\PropertyInfo\\' => 31,
             'Symfony\\Component\\PropertyAccess\\' => 33,
@@ -146,6 +148,10 @@ class ComposerStaticInit51292f21e4bba0b45ff14b03a5811f8c
         'Twig\\' => 
         array (
             0 => __DIR__ . '/..' . '/twig/twig/src',
+        ),
+        'Symfony\\Runtime\\Symfony\\Component\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/runtime/Internal',
         ),
         'Symfony\\Polyfill\\Php81\\' => 
         array (
@@ -242,6 +248,10 @@ class ComposerStaticInit51292f21e4bba0b45ff14b03a5811f8c
         'Symfony\\Component\\Security\\Core\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/security-core',
+        ),
+        'Symfony\\Component\\Runtime\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/runtime',
         ),
         'Symfony\\Component\\Routing\\' => 
         array (

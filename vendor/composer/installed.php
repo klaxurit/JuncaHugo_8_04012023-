@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '9dcfad71ce3114a5ea0dd23907537bd9cca4745b',
+        'reference' => '9e855bf81b6ef562266221119c1be83457726a11',
         'name' => 'saro0h/to-do-list',
         'dev' => true,
     ),
@@ -386,7 +386,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '9dcfad71ce3114a5ea0dd23907537bd9cca4745b',
+            'reference' => '9e855bf81b6ef562266221119c1be83457726a11',
             'dev_requirement' => false,
         ),
         'sebastian/code-unit-reverse-lookup' => array(
@@ -894,6 +894,15 @@
             'install_path' => __DIR__ . '/../symfony/routing',
             'aliases' => array(),
             'reference' => '4ce2df9a469c19ba45ca6aca04fec1c358a6e791',
+            'dev_requirement' => false,
+        ),
+        'symfony/runtime' => array(
+            'pretty_version' => 'v5.4.11',
+            'version' => '5.4.11.0',
+            'type' => 'composer-plugin',
+            'install_path' => __DIR__ . '/../symfony/runtime',
+            'aliases' => array(),
+            'reference' => 'c32ac27a8abebe4e6375cd12a4f78ba78e9c742f',
             'dev_requirement' => false,
         ),
         'symfony/security-bundle' => array(
