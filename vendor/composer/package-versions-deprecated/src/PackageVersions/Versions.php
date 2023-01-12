@@ -135,12 +135,15 @@ final class Versions
   'sebastian/resource-operations' => '2.0.2@31d35ca87926450c44eae7e2611d45a7a65ea8b3',
   'sebastian/type' => '1.1.4@0150cfbc4495ed2df3872fb31b26781e4e077eb4',
   'sebastian/version' => '2.0.1@99732be0ddb3361e16ad77b68ba41efc8e979019',
+  'symfony/browser-kit' => 'v5.1.11@8d0688f6f7c733ff4096d64656c8a3b320d9a1f8',
+  'symfony/css-selector' => 'v5.1.11@f65f217b3314504a1ec99c2d6ef69016bb13490f',
   'symfony/debug-bundle' => 'v5.1.11@cc01b42c54ca5a3eed3e48f0c2327e1b3d46c16b',
+  'symfony/dom-crawler' => 'v5.1.11@5d89ceb53ec65e1973a555072fac8ed5ecad3384',
   'symfony/maker-bundle' => 'v1.39.1@30c8ac13511f6df7bc9ac088f31d7a48ce6433c6',
   'symfony/phpunit-bridge' => 'v6.2.3@3766b8269d3bac5c214a04ebd6870e71e52bcb60',
   'symfony/web-profiler-bundle' => 'v5.1.11@9a906203efff7df59d1e0185f7aa05e631eb4ef7',
   'theseer/tokenizer' => '1.2.1@34a41e998c2183e22995f158c581e7b5e755ab9e',
-  'saro0h/to-do-list' => 'dev-main@76042420c672dd386f2cfac64156ad8c3509f8b2',
+  'saro0h/to-do-list' => 'dev-main@88e2e28683a055afa0a17e704f8c92d196e6423b',
 );
 
     private function __construct()
