@@ -54,6 +54,15 @@ class User implements UserInterface
         $this->username = $username;
     }
 
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string {
+        return (string) $this->username;
+    }
+
     public function getSalt()
     {
         return null;
