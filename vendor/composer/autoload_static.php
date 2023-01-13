@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit51292f21e4bba0b45ff14b03a5811f8c
+class ComposerStaticInit729b3c06376c19113ce5f493fa4fe67c
 {
     public static $files = array (
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
@@ -92,7 +92,6 @@ class ComposerStaticInit51292f21e4bba0b45ff14b03a5811f8c
             'Symfony\\Bridge\\PhpUnit\\' => 23,
             'Symfony\\Bridge\\Monolog\\' => 23,
             'Symfony\\Bridge\\Doctrine\\' => 24,
-            'Sensio\\Bundle\\FrameworkExtraBundle\\' => 35,
         ),
         'P' => 
         array (
@@ -381,10 +380,6 @@ class ComposerStaticInit51292f21e4bba0b45ff14b03a5811f8c
         'Symfony\\Bridge\\Doctrine\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/doctrine-bridge',
-        ),
-        'Sensio\\Bundle\\FrameworkExtraBundle\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/sensio/framework-extra-bundle/src',
         ),
         'Psr\\Log\\' => 
         array (
@@ -1097,9 +1092,9 @@ class ComposerStaticInit51292f21e4bba0b45ff14b03a5811f8c
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit51292f21e4bba0b45ff14b03a5811f8c::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit51292f21e4bba0b45ff14b03a5811f8c::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit51292f21e4bba0b45ff14b03a5811f8c::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit729b3c06376c19113ce5f493fa4fe67c::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit729b3c06376c19113ce5f493fa4fe67c::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit729b3c06376c19113ce5f493fa4fe67c::$classMap;
 
         }, null, ClassLoader::class);
     }

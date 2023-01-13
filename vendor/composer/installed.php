@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '32ce4d79b9a71f44610fe110d6c451f83bb87eeb',
+        'reference' => 'd3663f23a8dedad2b4c87d5d24d9609c90c156a1',
         'name' => 'saro0h/to-do-list',
         'dev' => true,
     ),
@@ -368,7 +368,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '32ce4d79b9a71f44610fe110d6c451f83bb87eeb',
+            'reference' => 'd3663f23a8dedad2b4c87d5d24d9609c90c156a1',
             'dev_requirement' => false,
         ),
         'sebastian/code-unit-reverse-lookup' => array(
@@ -478,15 +478,6 @@
             'aliases' => array(),
             'reference' => '99732be0ddb3361e16ad77b68ba41efc8e979019',
             'dev_requirement' => true,
-        ),
-        'sensio/framework-extra-bundle' => array(
-            'pretty_version' => 'v5.6.1',
-            'version' => '5.6.1.0',
-            'type' => 'symfony-bundle',
-            'install_path' => __DIR__ . '/../sensio/framework-extra-bundle',
-            'aliases' => array(),
-            'reference' => '430d14c01836b77c28092883d195a43ce413ee32',
-            'dev_requirement' => false,
         ),
         'symfony/asset' => array(
             'pretty_version' => 'v5.4.13',
