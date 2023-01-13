@@ -10,8 +10,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table("user")
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @UniqueEntity("email")
  */
+#[UniqueEntity('email')]
 class User implements UserInterface
 {
     /**
@@ -23,8 +23,8 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=25, unique=true)
-     * @Assert\NotBlank(message="Vous devez saisir un nom d'utilisateur.")
      */
+    #[Assert\NotBlank(message: "Vous devez saisir un nom d'utilisateur.")]
     private $username;
 
     /**
@@ -34,9 +34,9 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=60, unique=true)
-     * @Assert\NotBlank(message="Vous devez saisir une adresse email.")
-     * @Assert\Email(message="Le format de l'adresse n'est pas correcte.")
      */
+    #[Assert\NotBlank(message: 'Vous devez saisir une adresse email.')]
+    #[Assert\Email(message: "Le format de l'adresse n'est pas correcte.")]
     private $email;
 
     /**

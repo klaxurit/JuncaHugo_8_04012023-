@@ -15,17 +15,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TaskController extends AbstractController
 {
-    /**
-     * @Route("/tasks", name="task_list")
-     */
+    #[Route(path: '/tasks', name: 'task_list')]
     public function listAction(): Response
     {
         return $this->render('task/list.html.twig', ['tasks' => $this->getDoctrine()->getRepository('App:Task')->findAll()]);
     }
 
-    /**
-     * @Route("/tasks/create", name="task_create")
-     */
+    #[Route(path: '/tasks/create', name: 'task_create')]
     public function createAction(Request $request, EntityManager $em)
     {
         $task = new Task();
@@ -46,9 +42,7 @@ class TaskController extends AbstractController
         return $this->render('task/create.html.twig', ['form' => $form->createView()]);
     }
 
-    /**
-     * @Route("/tasks/{id}/edit", name="task_edit")
-     */
+    #[Route(path: '/tasks/{id}/edit', name: 'task_edit')]
     public function editAction(int $id, TaskRepository $taskRepository, Request $request, EntityManager $em)
     {
         $task = $taskRepository->find($id);
@@ -71,9 +65,7 @@ class TaskController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/tasks/{id}/toggle", name="task_toggle")
-     */
+    #[Route(path: '/tasks/{id}/toggle', name: 'task_toggle')]
     public function toggleTaskAction(int $id, TaskRepository $taskRepository, EntityManager $em): RedirectResponse
     {
         $task = $taskRepository->find($id);
@@ -86,9 +78,7 @@ class TaskController extends AbstractController
         return $this->redirectToRoute('task_list');
     }
 
-    /**
-     * @Route("/tasks/{id}/delete", name="task_delete")
-     */
+    #[Route(path: '/tasks/{id}/delete', name: 'task_delete')]
     public function deleteTaskAction(Task $task, EntityManager $em): RedirectResponse
     {
         $em->remove($task);

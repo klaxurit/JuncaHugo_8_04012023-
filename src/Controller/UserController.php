@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,25 +24,23 @@ class UserController extends AbstractController
         $this->userPasswordHasher = $userPasswordHasher;
     }
 
-    /**
-     * @Route("/users", name="user_list")
-     */
-    public function listAction(): Response
+    #[Route(path: '/users', name: 'user_list')]
+    public function listAction(UserRepository $userRepository): Response
     {
-        return $this->render('user/list.html.twig', ['users' => $this->getDoctrine()->getRepository('App:User')->findAll()]);
+        return $this->render('user/list.html.twig', [
+            'users' => $userRepository->findAll()
+        ]);
     }
 
-    /**
-     * @Route("/users/create", name="user_create")
-     */
-    public function createAction(Request $request, EntityManager $em)
+    #[Route(path: '/users/create', name: 'user_create')]
+    public function createAction(Request $request, EntityManagerInterface $em): Response
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
 
         $form->handleRequest($request);
 
-        if ($form->isValid() && $form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $password = $this->userPasswordHasher->hashPassword($user, $user->getPassword());
             $user->setPassword($password);
 
@@ -57,17 +55,15 @@ class UserController extends AbstractController
         return $this->render('user/create.html.twig', ['form' => $form->createView()]);
     }
 
-    /**
-     * @Route("/users/{id}/edit", name="user_edit")
-     */
-    public function editAction(int $id, UserRepository $userRepository, Request $request, EntityManager $em)
+    #[Route(path: '/users/{id}/edit', name: 'user_edit')]
+    public function editAction(int $id, UserRepository $userRepository, Request $request, EntityManagerInterface $em)
     {
         $user = $userRepository->find($id);
         $form = $this->createForm(UserType::class, $user);
 
         $form->handleRequest($request);
 
-        if ($form->isValid() && $form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $password = $this->userPasswordHasher->hashPassword($user, $user->getPassword());
             $user->setPassword($password);
 
