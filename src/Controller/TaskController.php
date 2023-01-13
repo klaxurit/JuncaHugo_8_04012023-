@@ -4,6 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Task;
 use App\Form\TaskType;
+use App\Repository\TaskRepository;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,15 +26,14 @@ class TaskController extends AbstractController
     /**
      * @Route("/tasks/create", name="task_create")
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request, EntityManager $em)
     {
         $task = new Task();
         $form = $this->createForm(TaskType::class, $task);
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+        if ($form->isValid() && $form->isSubmitted()) {
 
             $em->persist($task);
             $em->flush();
@@ -47,14 +49,16 @@ class TaskController extends AbstractController
     /**
      * @Route("/tasks/{id}/edit", name="task_edit")
      */
-    public function editAction(Task $task, Request $request)
+    public function editAction(int $id, TaskRepository $taskRepository, Request $request, EntityManager $em)
     {
+        $task = $taskRepository->find($id);
         $form = $this->createForm(TaskType::class, $task);
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+        if ($form->isValid() && $form->isSubmitted()) {
+            $em->persist($task);
+            $em->flush();
 
             $this->addFlash('success', 'La tâche a bien été modifiée.');
 
@@ -70,10 +74,12 @@ class TaskController extends AbstractController
     /**
      * @Route("/tasks/{id}/toggle", name="task_toggle")
      */
-    public function toggleTaskAction(Task $task): RedirectResponse
+    public function toggleTaskAction(int $id, TaskRepository $taskRepository, EntityManager $em): RedirectResponse
     {
+        $task = $taskRepository->find($id);
         $task->toggle(!$task->isDone());
-        $this->getDoctrine()->getManager()->flush();
+        $em->persist($task);
+        $em->flush();
 
         $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
 
@@ -83,9 +89,8 @@ class TaskController extends AbstractController
     /**
      * @Route("/tasks/{id}/delete", name="task_delete")
      */
-    public function deleteTaskAction(Task $task): RedirectResponse
+    public function deleteTaskAction(Task $task, EntityManager $em): RedirectResponse
     {
-        $em = $this->getDoctrine()->getManager();
         $em->remove($task);
         $em->flush();
 

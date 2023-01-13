@@ -39,7 +39,12 @@ class User implements UserInterface
      */
     private $email;
 
-    public function getId()
+    /**
+     * Get id
+     *
+     * @return integer|null
+     */
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -49,7 +54,7 @@ class User implements UserInterface
  *
  * @return string
  */
-    public function getUsername(): string
+    public function getUsername(): ?string
     {
         return $this->username;
     }
@@ -58,11 +63,13 @@ class User implements UserInterface
      * Set username
      *
      * @param [type] $username
-     * @return void
+     * @return self
      */
-    public function setUsername($username)
+    public function setUsername($username): self
     {
         $this->username = $username;
+
+        return $this;
     }
 
     /**
@@ -70,7 +77,8 @@ class User implements UserInterface
      *
      * @see UserInterface
      */
-    public function getUserIdentifier(): string {
+    public function getUserIdentifier(): ?string 
+    {
         return (string) $this->username;
     }
 
@@ -97,20 +105,22 @@ class User implements UserInterface
     /**
      * Set password
      *
-     * @param [type] $password
-     * @return void
+     * @param string $password
+     * @return self
      */
-    public function setPassword($password)
+    public function setPassword(string $password): self
     {
         $this->password = $password;
+        
+        return $this;
     }
 
     /**
      * Get email
      *
-     * @return void
+     * @return string|null
      */
-    public function getEmail()
+    public function getEmail(): ?string
     {
         return $this->email;
     }
@@ -118,12 +128,14 @@ class User implements UserInterface
     /**
      * Set email
      *
-     * @param [type] $email
-     * @return void
+     * @param string $email
+     * @return self
      */
-    public function setEmail($email)
+    public function setEmail(string $email): self
     {
         $this->email = $email;
+
+        return $this;
     }
 
     /**

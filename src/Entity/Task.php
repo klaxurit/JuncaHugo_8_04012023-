@@ -47,42 +47,91 @@ class Task
         $this->isDone = false;
     }
 
-    public function getId()
+    /**
+     * Get id
+     *
+     * @return integer|null
+     */
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getCreatedAt()
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime|null
+     */
+    public function getCreatedAt(): ?\DateTime
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt($createdAt)
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     * @return self
+     */
+    public function setCreatedAt(\DateTime $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
     }
 
-    public function getTitle()
+    /**
+     * Get title
+     *
+     * @return string|null
+     */
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    public function setTitle($title)
+    /**
+     * Set title
+     *
+     * @param string $title
+     * @return self
+     */
+    public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
     }
 
-    public function getContent()
+    /**
+     * Get content
+     *
+     * @return string|null
+     */
+    public function getContent(): ?string
     {
         return $this->content;
     }
 
-    public function setContent($content)
+    /**
+     * Set content
+     *
+     * @param string $content
+     * @return self
+     */
+    public function setContent(string $content): self
     {
         $this->content = $content;
+
+        return $this;
     }
 
-    public function isDone()
+    /**
+     * Get isDone
+     *
+     * @return boolean|null
+     */
+    public function isDone(): ?bool
     {
         return $this->isDone;
     }
@@ -90,17 +139,5 @@ class Task
     public function toggle($flag)
     {
         $this->isDone = $flag;
-    }
-
-    public function isIsDone(): ?bool
-    {
-        return $this->isDone;
-    }
-
-    public function setIsDone(bool $isDone): self
-    {
-        $this->isDone = $isDone;
-
-        return $this;
     }
 }

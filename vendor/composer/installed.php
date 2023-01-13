@@ -5,18 +5,18 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'd3663f23a8dedad2b4c87d5d24d9609c90c156a1',
+        'reference' => '854689b6c03c50415dab4adada88b88a26df956e',
         'name' => 'saro0h/to-do-list',
         'dev' => true,
     ),
     'versions' => array(
         'doctrine/annotations' => array(
-            'pretty_version' => '1.14.2',
-            'version' => '1.14.2.0',
+            'pretty_version' => '2.0.0',
+            'version' => '2.0.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../doctrine/annotations',
             'aliases' => array(),
-            'reference' => 'ad785217c1e9555a7d6c6c8c9f406395a5e2882b',
+            'reference' => 'd02c9f3742044e17d5fa8d28d8402a2d95c33302',
             'dev_requirement' => false,
         ),
         'doctrine/cache' => array(
@@ -368,7 +368,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'd3663f23a8dedad2b4c87d5d24d9609c90c156a1',
+            'reference' => '854689b6c03c50415dab4adada88b88a26df956e',
             'dev_requirement' => false,
         ),
         'sebastian/code-unit-reverse-lookup' => array(
