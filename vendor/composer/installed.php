@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '854689b6c03c50415dab4adada88b88a26df956e',
+        'reference' => 'd43d917c88d34572fcfa02068cdc928204e9f0dd',
         'name' => 'saro0h/to-do-list',
         'dev' => true,
     ),
@@ -368,7 +368,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '854689b6c03c50415dab4adada88b88a26df956e',
+            'reference' => 'd43d917c88d34572fcfa02068cdc928204e9f0dd',
             'dev_requirement' => false,
         ),
         'sebastian/code-unit-reverse-lookup' => array(
@@ -654,12 +654,12 @@
             'dev_requirement' => false,
         ),
         'symfony/flex' => array(
-            'pretty_version' => 'v1.19.4',
-            'version' => '1.19.4.0',
+            'pretty_version' => 'v2.2.4',
+            'version' => '2.2.4.0',
             'type' => 'composer-plugin',
             'install_path' => __DIR__ . '/../symfony/flex',
             'aliases' => array(),
-            'reference' => 'c82477240111bfe41a1067c9f0ab91d40bafa5b6',
+            'reference' => '52baff1adb29faf443c6710cb775bd88b9627381',
             'dev_requirement' => false,
         ),
         'symfony/form' => array(
