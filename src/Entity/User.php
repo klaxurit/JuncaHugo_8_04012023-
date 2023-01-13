@@ -44,11 +44,22 @@ class User implements UserInterface
         return $this->id;
     }
 
-    public function getUsername()
+/**
+ * Get username
+ *
+ * @return string
+ */
+    public function getUsername(): string
     {
         return $this->username;
     }
 
+    /**
+     * Set username
+     *
+     * @param [type] $username
+     * @return void
+     */
     public function setUsername($username)
     {
         $this->username = $username;
@@ -63,32 +74,64 @@ class User implements UserInterface
         return (string) $this->username;
     }
 
-    public function getSalt()
+    /**
+     * Get salt
+     *
+     * @return string|null
+     */
+    public function getSalt(): ?string
     {
         return null;
     }
 
-    public function getPassword()
+    /**
+     * Get password
+     *
+     * @return string|null
+     */
+    public function getPassword(): ?string
     {
         return $this->password;
     }
 
+    /**
+     * Set password
+     *
+     * @param [type] $password
+     * @return void
+     */
     public function setPassword($password)
     {
         $this->password = $password;
     }
 
+    /**
+     * Get email
+     *
+     * @return void
+     */
     public function getEmail()
     {
         return $this->email;
     }
 
+    /**
+     * Set email
+     *
+     * @param [type] $email
+     * @return void
+     */
     public function setEmail($email)
     {
         $this->email = $email;
     }
 
-    public function getRoles()
+    /**
+     * Get roles
+     *
+     * @return array
+     */
+    public function getRoles(): array
     {
         return ['ROLE_USER'];
     }
