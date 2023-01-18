@@ -4,32 +4,34 @@ namespace App\Controller;
 
 use App\Entity\Task;
 use App\Form\TaskType;
-use App\Repository\TaskRepository;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\Entity;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use App\Repository\TaskRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class TaskController extends AbstractController
 {
     #[Route(path: '/tasks', name: 'task_list')]
-    public function listAction(): Response
+    public function listAction(TaskRepository $taskRepository): Response
     {
-        return $this->render('task/list.html.twig', ['tasks' => $this->getDoctrine()->getRepository('App:Task')->findAll()]);
+        return $this->render('task/list.html.twig', [
+            'tasks' => $taskRepository->findAll()
+        ]);
     }
 
     #[Route(path: '/tasks/create', name: 'task_create')]
-    public function createAction(Request $request, EntityManager $em)
+    public function createAction(Request $request, EntityManagerInterface $em)
     {
         $task = new Task();
         $form = $this->createForm(TaskType::class, $task);
 
         $form->handleRequest($request);
 
-        if ($form->isValid() && $form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
 
             $em->persist($task);
             $em->flush();
@@ -43,14 +45,14 @@ class TaskController extends AbstractController
     }
 
     #[Route(path: '/tasks/{id}/edit', name: 'task_edit')]
-    public function editAction(int $id, TaskRepository $taskRepository, Request $request, EntityManager $em)
+    public function editAction(int $id, TaskRepository $taskRepository, Request $request, EntityManagerInterface $em)
     {
         $task = $taskRepository->find($id);
         $form = $this->createForm(TaskType::class, $task);
 
         $form->handleRequest($request);
 
-        if ($form->isValid() && $form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($task);
             $em->flush();
 
@@ -66,7 +68,7 @@ class TaskController extends AbstractController
     }
 
     #[Route(path: '/tasks/{id}/toggle', name: 'task_toggle')]
-    public function toggleTaskAction(int $id, TaskRepository $taskRepository, EntityManager $em): RedirectResponse
+    public function toggleTaskAction(int $id, TaskRepository $taskRepository, EntityManagerInterface $em): RedirectResponse
     {
         $task = $taskRepository->find($id);
         $task->toggle(!$task->isDone());
@@ -79,7 +81,7 @@ class TaskController extends AbstractController
     }
 
     #[Route(path: '/tasks/{id}/delete', name: 'task_delete')]
-    public function deleteTaskAction(Task $task, EntityManager $em): RedirectResponse
+    public function deleteTaskAction(Task $task, EntityManagerInterface $em): RedirectResponse
     {
         $em->remove($task);
         $em->flush();
