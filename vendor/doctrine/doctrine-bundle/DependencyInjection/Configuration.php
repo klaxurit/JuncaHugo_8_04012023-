@@ -2,31 +2,40 @@
 
 namespace Doctrine\Bundle\DoctrineBundle\DependencyInjection;
 
+use Doctrine\Common\Proxy\AbstractProxyFactory;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Mapping\ClassMetadataFactory;
 use ReflectionClass;
-use Symfony\Component\Config\Definition\BaseNode;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\DependencyInjection\Exception\LogicException;
 
+use function array_intersect_key;
 use function array_key_exists;
+use function array_keys;
+use function array_pop;
 use function assert;
 use function class_exists;
 use function constant;
+use function count;
+use function defined;
+use function implode;
 use function in_array;
 use function is_array;
 use function is_bool;
 use function is_int;
 use function is_string;
 use function key;
-use function method_exists;
 use function reset;
+use function sprintf;
 use function strlen;
 use function strpos;
 use function strtoupper;
 use function substr;
+use function trigger_deprecation;
 
 /**
  * This class contains the configuration information for the bundle
@@ -36,12 +45,9 @@ use function substr;
  */
 class Configuration implements ConfigurationInterface
 {
-    /** @var bool */
-    private $debug;
+    private bool $debug;
 
-    /**
-     * @param bool $debug Whether to use the debug mode
-     */
+    /** @param bool $debug Whether to use the debug mode */
     public function __construct(bool $debug)
     {
         $this->debug = $debug;
@@ -107,7 +113,9 @@ class Configuration implements ConfigurationInterface
                                 ->scalarNode('class')->isRequired()->end()
                                 ->booleanNode('commented')
                                     ->setDeprecated(
-                                        ...$this->getDeprecationMsg('The doctrine-bundle type commenting features were removed; the corresponding config parameter was deprecated in 2.0 and will be dropped in 3.0.', '2.0')
+                                        'doctrine/doctrine-bundle',
+                                        '2.0',
+                                        'The doctrine-bundle type commenting features were removed; the corresponding config parameter was deprecated in 2.0 and will be dropped in 3.0.',
                                     )
                                 ->end()
                             ->end()
@@ -135,12 +143,15 @@ class Configuration implements ConfigurationInterface
 
         $this->configureDbalDriverNode($connectionNode);
 
+        $collationKey = defined('Doctrine\DBAL\Connection::PARAM_ASCII_STR_ARRAY')
+            ? 'collate'
+            : 'collation';
+
         $connectionNode
             ->fixXmlConfig('option')
             ->fixXmlConfig('mapping_type')
             ->fixXmlConfig('slave')
             ->fixXmlConfig('replica')
-            ->fixXmlConfig('shard')
             ->fixXmlConfig('default_table_option')
             ->children()
                 ->scalarNode('driver')->defaultValue('pdo_mysql')->end()
@@ -160,12 +171,11 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('server_version')->end()
                 ->scalarNode('driver_class')->end()
                 ->scalarNode('wrapper_class')->end()
-                ->scalarNode('shard_manager_class')->end()
-                ->scalarNode('shard_choser')->end()
-                ->scalarNode('shard_choser_service')->end()
                 ->booleanNode('keep_slave')
                     ->setDeprecated(
-                        ...$this->getDeprecationMsg('The "keep_slave" configuration key is deprecated since doctrine-bundle 2.2. Use the "keep_replica" configuration key instead.', '2.2')
+                        'doctrine/doctrine-bundle',
+                        '2.2',
+                        'The "keep_slave" configuration key is deprecated since doctrine-bundle 2.2. Use the "keep_replica" configuration key instead.',
                     )
                 ->end()
                 ->booleanNode('keep_replica')->end()
@@ -178,7 +188,10 @@ class Configuration implements ConfigurationInterface
                     ->prototype('scalar')->end()
                 ->end()
                 ->arrayNode('default_table_options')
-                    ->info("This option is used by the schema-tool and affects generated SQL. Possible keys include 'charset','collate', and 'engine'.")
+                ->info(sprintf(
+                    "This option is used by the schema-tool and affects generated SQL. Possible keys include 'charset','%s', and 'engine'.",
+                    $collationKey
+                ))
                     ->useAttributeAsKey('name')
                     ->prototype('scalar')->end()
                 ->end()
@@ -189,7 +202,9 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->arrayNode('slaves')
                     ->setDeprecated(
-                        ...$this->getDeprecationMsg('The "slaves" configuration key will be renamed to "replicas" in doctrine-bundle 3.0. "slaves" is deprecated since doctrine-bundle 2.2.', '2.2')
+                        'doctrine/doctrine-bundle',
+                        '2.2',
+                        'The "slaves" configuration key will be renamed to "replicas" in doctrine-bundle 3.0. "slaves" is deprecated since doctrine-bundle 2.2.',
                     )
                     ->useAttributeAsKey('name')
                     ->prototype('array');
@@ -203,23 +218,6 @@ class Configuration implements ConfigurationInterface
                     ->prototype('array');
         $this->configureDbalDriverNode($replicaNode);
 
-        $shardNode = $connectionNode
-            ->children()
-                ->arrayNode('shards')
-                    ->prototype('array');
-
-        // TODO: Remove when https://github.com/psalm/psalm-plugin-symfony/pull/168 is released
-        assert($shardNode instanceof ArrayNodeDefinition);
-
-        $shardNode
-            ->children()
-                ->integerNode('id')
-                    ->min(1)
-                    ->isRequired()
-                ->end()
-            ->end();
-        $this->configureDbalDriverNode($shardNode);
-
         return $node;
     }
 
@@ -231,6 +229,29 @@ class Configuration implements ConfigurationInterface
     private function configureDbalDriverNode(ArrayNodeDefinition $node): void
     {
         $node
+            ->validate()
+            ->always(static function (array $values) {
+                if (! isset($values['url'])) {
+                    return $values;
+                }
+
+                $urlConflictingOptions = ['host' => true, 'port' => true, 'user' => true, 'password' => true, 'path' => true, 'dbname' => true, 'unix_socket' => true, 'memory' => true];
+                $urlConflictingValues  = array_keys(array_intersect_key($values, $urlConflictingOptions));
+
+                if ($urlConflictingValues) {
+                    $tail = count($urlConflictingValues) > 1 ? sprintf('or "%s" options', array_pop($urlConflictingValues)) : 'option';
+                    trigger_deprecation(
+                        'doctrine/doctrine-bundle',
+                        '2.4',
+                        'Setting the "doctrine.dbal.%s" %s while the "url" one is defined is deprecated',
+                        implode('", "', $urlConflictingValues),
+                        $tail
+                    );
+                }
+
+                return $values;
+            })
+            ->end()
             ->children()
                 ->scalarNode('url')->info('A URL with connection information; any parameter value parsed from this string will override explicitly set parameters')->end()
                 ->scalarNode('dbname')->end()
@@ -238,7 +259,12 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('port')->info('Defaults to null at runtime.')->end()
                 ->scalarNode('user')->info('Defaults to "root" at runtime.')->end()
                 ->scalarNode('password')->info('Defaults to null at runtime.')->end()
-                ->booleanNode('override_url')->defaultValue(false)->info('Allows overriding parts of the "url" parameter with dbname, host, port, user, and/or password parameters.')->end()
+                ->booleanNode('override_url')->setDeprecated(
+                    'doctrine/doctrine-bundle',
+                    '2.4',
+                    'The "doctrine.dbal.override_url" configuration key is deprecated.',
+                )->end()
+                ->scalarNode('dbname_suffix')->end()
                 ->scalarNode('application_name')->end()
                 ->scalarNode('charset')->end()
                 ->scalarNode('path')->end()
@@ -354,14 +380,16 @@ class Configuration implements ConfigurationInterface
                         })
                         ->then(static function ($v) {
                             $v = (array) $v;
-                            // Key that should not be rewritten to the connection config
+                            // Key that should not be rewritten to the entity-manager config
                             $excludedKeys  = [
                                 'default_entity_manager' => true,
                                 'auto_generate_proxy_classes' => true,
+                                'enable_lazy_ghost_objects' => true,
                                 'proxy_dir' => true,
                                 'proxy_namespace' => true,
                                 'resolve_target_entities' => true,
                                 'resolve_target_entity' => true,
+                                'controller_resolver' => true,
                             ];
                             $entityManager = [];
                             foreach ($v as $key => $value) {
@@ -382,7 +410,7 @@ class Configuration implements ConfigurationInterface
                     ->children()
                         ->scalarNode('default_entity_manager')->end()
                         ->scalarNode('auto_generate_proxy_classes')->defaultValue(false)
-                            ->info('Auto generate mode possible values are: "NEVER", "ALWAYS", "FILE_NOT_EXISTS", "EVAL"')
+                            ->info('Auto generate mode possible values are: "NEVER", "ALWAYS", "FILE_NOT_EXISTS", "EVAL", "FILE_NOT_EXISTS_OR_CHANGED"')
                             ->validate()
                                 ->ifTrue(function ($v) {
                                     $generationModes = $this->getAutoGenerateModes();
@@ -396,7 +424,7 @@ class Configuration implements ConfigurationInterface
                                     }
 
                                     if (is_string($v)) {
-                                        if (in_array(strtoupper($v), $generationModes['names']/*array('NEVER', 'ALWAYS', 'FILE_NOT_EXISTS', 'EVAL')*/)) {
+                                        if (in_array(strtoupper($v), $generationModes['names']/*array('NEVER', 'ALWAYS', 'FILE_NOT_EXISTS', 'EVAL', 'FILE_NOT_EXISTS_OR_CHANGED')*/)) {
                                             return false;
                                         }
                                     }
@@ -412,8 +440,23 @@ class Configuration implements ConfigurationInterface
                                 })
                             ->end()
                         ->end()
+                        ->booleanNode('enable_lazy_ghost_objects')->defaultFalse()
+                        ->end()
                         ->scalarNode('proxy_dir')->defaultValue('%kernel.cache_dir%/doctrine/orm/Proxies')->end()
                         ->scalarNode('proxy_namespace')->defaultValue('Proxies')->end()
+                        ->arrayNode('controller_resolver')
+                            ->canBeDisabled()
+                            ->children()
+                                ->booleanNode('auto_mapping')
+                                    ->defaultTrue()
+                                    ->info('Set to false to disable using route placeholders as lookup criteria when the primary key doesn\'t match the argument name')
+                                ->end()
+                                ->booleanNode('evict_cache')
+                                    ->info('Set to true to fetch the entity from the database instead of using the cache, if any')
+                                    ->defaultFalse()
+                                ->end()
+                            ->end()
+                        ->end()
                     ->end()
                     ->fixXmlConfig('entity_manager')
                     ->append($this->getOrmEntityManagersNode())
@@ -541,15 +584,19 @@ class Configuration implements ConfigurationInterface
                 ->append($this->getOrmCacheDriverNode('metadata_cache_driver'))
                 ->append($this->getOrmCacheDriverNode('result_cache_driver'))
                 ->append($this->getOrmEntityListenersNode())
+                ->fixXmlConfig('schema_ignore_class', 'schema_ignore_classes')
                 ->children()
                     ->scalarNode('connection')->end()
-                    ->scalarNode('class_metadata_factory_name')->defaultValue('Doctrine\ORM\Mapping\ClassMetadataFactory')->end()
-                    ->scalarNode('default_repository_class')->defaultValue('Doctrine\ORM\EntityRepository')->end()
+                    ->scalarNode('class_metadata_factory_name')->defaultValue(ClassMetadataFactory::class)->end()
+                    ->scalarNode('default_repository_class')->defaultValue(EntityRepository::class)->end()
                     ->scalarNode('auto_mapping')->defaultFalse()->end()
                     ->scalarNode('naming_strategy')->defaultValue('doctrine.orm.naming_strategy.default')->end()
                     ->scalarNode('quote_strategy')->defaultValue('doctrine.orm.quote_strategy.default')->end()
                     ->scalarNode('entity_listener_resolver')->defaultNull()->end()
                     ->scalarNode('repository_factory')->defaultValue('doctrine.orm.container_repository_factory')->end()
+                    ->arrayNode('schema_ignore_classes')
+                        ->prototype('scalar')->end()
+                    ->end()
                 ->end()
                 ->children()
                     ->arrayNode('second_level_cache')
@@ -693,7 +740,6 @@ class Configuration implements ConfigurationInterface
         $node        = $treeBuilder->getRootNode();
 
         $node
-            ->addDefaultsIfNotSet()
             ->beforeNormalization()
                 ->ifString()
                 ->then(static function ($v): array {
@@ -706,11 +752,8 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('pool')->end()
             ->end();
 
-        if ($name === 'metadata_cache_driver') {
-            $node->setDeprecated(...$this->getDeprecationMsg(
-                'The "metadata_cache_driver" configuration key is deprecated. PHP Array cache is now automatically registered when %kernel.debug% is false.',
-                '2.3'
-            ));
+        if ($name !== 'metadata_cache_driver') {
+            $node->addDefaultsIfNotSet();
         }
 
         return $node;
@@ -725,7 +768,7 @@ class Configuration implements ConfigurationInterface
     {
         $constPrefix = 'AUTOGENERATE_';
         $prefixLen   = strlen($constPrefix);
-        $refClass    = new ReflectionClass('Doctrine\Common\Proxy\AbstractProxyFactory');
+        $refClass    = new ReflectionClass(AbstractProxyFactory::class);
         $constsArray = $refClass->getConstants();
         $namesArray  = [];
         $valuesArray = [];
@@ -743,28 +786,5 @@ class Configuration implements ConfigurationInterface
             'names' => $namesArray,
             'values' => $valuesArray,
         ];
-    }
-
-    /**
-     * Returns the correct deprecation param's as an array for setDeprecated.
-     *
-     * Symfony/Config v5.1 introduces a deprecation notice when calling
-     * setDeprecation() with less than 3 args and the getDeprecation method was
-     * introduced at the same time. By checking if getDeprecation() exists,
-     * we can determine the correct param count to use when calling setDeprecated.
-     *
-     * @return list<string>|array{0:string, 1: numeric-string, string}
-     */
-    private function getDeprecationMsg(string $message, string $version): array
-    {
-        if (method_exists(BaseNode::class, 'getDeprecation')) {
-            return [
-                'doctrine/doctrine-bundle',
-                $version,
-                $message,
-            ];
-        }
-
-        return [$message];
     }
 }

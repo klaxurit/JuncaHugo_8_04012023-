@@ -2,10 +2,15 @@
 
 namespace Doctrine\Bundle\DoctrineBundle;
 
+use Closure;
+use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\CacheCompatibilityPass;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\CacheSchemaSubscriberPass;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DbalSchemaFilterPass;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\EntityListenerPass;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\IdGeneratorPass;
+use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\MiddlewaresPass;
+use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\RemoveLoggingMiddlewarePass;
+use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\RemoveProfilerControllerPass;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\ServiceRepositoryCompilerPass;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\WellKnownSchemaFilterPass;
 use Doctrine\Common\Util\ClassUtils;
@@ -28,8 +33,7 @@ use function spl_autoload_unregister;
 
 class DoctrineBundle extends Bundle
 {
-    /** @var callable|null */
-    private $autoloader;
+    private ?Closure $autoloader = null;
 
     /**
      * {@inheritDoc}
@@ -48,6 +52,7 @@ class DoctrineBundle extends Bundle
             }
         }
 
+        $container->addCompilerPass(new CacheCompatibilityPass());
         $container->addCompilerPass(new DoctrineValidationPass('orm'));
         $container->addCompilerPass(new EntityListenerPass());
         $container->addCompilerPass(new ServiceRepositoryCompilerPass());
@@ -55,6 +60,9 @@ class DoctrineBundle extends Bundle
         $container->addCompilerPass(new WellKnownSchemaFilterPass());
         $container->addCompilerPass(new DbalSchemaFilterPass());
         $container->addCompilerPass(new CacheSchemaSubscriberPass(), PassConfig::TYPE_BEFORE_REMOVING, -10);
+        $container->addCompilerPass(new RemoveProfilerControllerPass());
+        $container->addCompilerPass(new RemoveLoggingMiddlewarePass());
+        $container->addCompilerPass(new MiddlewaresPass());
 
         if (! class_exists(RegisterUidTypePass::class)) {
             return;
