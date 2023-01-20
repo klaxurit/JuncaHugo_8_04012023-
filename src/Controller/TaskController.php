@@ -32,7 +32,7 @@ class TaskController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
+            $task->setUser($this->getUser());
             $em->persist($task);
             $em->flush();
 
@@ -81,8 +81,10 @@ class TaskController extends AbstractController
     }
 
     #[Route(path: '/tasks/{id}/delete', name: 'task_delete')]
-    public function deleteTaskAction(Task $task, EntityManagerInterface $em): RedirectResponse
+    public function deleteTaskAction(int $id, TaskRepository $taskRepository, EntityManagerInterface $em): RedirectResponse
     {
+        $task = $taskRepository->find($id);
+
         $em->remove($task);
         $em->flush();
 
