@@ -1,0 +1,10 @@
+{# templates/bundles/TwigBundle/Exception/error404.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Une erreur c'est produite.</h1>
+
+    <p>
+        Une erreur est survenue, veuillez retournez sur la page <a href="{{ path('homepage') }}">d'acceuil</a>.
+    </p>
+{% endblock %}
