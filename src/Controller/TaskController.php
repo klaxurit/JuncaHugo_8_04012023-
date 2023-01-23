@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Task;
+use App\Entity\User;
 use App\Form\TaskType;
 use Doctrine\ORM\Mapping\Entity;
 use App\Repository\TaskRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,6 +17,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class TaskController extends AbstractController
 {
+    public function __construct(private readonly TaskRepository $taskRepository,private readonly UserRepository $userRepository)
+    {
+    }
+
     #[Route(path: '/tasks', name: 'task_list')]
     public function listAction(TaskRepository $taskRepository): Response
     {
@@ -53,6 +59,9 @@ class TaskController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if(!$task->getUser()){
+                $task->setUser($this->userRepository->findOneBy(["email" => User::ANONYMOUS_USER_EMAIL]));
+            }
             $em->persist($task);
             $em->flush();
 
@@ -84,6 +93,7 @@ class TaskController extends AbstractController
     public function deleteTaskAction(int $id, TaskRepository $taskRepository, EntityManagerInterface $em): RedirectResponse
     {
         $task = $taskRepository->find($id);
+        $this->denyAccessUnlessGranted('TASK_DELETE', $task);
 
         $em->remove($task);
         $em->flush();
