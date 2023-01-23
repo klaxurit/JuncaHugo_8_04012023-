@@ -2,23 +2,21 @@
 
 namespace Tests\AppBundle\Controller;
 
-use App\Kernel;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class DefaultControllerTest extends WebTestCase
 {
-    protected static function getKernelClass(): string
+    public function testSomething(): void
     {
-        return Kernel::class;
-    }
-
-    public function testIndex(): void
-    {
+        // This calls KernelTestCase::bootKernel(), and creates a
+        // "client" that is acting as the browser
         $client = static::createClient();
 
+        // Request a specific page
         $crawler = $client->request('GET', '/');
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertContains('Welcome to Symfony', $crawler->filter('#container h1')->text());
+        // Validate a successful response and some content
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorTextContains('h1', 'Bienvenue sur Todo List, l\'application vous permettant de gérer l\'ensemble de vos tâches sans effort !');
     }
 }
