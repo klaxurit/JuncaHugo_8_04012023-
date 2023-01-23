@@ -1,0 +1,12 @@
+{# templates/bundles/TwigBundle/Exception/error404.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Erreur 404 : Page non trouvée</h1>
+
+    <p>
+        Désolé, la page que vous avez demandée est introuvable. Il est possible que le lien que vous avez suivi soit rompu ou que la page ait été supprimée.
+        Veuillez vérifier l'orthographe de l'URL ou utiliser notre barre de recherche pour trouver ce que vous cherchez.
+        Cliquez <a href="{{ path('homepage') }}">ici</a> pour retourner sur la page d'acceuil.
+    </p>
+{% endblock %}
