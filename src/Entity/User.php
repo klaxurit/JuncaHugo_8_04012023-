@@ -34,6 +34,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Email(message: "Le format de l'adresse n'est pas correcte.")]
     private $email;
 
+    #[ORM\Column(type: 'json')]
+    private $roles = [];
+
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Task::class, orphanRemoval: true)]
     private Collection $tasks;
 
@@ -83,6 +86,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getUserIdentifier(): ?string 
     {
         return (string) $this->username;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
     }
 
     /**
@@ -139,16 +161,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->email = $email;
 
         return $this;
-    }
-
-    /**
-     * Get roles
-     *
-     * @return array
-     */
-    public function getRoles(): array
-    {
-        return ['ROLE_USER'];
     }
 
     public function eraseCredentials()
