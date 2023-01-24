@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class DefaultController extends AbstractController
 {
+    
     #[Route(path: '/', name: 'homepage')]
     public function indexAction(): Response
     {
