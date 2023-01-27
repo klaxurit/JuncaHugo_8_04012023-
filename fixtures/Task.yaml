@@ -1,0 +1,9 @@
+App\Entity\Task:
+    task{1..15}:
+        title: '<jobTitle()>'
+        content: '<sentence(5, 10)>'
+        user: '@user_<numberBetween(1, 3)>'
+
+    task{1..5}:
+        title: '<jobTitle()>'
+        content: '<sentence(5, 10)>'
