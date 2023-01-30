@@ -4,11 +4,9 @@ namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-#[AsController]
 class SecurityController extends AbstractController
 {
     #[Route(path: '/login', name: 'app_login')]
@@ -16,6 +14,7 @@ class SecurityController extends AbstractController
     {
         if (!$this->getUser()) {
             $error = $authenticationUtils->getLastAuthenticationError();
+            // dd($authenticationUtils);
             $lastUsername = $authenticationUtils->getLastUsername();
             
             return $this->render('security/login.html.twig', [
@@ -26,11 +25,11 @@ class SecurityController extends AbstractController
         return $this->render('default/index.html.twig');
     }
 
-    // #[Route(path: '/login_check', name: 'login_check')]
-    // public function loginCheck()
-    // {
-    //     // This code is never executed.
-    // }
+    #[Route(path: '/login_check', name: 'login_check')]
+    public function loginCheck()
+    {
+        // This code is never executed.
+    }
 
     #[Route(path: '/logout', name: 'app_logout', methods: ['GET'])]
     public function logout(): void

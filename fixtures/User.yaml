@@ -3,16 +3,16 @@ App\Entity\User:
         username: '<username()>'
         email: '<email()>'
         roles: '[ROLE_USER]'
-        password: 'password'
+        password: '<hashPassword("password")>'
 
     user_admin:
         username: 'Administrateur'
         email: '<email()>'
         roles: '[ROLE_ADMIN]'
-        password: 'password'
+        password: '<hashPassword("password")>'
 
     user_anonymous:
         username: 'Anonymous'
         email: '<email()>'
         roles: '[ROLE_ANONYMOUS]'
-        password: 'password'
+        password: '<hashPassword("password")>'

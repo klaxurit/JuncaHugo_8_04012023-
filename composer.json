@@ -56,7 +56,10 @@
         ],
         "post-update-cmd": [
             "@symfony-scripts"
-        ]
+        ],
+        "auto-scripts": {
+
+        }
     },
     "extra": {
         "src-dir": "src/App",

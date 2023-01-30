@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'e156e7a1f71c18c0d3be925da5e7eb1f88bcf219',
+        'reference' => 'd14b3c76ad377af5e3006cc6014df538615907b2',
         'name' => 'saro0h/to-do-list',
         'dev' => true,
     ),
@@ -413,7 +413,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'e156e7a1f71c18c0d3be925da5e7eb1f88bcf219',
+            'reference' => 'd14b3c76ad377af5e3006cc6014df538615907b2',
             'dev_requirement' => false,
         ),
         'sebastian/cli-parser' => array(

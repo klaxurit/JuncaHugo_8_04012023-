@@ -20,6 +20,8 @@ services:
         tags:
             - 'controller.service_arguments'
             - 'container.service_subscriber'
+    App\DataFixtures\Providers\HashPasswordProvider:
+        tags: [ { name: nelmio_alice.faker.provider } ]
     # obliger d'ajouter calls: pour eviter l'erreur "has no container set, did you forget to define it as a service subscriber?"
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
