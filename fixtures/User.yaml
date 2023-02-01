@@ -7,7 +7,7 @@ App\Entity\User:
 
     user_admin:
         username: 'Administrateur'
-        email: '<email()>'
+        email: 'admin\@admin.test'
         roles: '[ROLE_ADMIN]'
         password: '<hashPassword("password")>'
 

@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'd14b3c76ad377af5e3006cc6014df538615907b2',
+        'reference' => 'ae4db8c4243aaac35e948960276af97fbbde39fc',
         'name' => 'saro0h/to-do-list',
         'dev' => true,
     ),
@@ -207,6 +207,15 @@
             'aliases' => array(),
             'reference' => 'dd19fe8e07cc3f374308565667eecd4958c22106',
             'dev_requirement' => false,
+        ),
+        'liip/test-fixtures-bundle' => array(
+            'pretty_version' => '2.5.0',
+            'version' => '2.5.0.0',
+            'type' => 'symfony-bundle',
+            'install_path' => __DIR__ . '/../liip/test-fixtures-bundle',
+            'aliases' => array(),
+            'reference' => '497e90f9d6b03552da1bab8ffd588d1a284b3802',
+            'dev_requirement' => true,
         ),
         'monolog/monolog' => array(
             'pretty_version' => '2.8.0',
@@ -413,7 +422,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'd14b3c76ad377af5e3006cc6014df538615907b2',
+            'reference' => 'ae4db8c4243aaac35e948960276af97fbbde39fc',
             'dev_requirement' => false,
         ),
         'sebastian/cli-parser' => array(

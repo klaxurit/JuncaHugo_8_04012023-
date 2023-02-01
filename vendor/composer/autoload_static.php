@@ -118,6 +118,7 @@ class ComposerStaticInit4ef3f587628ea9c24d961ce76788aba5
         ),
         'L' => 
         array (
+            'Liip\\TestFixturesBundle\\' => 24,
             'Laminas\\Code\\' => 13,
         ),
         'H' => 
@@ -437,6 +438,10 @@ class ComposerStaticInit4ef3f587628ea9c24d961ce76788aba5
         'Monolog\\' => 
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
+        ),
+        'Liip\\TestFixturesBundle\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/liip/test-fixtures-bundle/src',
         ),
         'Laminas\\Code\\' => 
         array (
