@@ -15,8 +15,6 @@ class TaskTest extends KernelTestCase
         ->setCreatedAt(new \DateTime());
     }
 
-
-
     public function testGetId() {
         $id = $this->getEntity()->getId();
         $this->assertEquals($id, 1);
