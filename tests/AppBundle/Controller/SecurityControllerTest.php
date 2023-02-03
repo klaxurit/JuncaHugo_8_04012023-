@@ -9,17 +9,20 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class SecurityControllerTest extends WebTestCase
 {
+    /** @var AbstractDatabaseTool */
     protected $databaseTool;
+    protected $client;
 
     public function setUp(): void
     {
+        // parent::setUp();
+        $this->client = $this->createClient();
         $this->databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
     }
 
     public function testLoginPage(): void
     {
-        $client = static::createClient();
-        $client->request('GET', '/login');
+        $this->client->request('GET', '/login');
 
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $this->assertSelectorTextContains('button', 'Se connecter');
@@ -28,38 +31,31 @@ class SecurityControllerTest extends WebTestCase
 
     public function testLoginWithBadCredentials() 
     {
-        $client = static::createClient();
-        $crawler = $client->request('GET', '/login');
+        $crawler = $this->client->request('GET', '/login');
         $form = $crawler->selectButton('Se connecter')->form([
             '_username' => 'Administrateur',
             '_password' => 'wrongpassword'
         ]);
-        $client->submit($form);
-        $client->followRedirect();
+        $this->client->submit($form);
+        $this->client->followRedirect();
         $this->assertRouteSame('app_login');
         $this->assertSelectorExists('.alert.alert-danger');
     }
 
     public function testLoginWithGoodCredentials()
     {
-        $client = static::createClient();
         $this->databaseTool->loadFixtures([
-            'Bamarni\MainBundle\DataFixtures\ORM\LoadData',
-            'Me\MyBundle\DataFixtures\ORM\LoadData'
+            // __DIR__ . '/fixtures/User.yaml'
+            'App\DataFixtures\AppFixtures'
         ]);
-        $client->request('GET', '/login');
-        $client->submitForm('Se connecter', [
+        $this->client->request('GET', '/login');
+        $this->client->submitForm('Se connecter', [
             '_username' => 'Administrateur',
             '_password' => 'password',
         ]);
         
-        $client->followRedirect();
+        $this->client->followRedirect();
+        // $this->assertSelectorTextContains('h1', "Bienvenue sur Todo List, l'application vous permettant de gérer l'ensemble de vos tâches sans effort !");
         $this->assertRouteSame('homepage');
     }
-
-    // public function testRedirectAfterLogin() {
-    //     $client = static::createClient();
-    //     $client->request('GET', '/login');
-    //     $this->assertResponseRedirects('/');
-    // }
 }
