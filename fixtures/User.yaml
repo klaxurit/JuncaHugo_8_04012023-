@@ -11,6 +11,12 @@ App\Entity\User:
         roles: '[ROLE_ADMIN]'
         password: '<hashPassword("password")>'
 
+    user_user:
+        username: 'Utilisateur'
+        email: 'user\@user.test'
+        roles: '[ROLE_USER]'
+        password: '<hashPassword("password")>'
+
     user_anonymous:
         username: 'Anonymous'
         email: '<email()>'

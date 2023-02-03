@@ -21,19 +21,13 @@ class SecurityController extends AbstractController
                 'error' => $error,
             ]);
         }
-        return $this->render('default/index.html.twig');
-    }
-
-    #[Route(path: '/login_check', name: 'login_check')]
-    public function loginCheck()
-    {
-        // This code is never executed.
     }
 
     #[Route(path: '/logout', name: 'app_logout', methods: ['GET'])]
+    // @codeCoverageIgnoreStart
     public function logout(): void
     {
         // controller can be blank: it will never be called!
-        throw new \Exception('Don\'t forget to activate logout in security.yaml');
     }
+    // @codeCoverageIgnoreEnd
 }

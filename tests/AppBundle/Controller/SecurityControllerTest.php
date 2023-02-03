@@ -45,7 +45,19 @@ class SecurityControllerTest extends WebTestCase
         ]);
         
         $this->client->followRedirect();
+        $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('h1', "Bienvenue sur Todo List, l'application vous permettant de gérer l'ensemble de vos tâches sans effort !");
         $this->assertRouteSame('homepage');
+    }
+
+    public function testLogOut() {
+        $this->client->request('GET', '/login');
+        $this->client->submitForm('Se connecter', [
+            '_username' => 'Administrateur',
+            '_password' => 'password',
+        ]);
+        $this->client->request('GET', '/logout');
+        $this->client->followRedirect();
+        $this->assertResponseIsSuccessful();
     }
 }
