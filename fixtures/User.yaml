@@ -19,6 +19,6 @@ App\Entity\User:
 
     user_anonymous:
         username: 'Anonymous'
-        email: '<email()>'
+        email: 'utilisateur\@anonyme.com'
         roles: '[ROLE_ANONYMOUS]'
         password: '<hashPassword("password")>'

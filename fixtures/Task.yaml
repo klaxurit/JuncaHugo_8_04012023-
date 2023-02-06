@@ -7,3 +7,7 @@ App\Entity\Task:
     task{1..5}:
         title: '<jobTitle()>'
         content: '<sentence(5, 10)>'
+
+    task_test:
+        title: 'task title test'
+        content: 'task content test'
