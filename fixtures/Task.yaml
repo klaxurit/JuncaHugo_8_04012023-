@@ -11,3 +11,8 @@ App\Entity\Task:
     task_test:
         title: 'task title test'
         content: 'task content test'
+
+    task_user:
+        title: 'User task title'
+        content: 'User task content'
+        user: '@user_user'

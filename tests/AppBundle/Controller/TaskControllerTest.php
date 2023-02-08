@@ -94,4 +94,16 @@ class TaskControllerTest extends WebTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $this->assertNull($task->getId());
     }
+
+    public function testAuthorDeleteTask()
+    {
+        $task = $this->taskRepository->findOneByTitle('User task title');
+        $user = $task->getUser();
+        $this->client->loginUser($user);
+        $this->client->request('GET', '/tasks/' . $task->getId() . '/delete');
+        $this->client->followRedirect();
+        
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+        $this->assertNull($task->getId());
+    }
 }

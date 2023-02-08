@@ -11,6 +11,7 @@ class HashPasswordProvider
      * @var UserPasswordHasherInterface
      */
     private $encoder;
+    // @codeCoverageIgnoreStart
     public function __construct(UserPasswordHasherInterface $encoder)
     {
         $this->encoder = $encoder;
@@ -20,5 +21,5 @@ class HashPasswordProvider
     {
         return $this->encoder->hashPassword(new User(), $plainPassword);
     }
-
+    // @codeCoverageIgnoreEnd
 }
