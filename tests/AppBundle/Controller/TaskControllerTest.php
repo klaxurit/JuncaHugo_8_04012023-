@@ -19,7 +19,7 @@ class TaskControllerTest extends WebTestCase
         $this->taskRepository = $this->getContainer()->get(TaskRepository::class);
         $this->userRepository = $this->getContainer()->get(UserRepository::class);
     }
-
+    
     public function testShowTasksList()
     {
         $this->client->request('GET', '/tasks');
