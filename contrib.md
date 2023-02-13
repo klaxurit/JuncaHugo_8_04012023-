@@ -35,4 +35,16 @@ This file describes the steps to contribute to the Symfony 5.4 project on Github
 
 We thank you for your contribution to the Symfony Todo project. Every contribution, big or small, helps to improve the quality of the project for users.
 
+
+## Autheur
+
+👤 **JUNCA Hugo**
+
+* Website: JUNCA Hugo
+* Twitter: [@axurit19](https://twitter.com/axurit19)
+* Github: [@klaxurit](https://github.com/klaxurit)
+* LinkedIn: [@juncahugo](https://linkedin.com/in/juncahugo)
+
+***
+
 🚀 Happy contributing! 🚀
