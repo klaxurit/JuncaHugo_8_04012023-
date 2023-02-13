@@ -10,15 +10,13 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class TaskVoter extends Voter
 {
-    public const EDIT = 'TASK_EDIT';
-    public const VIEW = 'TASK_VIEW';
     public const DELETE = 'TASK_DELETE';
 
     protected function supports(string $attribute, $subject): bool
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, [self::EDIT, self::VIEW, self::DELETE])
+        return in_array($attribute, [self::DELETE])
             && $subject instanceof \App\Entity\Task;
     }
 
@@ -31,34 +29,32 @@ class TaskVoter extends Voter
         }
 
         $task = $subject;
-        if (!$task->getUser()) {
+        if (!$task instanceof Task) {
             return false;
         }
 
-
-        // ... (check conditions and return true to grant permission) ...
-        switch ($attribute) {
-            case self::EDIT:
-                // logic to determine if the user can EDIT
-                // return true or false
-                break;
-            case self::VIEW:
-                // logic to determine if the user can VIEW
-                // return true or false
-                break;
-            case self::DELETE:
-                return $this->canDelete($task, $user);
+        if (self::DELETE) {
+            return $this->canDelete($task, $user);
         }
 
         return false;
     }
 
+    public function taskIsAnonymous(Task $task)
+    {
+        return (!$task->getUser() || $task->getUser()->getEmail() === User::ANONYMOUS_USER_EMAIL);
+    }
+
+    public function isTaskAuthor(Task $task, User $user)
+    {
+        if ($task->getUser()) {
+            return $task->getUser()->getEmail() === $user->getEmail();
+        }
+    }
+
     public function canDelete(Task $task, User $user)
     {
-        if (
-            in_array('ROLE_ADMIN', $user->getRoles()) && $task->getUser()->getEmail() === User::ANONYMOUS_USER_EMAIL || 
-            $task->getUser()->getEmail() === $user->getEmail()
-            ) {
+        if (in_array('ROLE_ADMIN', $user->getRoles()) && $this->taskIsAnonymous($task) || $this->isTaskAuthor($task, $user)) {
             return true;
         }
         return false;

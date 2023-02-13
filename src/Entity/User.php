@@ -8,13 +8,11 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'user')]
-#[UniqueEntity('email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     public const ANONYMOUS_USER_EMAIL = "utilisateur@anonyme.com";
@@ -28,7 +26,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotBlank(message: "Vous devez saisir un nom d'utilisateur.")]
     private $username;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'string')]
     private $password;
 
     #[ORM\Column(length: 180, unique: true)]
@@ -120,25 +118,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * Get password
-     *
-     * @return string|null
+     * @see PasswordAuthenticatedUserInterface
      */
-    public function getPassword(): ?string
+    public function getPassword(): string
     {
         return $this->password;
     }
 
-    /**
-     * Set password
-     *
-     * @param string $password
-     * @return self
-     */
     public function setPassword(string $password): self
     {
         $this->password = $password;
-        
+
         return $this;
     }
 
@@ -195,6 +185,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $task->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function setId(?int $id): self {
+        $this->id = $id;
 
         return $this;
     }
