@@ -2,7 +2,6 @@
 namespace App\Tests\Entity;
 
 use App\Entity\Task;
-use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class TaskTest extends KernelTestCase
@@ -15,31 +14,16 @@ class TaskTest extends KernelTestCase
         ->setCreatedAt(new \DateTime());
     }
 
-    public function testGetId() {
-        $id = $this->getEntity()->getId();
-        $this->assertEquals($id, 1);
-    }
-
-    public function testGetTitle() {
-        $title = $this->getEntity()->getTitle();
-        $this->assertEquals($title, 'TaskTest');
-    }
-
-    public function testGetContent() {
-        $content = $this->getEntity()->getContent();
-        $this->assertEquals($content, 'Task content test');
-    }
-
-    public function testGetCreatedAt() {
-        $date = new \DateTime();
-        $task = $this->getEntity()->setCreatedAt($date);
-        $createdAt = $task->getCreatedAt();
-        $this->assertEquals($createdAt, $date);
-    }
-
-    public function testIsDone() {
+    public function testTaskGetterAndSetters() {
         $task = $this->getEntity();
+        $date = new \DateTime();
+        $task->setCreatedAt($date);
+        $createdAt = $task->getCreatedAt();
         $task->toggle(true);
         $this->assertTrue($task->isDone());
+        $this->assertEquals($createdAt, $date);
+        $this->assertEquals(1, $task->getId());
+        $this->assertEquals($task->getTitle(), 'TaskTest');
+        $this->assertEquals($task->getContent(), 'Task content test');
     }
 }

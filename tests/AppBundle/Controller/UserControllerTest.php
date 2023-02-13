@@ -5,7 +5,6 @@ namespace Tests\AppBundle\Controller;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserControllerTest extends WebTestCase
 {
@@ -58,6 +57,8 @@ class UserControllerTest extends WebTestCase
         ]);
         $this->client->submit($form);
         $this->client->followRedirect();
+        $user = $this->userRepository->findOneBy(["email" => "john@mail.com"]);
+        $this->assertEquals($user->getEmail(), 'john@mail.com');
         $this->assertSelectorTextContains('h1', 'Liste des utilisateurs');
     }
 
@@ -76,6 +77,8 @@ class UserControllerTest extends WebTestCase
         ]);
         $this->client->submit($form);
         $this->client->followRedirect();
+        $user = $this->userRepository->findOneBy(["email" => "john@mail.com"]);
+        $this->assertEquals($user->getUsername(), 'JohnEdited');
         $this->assertSelectorTextContains('h1', 'Liste des utilisateurs');
     }
 }
