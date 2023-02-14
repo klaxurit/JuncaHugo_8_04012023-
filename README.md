@@ -14,57 +14,53 @@
 
 > A Todo List App.
 
-## Prérequis
+## Prerequisites
 
 - PHP >= 8.1
 - Composer
 
-## Paquet installé via composer
+## Packages installed via Composer
 
-- symfony/maker-bundle
-- orm
-- orm-fixtures
-- security
-- wildurand/hateoas-bundle
-- symfony/validator
-- doctrinne/annotations
-- lexik/jwt-authentication-bundle
-- nelmio/api-doc-bundle
-- twig asset
+- hautelook/alice-bundle
+- liip/test-fixtures-bundle
+- phpunit/phpunit
+- rector/rector
 
 ## Installation
 
-1. Clonez le dépôt git :
+1. Clone the git repository :
 ``git clone https://github.com/klaxurit/JuncaHugo_8_04012023-.git``
 
-2. Installez les dépendances en utilisant Composer :
+2. Install dependencies using Composer :
 ``composer install``
 
-3. Copiez le .env en .env.local et modifier les paramètres sql.
+3. Copy .env to .env.local and modify the SQL parameters and do the same with the .env.test to setup a new database for tests.
 
-6. Créez la base de données et effectuez les migrations en utilisant les commandes Doctrine :
+6. Create the database and perform migrations using Doctrine commands :
 - ``php bin/console doctrine:database:create``
 - ``php bin/console doctrine:migrations:migrate``
 
-## Exécution
+## Execution
 
-Exécutez le serveur local Symfony pour lancer l'application :
+Run the local Symfony server to launch the application :
 
 ``php bin/console server:run``
 
-Pour chargez un jeux de donnée veuillez saisir cette commande dans votre terminal:
+To load data fixtures, enter this command in your terminal :
 
 ``php bin/console hautelook:fixtures:load``
 
-Les fixtures contiennent:
+The fixtures contain :
 
-- Un compte administrateur. id: Administrateur / mdp: password
-- Un compte utilisateur. id: Utilisateur / mdp: password
-- Un compte anonyme. id: Anonymous / mdp: password
-- Trois utilisateur généré de manière aléatoire compte supplementaire
+- An administrator account. id: Administrateur / password: password
+- A user account. id: Utilisateur / password: password
+- An anonymous account. id: Anonymous / password: password
+- Three randomly generated additional users
+- Eleven tasks with assignated users
+- Six tasks without assignated users
 
 
-## Autheur
+## Author
 
 👤 **JUNCA Hugo**
 

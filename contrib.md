@@ -28,6 +28,7 @@ This file describes the steps to contribute to the Symfony 5.4 project on Github
 ## Rules to follow 📚
 
 - Code must be in compliance with Symfony standards
+- Code must be indented with 4 spaces tab size
 - Comments and documentation must be in English
 - Changes must be tested and functional ( run all test: ```make tests```)
 
