@@ -10,13 +10,13 @@ This file describes the steps to contribute to the Symfony 5.4 project on Github
 
 ## How to contribute? 🤔
 
-1. Fork the Symfony 5.4 project on your Github account (follow ReadMe file instructions)
-2. Clone the project on your computer
-3. Create a branch for your changes
-4. Make the desired changes
-5. Run tests
-6. Commit the changes and push them to your branch
-7. Create a pull request to submit your contribution to the main project and add me as reviewers
+1. Clone the project on your computer
+2. Create issue
+2. Create a branch // NAMING
+3. Make the desired changes
+4. Run tests
+5. Commit the changes and push them to your branch
+6. Create a pull request to submit your contribution to the main project and add @klaxurit as reviewers
 
 ## What to contribute? 🤗
 
