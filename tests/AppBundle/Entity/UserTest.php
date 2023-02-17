@@ -23,34 +23,6 @@ class UserTest extends KernelTestCase
         ->addTask($this->createTask());
     }
 
-    
-    // public function testCreateAdminUser() {
-    //     $user = $this->getEntity()->setRoles(['ROLE_ADMIN']);
-    //     $this->assertContains('ROLE_ADMIN', $user->getRoles());
-    //     $this->assertContains('ROLE_USER', $user->getRoles());
-    // }
-    
-    // public function testCreateBasicUser() {
-    //     $user = $this->getEntity();
-    //     $this->assertContains('ROLE_USER', $user->getRoles());
-    //     $this->assertNotContains('ROLE_ADMIN', $user->getRoles());
-    // }
-    
-    // public function testAddTask() {
-    //     $user = $this->getEntity()->addTask($this->createTask());
-    //     $task = $user->getTasks();
-    //     $this->assertCount(2, $task);
-    // }
-    
-    // public function testRemoveTask() {
-    //     $user = $this->getEntity();
-    //     $task = $this->createTask();
-    //     $user->addTask($task);
-    //     $user->removeTask($task);
-    //     $this->assertNull($task->getUser());
-    //     $this->assertCount(1, $this->getEntity()->getTasks());
-    // }
-
     public function testUserGettersAndSetters() {
         $user = $this->getEntity();
         $this->assertEquals($user->getUsername(), 'Usertest');

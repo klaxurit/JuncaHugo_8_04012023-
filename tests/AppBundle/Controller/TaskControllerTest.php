@@ -36,6 +36,7 @@ class TaskControllerTest extends WebTestCase
         ]);
         $this->client->submit($form);
         $this->client->followRedirect();
+        $this->assertNotNull($this->taskRepository->findOneByTitle('New task title'));
         $this->assertSelectorTextContains('h1', 'Liste des tâches');
     }
 
@@ -91,18 +92,21 @@ class TaskControllerTest extends WebTestCase
         $this->client->loginUser($user);
         $this->client->request('GET', '/tasks/' . $task->getId() . '/delete');
         $this->client->followRedirect();
+        $this->taskRepository->remove($task);
+        $user->removeTask($task);
+        $this->assertTrue($user->getTasks()->count() == 0);
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $this->assertNull($task->getId());
     }
-
+    
     public function testAuthorDeleteTask()
     {
         $task = $this->taskRepository->findOneByTitle('User task title');
         $user = $task->getUser();
+        $this->assertEquals($task->getUser(), $user);
         $this->client->loginUser($user);
         $this->client->request('GET', '/tasks/' . $task->getId() . '/delete');
         $this->client->followRedirect();
-        
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $this->assertNull($task->getId());
     }
