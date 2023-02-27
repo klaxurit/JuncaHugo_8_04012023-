@@ -4,9 +4,9 @@ namespace App\Security\Voter;
 
 use App\Entity\Task;
 use App\Entity\User;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class TaskVoter extends Voter
 {
@@ -42,7 +42,7 @@ class TaskVoter extends Voter
 
     public function taskIsAnonymous(Task $task)
     {
-        return (!$task->getUser() || $task->getUser()->getEmail() === User::ANONYMOUS_USER_EMAIL);
+        return !$task->getUser() || $task->getUser()->getEmail() === User::ANONYMOUS_USER_EMAIL;
     }
 
     public function isTaskAuthor(Task $task, User $user)
@@ -57,6 +57,7 @@ class TaskVoter extends Voter
         if (in_array('ROLE_ADMIN', $user->getRoles()) && $this->taskIsAnonymous($task) || $this->isTaskAuthor($task, $user)) {
             return true;
         }
+
         return false;
     }
 }

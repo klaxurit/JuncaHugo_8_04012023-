@@ -2,20 +2,19 @@
 
 namespace App\Entity;
 
+use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\UserRepository;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'user')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    public const ANONYMOUS_USER_EMAIL = "utilisateur@anonyme.com";
+    public const ANONYMOUS_USER_EMAIL = 'utilisateur@anonyme.com';
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -46,30 +45,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * Get id
-     *
-     * @return integer|null
+     * Get id.
      */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-/**
- * Get username
- *
- * @return string
- */
+    /**
+     * Get username.
+     *
+     * @return string
+     */
     public function getUsername(): ?string
     {
         return $this->username;
     }
 
     /**
-     * Set username
+     * Set username.
      *
      * @param [type] $username
-     * @return self
      */
     public function setUsername($username): self
     {
@@ -83,7 +79,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *
      * @see UserInterface
      */
-    public function getUserIdentifier(): ?string 
+    public function getUserIdentifier(): ?string
     {
         return (string) $this->username;
     }
@@ -108,9 +104,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * Get salt
-     *
-     * @return string|null
+     * Get salt.
      */
     public function getSalt(): ?string
     {
@@ -133,9 +127,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * Get email
-     *
-     * @return string|null
+     * Get email.
      */
     public function getEmail(): ?string
     {
@@ -143,10 +135,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * Set email
-     *
-     * @param string $email
-     * @return self
+     * Set email.
      */
     public function setEmail(string $email): self
     {
@@ -181,15 +170,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->tasks->removeElement($task)) {
             // set the owning side to null (unless already changed)
+            // @codeCoverageIgnoreStart
             if ($task->getUser() === $this) {
                 $task->setUser(null);
             }
+            // @codeCoverageIgnoreEnd
         }
 
         return $this;
     }
 
-    public function setId(?int $id): self {
+    public function setId(?int $id): self
+    {
         $this->id = $id;
 
         return $this;

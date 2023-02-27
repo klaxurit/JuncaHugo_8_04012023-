@@ -1,36 +1,36 @@
 # Contributing to Symfony 5.4 Todo List Project 🎉
 
-This file describes the steps to contribute to the Symfony 5.4 project on Github.
+This file describes the steps to contribute to the Symfony 5.4 Todo List project on Github.
 
 ## Prerequisites 🚀
 
-- Knowledge of PHP and web development
-- Knowledge of the Github platform
-- Knowledge of Symfony version 5.4
+First of all to contribute to this project clone this repository and install it locally by following the [**README**](README.md) file.
 
-## How to contribute? 🤔
+## Workflow 🤔
 
-1. Clone the project on your computer
-2. Create issue
-2. Create a branch // NAMING
-3. Make the desired changes
-4. Run tests
-5. Commit the changes and push them to your branch
-6. Create a pull request to submit your contribution to the main project and add @klaxurit as reviewers
-
-## What to contribute? 🤗
-
-- Bug fixes
-- Feature additions
-- Performance improvements
-- Documentation and code comments
-
-## Rules to follow 📚
-
-- Code must be in compliance with Symfony standards
-- Code must be indented with 4 spaces tab size
-- Comments and documentation must be in English
-- Changes must be tested and functional ( run all test: ```make tests```)
+1. Create an [**issue**](https://github.com/klaxurit/JuncaHugo_8_04012023-/issues), dont forget to use the appropriate label.
+    - Use the dedicated fields to give more description about your issue (title, description).
+    - Click on assign yourself in the Assignees field on the right of window to assign the issue as yours.
+    - Click on the project field to attribute this issue to the Todo List project, so you can use the [**project**](https://github.com/users/klaxurit/projects/3) board to tell others developers you or working on it.
+    - When your issue is created move it in the In progress section on the [**project**](https://github.com/users/klaxurit/projects/3) board.
+2. Create a branch from the master branch of the repository.
+    - Name the branch using this convention:
+        - To resolve a bug: fix/<issue-id><issue-title>
+        - To make a new feature: feature/<issue-id><issue-title>
+        - To make an improvement of existing feature: improvement/<issue-id><issue-title>
+    - After branch created you can start to code, but there is some coding standards to follow.
+3. Follow standards coding convention
+    - This project follow the [**PSR-4**](https://www.php-fig.org/psr/psr-4/) as code formater.
+    - Code must be indented with 4 spaces tab size.
+    - Comments and documentation must be in English
+    - Install the [**PHP-CS-FIXER**](https://github.com/PHP-CS-Fixer/PHP-CS-Fixer), this tool can be run using `tools/php-cs-fixer/vendor/bin/php-cs-fixer fix src` command.
+    - This project is Symfony project so you have to follow framework [**bests-practices**](https://symfony.com/doc/5.4/best_practices.html).
+4. This project have functionnal and unit tests that all pass, to ensure the stability and maintanabilty of the project, please be sure to run test with `make tests` to check if all is working good before committing and pushing.
+5. When your feature/bugfix/improvement is done you have to make a [**Pull-request**](https://github.com/klaxurit/JuncaHugo_8_04012023-/pulls).
+    - Select the main branch as `base` and your branch as `compare` then click on 'Create pull request' button.
+    - Add title and description to explain what you have done on your branch.
+    - Link your issue to the pull request and add @klaxurit as reviewers.
+    - As the pull request is created SymfonyInsight will analyse your code automatically, check if you have any errors, duplicaiton, code smells and correct it if needed.
 
 ## Acknowledgements 💖
 

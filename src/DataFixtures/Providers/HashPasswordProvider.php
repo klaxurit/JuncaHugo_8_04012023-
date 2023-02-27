@@ -11,6 +11,7 @@ class HashPasswordProvider
      * @var UserPasswordHasherInterface
      */
     private $encoder;
+
     // @codeCoverageIgnoreStart
     public function __construct(UserPasswordHasherInterface $encoder)
     {

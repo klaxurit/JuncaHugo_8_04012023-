@@ -27,13 +27,12 @@ class TaskRepositoryTest extends KernelTestCase
 
     public function testSaveTask()
     {
-    $task = (new Task())
-        ->setTitle('Save task title')
-        ->setContent('Save task content');
-    $this->taskRepository->save($task, true);
-    $this->assertEquals($task->getTitle(), 'Save task title');
-    $this->taskRepository->remove($task, true);
-    $this->assertNull($task->getId());
-
+        $task = (new Task())
+            ->setTitle('Save task title')
+            ->setContent('Save task content');
+        $this->taskRepository->save($task, true);
+        $this->assertEquals($task->getTitle(), 'Save task title');
+        $this->taskRepository->remove($task, true);
+        $this->assertNull($task->getId());
     }
 }

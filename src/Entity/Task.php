@@ -10,7 +10,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: 'task')]
 class Task
 {
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -41,9 +40,7 @@ class Task
     }
 
     /**
-     * Get id
-     *
-     * @return integer|null
+     * Get id.
      */
     public function getId(): ?int
     {
@@ -51,9 +48,7 @@ class Task
     }
 
     /**
-     * Get createdAt
-     *
-     * @return \DateTime|null
+     * Get createdAt.
      */
     public function getCreatedAt(): ?\DateTime
     {
@@ -61,10 +56,7 @@ class Task
     }
 
     /**
-     * Set createdAt
-     *
-     * @param \DateTime $createdAt
-     * @return self
+     * Set createdAt.
      */
     public function setCreatedAt(\DateTime $createdAt): self
     {
@@ -74,9 +66,7 @@ class Task
     }
 
     /**
-     * Get title
-     *
-     * @return string|null
+     * Get title.
      */
     public function getTitle(): ?string
     {
@@ -84,10 +74,7 @@ class Task
     }
 
     /**
-     * Set title
-     *
-     * @param string $title
-     * @return self
+     * Set title.
      */
     public function setTitle(string $title): self
     {
@@ -97,9 +84,7 @@ class Task
     }
 
     /**
-     * Get content
-     *
-     * @return string|null
+     * Get content.
      */
     public function getContent(): ?string
     {
@@ -107,10 +92,7 @@ class Task
     }
 
     /**
-     * Set content
-     *
-     * @param string $content
-     * @return self
+     * Set content.
      */
     public function setContent(string $content): self
     {
@@ -120,9 +102,7 @@ class Task
     }
 
     /**
-     * Get isDone
-     *
-     * @return boolean|null
+     * Get isDone.
      */
     public function isDone(): ?bool
     {
@@ -146,7 +126,7 @@ class Task
         return $this;
     }
 
-    public function setId(?int $id): self 
+    public function setId(?int $id): self
     {
         $this->id = $id;
 

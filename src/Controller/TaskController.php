@@ -5,19 +5,18 @@ namespace App\Controller;
 use App\Entity\Task;
 use App\Entity\User;
 use App\Form\TaskType;
-use Doctrine\ORM\Mapping\Entity;
 use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class TaskController extends AbstractController
 {
-    public function __construct(private readonly TaskRepository $taskRepository,private readonly UserRepository $userRepository)
+    public function __construct(private readonly TaskRepository $taskRepository, private readonly UserRepository $userRepository)
     {
     }
 
@@ -25,7 +24,7 @@ class TaskController extends AbstractController
     public function listAction(TaskRepository $taskRepository): Response
     {
         return $this->render('task/list.html.twig', [
-            'tasks' => $taskRepository->findAll()
+            'tasks' => $taskRepository->findAll(),
         ]);
     }
 
@@ -59,8 +58,8 @@ class TaskController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if(!$task->getUser()){
-                $task->setUser($this->userRepository->findOneBy(["email" => User::ANONYMOUS_USER_EMAIL]));
+            if (!$task->getUser()) {
+                $task->setUser($this->userRepository->findOneBy(['email' => User::ANONYMOUS_USER_EMAIL]));
             }
             $em->persist($task);
             $em->flush();
