@@ -2,10 +2,6 @@
 
 This file describes the steps to contribute to the Symfony 5.4 Todo List project on Github.
 
-## Prerequisites 🚀
-
-First of all to contribute to this project clone this repository and install it locally by following the [**README**](README.md) file.
-
 ## Workflow 🤔
 
 1. Create an [**issue**](https://github.com/klaxurit/JuncaHugo_8_04012023-/issues), dont forget to use the appropriate label.
