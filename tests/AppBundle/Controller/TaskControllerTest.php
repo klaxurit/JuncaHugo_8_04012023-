@@ -36,7 +36,9 @@ class TaskControllerTest extends WebTestCase
         ]);
         $this->client->submit($form);
         $this->client->followRedirect();
-        $this->assertNotNull($this->taskRepository->findOneByTitle('New task title'));
+
+        $createdTask = $this->taskRepository->findOneByTitle('New task title');
+        $this->assertNotNull($createdTask);
         $this->assertSelectorTextContains('h1', 'Liste des tâches');
     }
 
@@ -63,7 +65,9 @@ class TaskControllerTest extends WebTestCase
         $this->client->request('GET', '/tasks/' . $task->getId() . '/toggle');
         $this->client->followRedirect();
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
-        $this->assertTrue($task->isDone());
+        
+        $updatedTask = $this->taskRepository->findOneByTitle('New task title');
+        $this->assertTrue($updatedTask->isDone());
     }
 
     public function testVisitorDeleteTask()

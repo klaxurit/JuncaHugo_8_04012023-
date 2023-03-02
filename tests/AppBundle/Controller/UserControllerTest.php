@@ -57,8 +57,12 @@ class UserControllerTest extends WebTestCase
         ]);
         $this->client->submit($form);
         $this->client->followRedirect();
+        
         $user = $this->userRepository->findOneBy(["email" => "john@mail.com"]);
+        $this->assertNotNull($user->getId());
         $this->assertEquals($user->getEmail(), 'john@mail.com');
+        $this->assertEquals($user->getUsername(), 'John');
+        $this->assertEquals($user->getRoles(), ['ROLE_USER']);
         $this->assertSelectorTextContains('h1', 'Liste des utilisateurs');
     }
 
@@ -72,13 +76,15 @@ class UserControllerTest extends WebTestCase
             'user[username]' => 'JohnEdited',
             'user[password][first]' => 'password',
             'user[password][second]' => 'password',
-            'user[email]' => 'john@mail.com',
+            'user[email]' => 'johnedited@mail.com',
             'user[roles]' => 'ROLE_USER',
         ]);
         $this->client->submit($form);
         $this->client->followRedirect();
-        $user = $this->userRepository->findOneBy(["email" => "john@mail.com"]);
+
+        $user = $this->userRepository->findOneBy(["email" => "johnedited@mail.com"]);
         $this->assertEquals($user->getUsername(), 'JohnEdited');
+        $this->assertEquals($user->getEmail(), "johnedited@mail.com");
         $this->assertSelectorTextContains('h1', 'Liste des utilisateurs');
     }
 }
