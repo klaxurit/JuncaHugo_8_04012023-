@@ -21,7 +21,7 @@ This file describes the steps to contribute to the Symfony 5.4 Todo List project
     - Comments and documentation must be in English
     - Install the [**PHP-CS-FIXER**](https://github.com/PHP-CS-Fixer/PHP-CS-Fixer), this tool can be run using `tools/php-cs-fixer/vendor/bin/php-cs-fixer fix src` command.
     - This project is Symfony project so you have to follow framework [**bests-practices**](https://symfony.com/doc/5.4/best_practices.html).
-4. This project have functionnal and unit tests that all pass, to ensure the stability and maintanabilty of the project, please be sure to run test with `make tests` to check if all is working good before committing and pushing.
+4. This project have functionnal and unit tests that all pass, to ensure the stability and maintanabilty of the project, please be sure to run test with `make tests` to check if all is working good before committing and pushing. Use [**code-climate**](https://codeclimate.com/) and be sure to keep the maintainability rate to A rank.
 5. When your feature/bugfix/improvement is done you have to make a [**Pull-request**](https://github.com/klaxurit/JuncaHugo_8_04012023-/pulls).
     - Select the main branch as `base` and your branch as `compare` then click on 'Create pull request' button.
     - Add title and description to explain what you have done on your branch.
