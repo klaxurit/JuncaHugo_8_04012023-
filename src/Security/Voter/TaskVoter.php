@@ -11,12 +11,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class TaskVoter extends Voter
 {
     public const DELETE = 'TASK_DELETE';
+    public const EDIT = 'TASK_EDIT';
 
     protected function supports(string $attribute, $subject): bool
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, [self::DELETE])
+        return in_array($attribute, [self::DELETE, self::EDIT])
             && $subject instanceof \App\Entity\Task;
     }
 
@@ -37,6 +38,10 @@ class TaskVoter extends Voter
             return $this->canDelete($task, $user);
         }
 
+        if (self::EDIT) {
+            return $this->canEdit($task, $user);
+        }
+
         return false;
     }
 
@@ -53,6 +58,15 @@ class TaskVoter extends Voter
     }
 
     public function canDelete(Task $task, User $user)
+    {
+        if (in_array('ROLE_ADMIN', $user->getRoles()) && $this->taskIsAnonymous($task) || $this->isTaskAuthor($task, $user)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function canEdit(Task $task, User $user)
     {
         if (in_array('ROLE_ADMIN', $user->getRoles()) && $this->taskIsAnonymous($task) || $this->isTaskAuthor($task, $user)) {
             return true;

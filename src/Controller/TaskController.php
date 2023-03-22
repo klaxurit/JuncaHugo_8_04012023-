@@ -53,6 +53,7 @@ class TaskController extends AbstractController
     public function editAction(int $id, TaskRepository $taskRepository, Request $request, EntityManagerInterface $em)
     {
         $task = $taskRepository->find($id);
+        $this->denyAccessUnlessGranted('TASK_EDIT', $task);
         $form = $this->createForm(TaskType::class, $task);
 
         $form->handleRequest($request);
@@ -79,6 +80,7 @@ class TaskController extends AbstractController
     public function toggleTaskAction(int $id, TaskRepository $taskRepository, EntityManagerInterface $em): RedirectResponse
     {
         $task = $taskRepository->find($id);
+        $this->denyAccessUnlessGranted('TASK_EDIT', $task);
         $task->toggle(!$task->isDone());
         $em->persist($task);
         $em->flush();
